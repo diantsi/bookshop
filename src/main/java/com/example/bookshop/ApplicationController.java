@@ -36,10 +36,10 @@ public class ApplicationController {
         return "/clientcard/index";
     }
 
-    @GetMapping({"/genre", "/genre.html"})
-    public String genre(){
-        return "/genre/index";
-    }
+//    @GetMapping({"/genre", "/genre.html"})
+//    public String genre(){
+//        return "/genre/index";
+//    }
 
     @GetMapping({"/receipt", "/receipt.html"})
     public String receipt(){

@@ -2,6 +2,7 @@ package com.example.bookshop.service;
 
 import com.example.bookshop.dao.GenreDao;
 import com.example.bookshop.dto.GenreDto;
+import com.example.bookshop.entity.Genre;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -15,7 +16,7 @@ public class GenreService {
         this.genreDao = genreDao;
     }
 
-    public List<GenreDto> getAllGenres() {
+    public List<Genre> getAllGenres() {
         return genreDao.findAll();
     }
 }

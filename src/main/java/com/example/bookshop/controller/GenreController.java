@@ -1,15 +1,18 @@
 package com.example.bookshop.controller;
 
 import com.example.bookshop.dto.GenreDto;
+import com.example.bookshop.entity.Genre;
 import com.example.bookshop.service.GenreService;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
-@RestController
-@RequestMapping("/genres")
+@Controller
+//@RequestMapping("/genres")
 public class GenreController {
 
     private final GenreService genreService;
@@ -18,8 +21,10 @@ public class GenreController {
         this.genreService = genreService;
     }
 
-    @GetMapping
-    public List<GenreDto> getAllGenres() {
-        return genreService.getAllGenres();
+    @GetMapping({"/genre", "/genre.html"})
+    public String showCategoriesPage(Model model) {
+        List<Genre> genres = genreService.getAllGenres();
+        model.addAttribute("genres", genres);
+        return "genre/index"; // посилається на genre.index.html
     }
 }

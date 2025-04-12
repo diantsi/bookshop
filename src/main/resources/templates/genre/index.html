@@ -1,9 +1,20 @@
 <!DOCTYPE html>
 <html xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
       layout:decorate="~{_layout}">
+<head>
+    <meta charset="UTF-8">
+    <title>Жанри</title>
+</head>
+<body>
 <div layout:fragment="content">
     <h1>Жанри</h1>
-
+    <ul>
+        <li th:each="genre : ${genres}">
+            <span th:text="${genre.name}"></span> —
+            <span th:text="${genre.description}"></span> —
+            <span th:text="${genre.numberOfBooks}"></span>
+        </li>
+    </ul>
 </div>
-
+</body>
 </html>
