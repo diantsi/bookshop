@@ -11,10 +11,49 @@ public class ApplicationController {
         return "index";
     }
 
-    @GetMapping({"/widgets", "/widgets.html"})
-    public String widget(){
-        return "widgets";
+    @GetMapping({"/index2", "/index2.html"})
+    public String home2(){
+        return "index2";
     }
 
+    @GetMapping({"/_layout", "/_layout.html"})
+    public String layout(){
+        return "_layout";
+    }
+
+    @GetMapping({"/book", "/book.html"})
+    public String book(){
+        return "/book/index";
+    }
+
+    @GetMapping({"/bookcopy", "/bookcopy.html"})
+    public String bookcopy(){
+        return "/bookcopy/index";
+    }
+
+    @GetMapping({"/clientcard", "/clientcard.html"})
+    public String clientcard(){
+        return "/clientcard/index";
+    }
+
+    @GetMapping({"/genre", "/genre.html"})
+    public String genre(){
+        return "/genre/index";
+    }
+
+    @GetMapping({"/receipt", "/receipt.html"})
+    public String receipt(){
+        return "/receipt/index";
+    }
+
+    @GetMapping({"/review", "/review.html"})
+    public String review(){
+        return "/review/index";
+    }
+
+    @GetMapping({"/worker", "/worker.html"})
+    public String worker(){
+        return "/worker/index";
+    }
 }
 
