@@ -27,29 +27,28 @@ SET SQL_MODE="NO_AUTO_VALUE_ON_ZERO";
 --
 
 CREATE TABLE IF NOT EXISTS `genre` (
-                                       `genre_name` varchar(20) NOT NULL,
-                                       `genre_description` varchar(100) NOT NULL,
-                                       `number_of_books` int NOT NULL DEFAULT 0,
+                                       `Id_genre` int(11) NOT NULL AUTO_INCREMENT,
+                                       `Genre_name` varchar(20) NOT NULL,
+                                       `Genre_description` varchar(100) NOT NULL,
+                                       `Number_of_books` int NOT NULL DEFAULT 0,
                                        PRIMARY KEY (`genre_name`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=13;
 
 --
 -- Dumping data for table `genre`
 --
 
-INSERT INTO `genre` (`genre_name`, `genre_description`, `number_of_books`) VALUES
-                                                                               ('біографії', 'коли чуже життя цікавіше', 0),
-                                                                               ('детективи', 'щоб напрягти мізки', 0),
-                                                                               ('жахи', 'щоб життя медом не здавалося', 0),
-                                                                               ('класика', 'завжди актуальна', 0),
-                                                                               ('книги для дітей', 'про котиків і зайчиків', 0),
-                                                                               ('науково-популярна література', 'протидія гниттю мозку', 0),
-                                                                               ('поезія', 'для поціновувачів', 0),
-                                                                               ('про саморозвиток', 'успішний успіх', 0),
-                                                                               ('романи', 'для романтиків', 0),
-                                                                               ('трилери', 'щоб серце в п\'яти пішло', 0),
-                                                                               ('фантастика', 'бо буденний світ набрид', 0),
-                                                                               ('фентезі', 'світ магії та пригод', 0);
+INSERT INTO `genre` (`Id_genre`,`Genre_name`, `Genre_description`, `Number_of_books`) VALUES
+                                                                                          (1, 'біографії', 'коли чуже життя цікавіше', 0),
+                                                                                          (2, 'детективи', 'щоб напрягти мізки', 0),
+                                                                                          (3, 'жахи', 'щоб життя медом не здавалося', 0),
+                                                                                          (4, 'класика', 'завжди актуальна', 0),
+                                                                                          (5, 'книги для дітей', 'про котиків і зайчиків', 0),
+                                                                                          (6, 'науково-популярна література', 'протидія гниттю мозку', 0),
+                                                                                          (7, 'фентезі', 'світ магії та пригод', 0),
+                                                                                          (8, 'про саморозвиток', 'успішний успіх', 0),
+                                                                                          (9, 'романи', 'для романтиків', 0),
+                                                                                          (10, 'трилери', 'щоб серце в п\'яти пішло', 0);
 
 -- --------------------------------------------------------
 
@@ -180,27 +179,26 @@ CREATE TABLE IF NOT EXISTS `instance` (
 
 CREATE TABLE IF NOT EXISTS `genre_book` (
                                             `Book_ISBN` varchar(30) NOT NULL,
-                                            `Genre_name` varchar(20) NOT NULL,
-                                            PRIMARY KEY (`Book_ISBN`, `Genre_name`),
+                                            `Id_genre` int(11) NOT NULL,
+                                            PRIMARY KEY (`Book_ISBN`,`Id_genre`),
                                             FOREIGN KEY (`Book_ISBN`) REFERENCES `book`(`ISBN`) ON DELETE CASCADE ON UPDATE CASCADE,
-                                            FOREIGN KEY (`Genre_name`) REFERENCES `genre`(`genre_name`) ON DELETE NO ACTION ON UPDATE CASCADE
+                                            FOREIGN KEY (`Id_genre`) REFERENCES `genre`(`Id_genre`) ON DELETE NO ACTION ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
 -- Dumping data for table `genre_book`
 --
-
-INSERT INTO `genre_book` (`Book_ISBN`, `Genre_name`) VALUES
-                                                         ('978-0-7475-3269-9', 'фентезі'),
-                                                         ('978-0-7432-7356-5', 'романи'),
-                                                         ('978-1-4028-9462-6', 'романи'),
-                                                         ('978-1-56619-909-4', 'фантастика'), -- Changed from 'антиутопія' to existing genre
-                                                         ('978-1-56619-909-5', 'романи'),
-                                                         ('978-11-12-67-9-99', 'жахи'),
-                                                         ('978-3-16-148410-1', 'фентезі'),
-                                                         ('978-3-16-148410-2', 'фантастика'),
-                                                         ('978-5-699-12345-6', 'романи'),
-                                                         ('978-966-14-8523-4', 'детективи');
+INSERT INTO `genre_book` (`Book_ISBN`, `Id_genre`) VALUES
+                                                       ('978-0-7475-3269-9', 7),
+                                                       ('978-0-7432-7356-5', 9),
+                                                       ('978-1-4028-9462-6', 9),
+                                                       ('978-1-56619-909-4', 3),
+                                                       ('978-1-56619-909-5', 9),
+                                                       ('978-11-12-67-9-99', 3),
+                                                       ('978-3-16-148410-1', 7),
+                                                       ('978-3-16-148410-2', 3),
+                                                       ('978-5-699-12345-6', 9),
+                                                       ('978-966-14-8523-4', 2);
 
 -- --------------------------------------------------------
 
@@ -355,12 +353,12 @@ CREATE TRIGGER `update_genre_book_count`
     FOR EACH ROW
 BEGIN
     UPDATE `genre`
-    SET `number_of_books` = (
+    SET `Number_of_books` = (
         SELECT COUNT(*)
         FROM `genre_book`
-        WHERE `Genre_name` = NEW.`Genre_name`
+        WHERE `Id_genre` = NEW.`Id_genre`
     )
-    WHERE `genre_name` = NEW.`Genre_name`;
+    WHERE `Id_genre` = NEW.`Id_genre`;
 END//
 DELIMITER ;
 
@@ -370,21 +368,20 @@ CREATE TRIGGER `update_genre_book_count_delete`
     FOR EACH ROW
 BEGIN
     UPDATE `genre`
-    SET `number_of_books` = (
+    SET `Number_of_books` = (
         SELECT COUNT(*)
         FROM `genre_book`
-        WHERE `Genre_name` = OLD.`Genre_name`
+        WHERE `Id_genre` = OLD.`Id_genre`
     )
-    WHERE `genre_name` = OLD.`Genre_name`;
+    WHERE `Id_genre` = OLD.`Id_genre`;
 END//
 DELIMITER ;
 
--- Initial update for `number_of_books`
 UPDATE `genre` g
 SET `number_of_books` = (
     SELECT COUNT(*)
     FROM `genre_book` gb
-    WHERE gb.`Genre_name` = g.`genre_name`
+    WHERE gb.`Id_genre` = g.`Id_genre`
 );
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
