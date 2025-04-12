@@ -1,6 +1,5 @@
 package com.example.bookshop.dao;
 
-import com.example.bookshop.dto.GenreDto;
 import com.example.bookshop.entity.Genre;
 import org.springframework.stereotype.Repository;
 
@@ -19,7 +18,7 @@ public class GenreDao {
 
     public List<Genre> findAll() {
         List<Genre> genres = new ArrayList<>();
-        String query = "SELECT genre_name, genre_description, number_of_books FROM genre";
+        String query = "SELECT Id_genre, Genre_name, Genre_description, Number_of_books FROM genre";
 
         try (Connection conn = daoConnection.getConnection();
              PreparedStatement ps = conn.prepareStatement(query);
@@ -27,9 +26,10 @@ public class GenreDao {
 
             while (rs.next()) {
                 Genre genre = new Genre(
-                        rs.getString("genre_name"),
-                        rs.getString("genre_description"),
-                        rs.getInt("number_of_books")
+                        rs.getLong("Id_genre"),
+                        rs.getString("Genre_name"),
+                        rs.getString("Genre_description"),
+                        rs.getInt("Number_of_books")
                 );
                 genres.add(genre);
             }

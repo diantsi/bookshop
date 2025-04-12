@@ -31,7 +31,7 @@ CREATE TABLE IF NOT EXISTS `genre` (
                                        `Genre_name` varchar(20) NOT NULL,
                                        `Genre_description` varchar(100) NOT NULL,
                                        `Number_of_books` int NOT NULL DEFAULT 0,
-                                       PRIMARY KEY (`genre_name`)
+                                       PRIMARY KEY (`Id_genre`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=13;
 
 --

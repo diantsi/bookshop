@@ -10,6 +10,7 @@
     <h1>Жанри</h1>
     <ul>
         <li th:each="genre : ${genres}">
+            <span th:text="${genre.id}"></span> —
             <span th:text="${genre.name}"></span> —
             <span th:text="${genre.description}"></span> —
             <span th:text="${genre.numberOfBooks}"></span>

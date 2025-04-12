@@ -8,8 +8,8 @@ public class Genre {
 
     // конструктори
     public Genre() {}
-    public Genre(String name, String description, int numberOfBooks) {
-        //this.id = id;
+    public Genre(Long id, String name, String description, int numberOfBooks) {
+        this.id = id;
         this.name = name;
         this.description = description;
         this.numberOfBooks = numberOfBooks;
