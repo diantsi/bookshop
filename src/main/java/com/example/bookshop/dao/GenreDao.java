@@ -57,4 +57,18 @@ public class GenreDao {
             throw new RuntimeException("Cannot save genre", e);
         }
     }
+
+    public void deleteById(Long id) {
+        String query = "DELETE FROM genre WHERE Id_genre = ?";
+
+        try (Connection conn = daoConnection.getConnection();
+             PreparedStatement ps = conn.prepareStatement(query)) {
+
+            ps.setLong(1, id);
+            ps.executeUpdate();
+
+        } catch (SQLException e) {
+            throw new RuntimeException("Cannot delete genre", e);
+        }
+    }
 }

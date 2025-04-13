@@ -4,10 +4,7 @@ import com.example.bookshop.entity.Genre;
 import com.example.bookshop.service.GenreService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -37,6 +34,12 @@ public class GenreController {
     @PostMapping("/genres")
     public String saveGenre(Genre genre) {
         genreService.saveGenre(genre);
+        return "redirect:/genre";
+    }
+
+    @RequestMapping(value = "/genres/delete/{id}", method = {RequestMethod.GET, RequestMethod.DELETE})
+    public String deleteGenre(@PathVariable Long id) {
+        genreService.delete(id);
         return "redirect:/genre";
     }
 }

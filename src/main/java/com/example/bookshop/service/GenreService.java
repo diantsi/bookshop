@@ -22,4 +22,8 @@ public class GenreService {
     public void saveGenre(Genre genre) {
         genreDao.saveGenre(genre);
     }
+
+    public void delete(Long id) {
+        genreDao.deleteById(id);
+    }
 }
