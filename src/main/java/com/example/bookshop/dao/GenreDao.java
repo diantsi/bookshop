@@ -40,4 +40,21 @@ public class GenreDao {
 
         return genres;
     }
+
+
+    public void saveGenre(Genre genre) {
+        String query = "INSERT INTO genre (Genre_name, Genre_description, Number_of_books) VALUES (?, ?, ?)";
+
+        try (Connection conn = daoConnection.getConnection();
+             PreparedStatement ps = conn.prepareStatement(query)) {
+
+            ps.setString(1, genre.getName());
+            ps.setString(2, genre.getDescription());
+            ps.setInt(3, genre.getNumberOfBooks());
+            ps.executeUpdate();
+
+        } catch (SQLException e) {
+            throw new RuntimeException("Cannot save genre", e);
+        }
+    }
 }

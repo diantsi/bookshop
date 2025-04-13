@@ -5,6 +5,7 @@ import com.example.bookshop.service.GenreService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -25,5 +26,17 @@ public class GenreController {
         List<Genre> genres = genreService.getAllGenres();
         model.addAttribute("genres", genres);
         return "genre/index"; // посилається на genre.index.html
+    }
+
+
+    @GetMapping({"/add_genre", "add_genre.html"})
+    public String addGenre(Model model) {
+        return "genre/add_genre";
+    }
+
+    @PostMapping("/genres")
+    public String saveGenre(Genre genre) {
+        genreService.saveGenre(genre);
+        return "redirect:/genre";
     }
 }

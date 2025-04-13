@@ -18,4 +18,8 @@ public class GenreService {
     public List<Genre> getAllGenres() {
         return genreDao.findAll();
     }
+
+    public void saveGenre(Genre genre) {
+        genreDao.saveGenre(genre);
+    }
 }
