@@ -27,4 +27,11 @@ public class Genre {
 
     public int getNumberOfBooks() { return numberOfBooks; }
     public void setNumberOfBooks(int numberOfBooks) { this.numberOfBooks = numberOfBooks; }
+
+    public Genre orElse(Object o) {
+        if(this == null) {
+            return null;
+        }
+        return this;
+    }
 }

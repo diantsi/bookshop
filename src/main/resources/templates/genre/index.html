@@ -37,7 +37,8 @@
                         <td>
                             <div class="btn-group">
                                 <a class="btn btn-primary" href="#"><i class="icon_plus_alt2"></i></a>
-                                <a class="btn btn-success" href="#"><i class="icon_check_alt2"></i></a>
+                                <a class="btn btn-success"
+                                   th:href="@{'/edit_genre/' + ${genre.id}}"><i class="icon_check_alt2"></i></a>
                                 <a class="btn btn-danger"
                                    onclick="return confirm('sure?')"
                                    th:href="@{'/genres/delete/' + ${genre.id}}"><i class="icon_close_alt2"></i></a>

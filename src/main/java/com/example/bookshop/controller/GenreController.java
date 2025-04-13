@@ -26,10 +26,18 @@ public class GenreController {
     }
 
 
-    @GetMapping({"/add_genre", "add_genre.html"})
+    @GetMapping("/add_genre")
     public String addGenre(Model model) {
         return "genre/add_genre";
     }
+
+    @GetMapping("/edit_genre/{id}")
+    public String editGenre(@PathVariable Long id, Model model) {
+        Genre genre = genreService.getById(id);
+        model.addAttribute("genre", genre);
+        return "genre/edit_genre";
+    }
+
 
     @PostMapping("/genres")
     public String saveGenre(Genre genre) {

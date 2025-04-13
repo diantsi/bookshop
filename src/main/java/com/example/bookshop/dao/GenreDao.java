@@ -43,21 +43,41 @@ public class GenreDao {
 
 
     public void saveGenre(Genre genre) {
-        String query = "INSERT INTO genre (Genre_name, Genre_description, Number_of_books) VALUES (?, ?, ?)";
+        if (genre.getId() == null) {
+            String query = "INSERT INTO genre (Genre_name, Genre_description, Number_of_books) VALUES (?, ?, ?)";
+            try (Connection conn = daoConnection.getConnection();
+                 PreparedStatement ps = conn.prepareStatement(query, Statement.RETURN_GENERATED_KEYS)) {
 
-        try (Connection conn = daoConnection.getConnection();
-             PreparedStatement ps = conn.prepareStatement(query)) {
+                ps.setString(1, genre.getName());
+                ps.setString(2, genre.getDescription());
+                ps.setInt(3, genre.getNumberOfBooks());
+                ps.executeUpdate();
 
-            ps.setString(1, genre.getName());
-            ps.setString(2, genre.getDescription());
-            ps.setInt(3, genre.getNumberOfBooks());
-            ps.executeUpdate();
+                try (ResultSet generatedKeys = ps.getGeneratedKeys()) {
+                    if (generatedKeys.next()) {
+                        genre.setId(generatedKeys.getLong(1));
+                    }
+                }
 
-        } catch (SQLException e) {
-            throw new RuntimeException("Cannot save genre", e);
+            } catch (SQLException e) {
+                throw new RuntimeException("Cannot save genre", e);
+            }
+        } else {
+            String query = "UPDATE genre SET Genre_name = ?, Genre_description = ?, Number_of_books = ? WHERE Id_genre = ?";
+            try (Connection conn = daoConnection.getConnection();
+                 PreparedStatement ps = conn.prepareStatement(query)) {
+
+                ps.setString(1, genre.getName());
+                ps.setString(2, genre.getDescription());
+                ps.setInt(3, genre.getNumberOfBooks());
+                ps.setLong(4, genre.getId());
+                ps.executeUpdate();
+
+            } catch (SQLException e) {
+                throw new RuntimeException("Cannot update genre", e);
+            }
         }
     }
-
     public void deleteById(Long id) {
         String query = "DELETE FROM genre WHERE Id_genre = ?";
 
@@ -71,4 +91,32 @@ public class GenreDao {
             throw new RuntimeException("Cannot delete genre", e);
         }
     }
+
+    public Genre findById(Long id) {
+        String query = "SELECT Id_genre, Genre_name, Genre_description, Number_of_books FROM genre WHERE Id_genre = ?";
+        Genre genre = null;
+
+        try (Connection conn = daoConnection.getConnection();
+             PreparedStatement ps = conn.prepareStatement(query)) {
+
+            ps.setLong(1, id);
+            ResultSet rs = ps.executeQuery();
+
+            if (rs.next()) {
+                genre = new Genre(
+                        rs.getLong("Id_genre"),
+                        rs.getString("Genre_name"),
+                        rs.getString("Genre_description"),
+                        rs.getInt("Number_of_books")
+                );
+            }
+
+        } catch (SQLException e) {
+            throw new RuntimeException("Cannot find genre", e);
+        }
+
+        return genre;
+    }
+
+
 }

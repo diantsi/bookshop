@@ -26,4 +26,8 @@ public class GenreService {
     public void delete(Long id) {
         genreDao.deleteById(id);
     }
+
+    public Genre getById(Long id) {
+        return genreDao.findById(id).orElse(null);
+    }
 }

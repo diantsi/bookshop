@@ -13,28 +13,29 @@
     <title>Creative - Bootstrap Admin Template</title>
 
     <!-- Bootstrap CSS -->
-    <link href="css/bootstrap.min.css" rel="stylesheet">
+    <link th:href="@{/css/bootstrap.min.css}" rel="stylesheet">
     <!-- bootstrap theme -->
-    <link href="css/bootstrap-theme.css" rel="stylesheet">
+    <link th:href="@{/css/bootstrap-theme.css}" rel="stylesheet">
     <!--external css-->
     <!-- font icon -->
-    <link href="css/elegant-icons-style.css" rel="stylesheet" />
-    <link href="css/font-awesome.min.css" rel="stylesheet" />
+    <link th:href="@{/css/elegant-icons-style.css}" rel="stylesheet"/>
+    <link th:href="@{/css/font-awesome.min.css}" rel="stylesheet"/>
     <!-- full calendar css-->
-    <link href="assets/fullcalendar/fullcalendar/bootstrap-fullcalendar.css" rel="stylesheet" />
-    <link href="assets/fullcalendar/fullcalendar/fullcalendar.css" rel="stylesheet" />
+    <link th:href="@{/assets/fullcalendar/fullcalendar/bootstrap-fullcalendar.css}" rel="stylesheet"/>
+    <link th:href="@{/assets/fullcalendar/fullcalendar/fullcalendar.css}" rel="stylesheet"/>
     <!-- easy pie chart-->
-    <link href="assets/jquery-easy-pie-chart/jquery.easy-pie-chart.css" rel="stylesheet" type="text/css" media="screen" />
+    <link th:href="@{/assets/jquery-easy-pie-chart/jquery.easy-pie-chart.css}" rel="stylesheet" type="text/css"
+          media="screen"/>
     <!-- owl carousel -->
-    <link rel="stylesheet" href="css/owl.carousel.css" type="text/css">
-    <link href="css/jquery-jvectormap-1.2.2.css" rel="stylesheet">
+    <link th:href="@{/css/owl.carousel.css}" rel="stylesheet" type="text/css">
+    <link th:href="@{/css/jquery-jvectormap-1.2.2.css}" rel="stylesheet">
     <!-- Custom styles -->
-    <link rel="stylesheet" href="css/fullcalendar.css">
-    <link href="css/widgets.css" rel="stylesheet">
-    <link href="css/style.css" rel="stylesheet">
-    <link href="css/style-responsive.css" rel="stylesheet" />
-    <link href="css/xcharts.min.css" rel=" stylesheet">
-    <link href="css/jquery-ui-1.10.4.min.css" rel="stylesheet">
+    <link th:href="@{/css/fullcalendar.css}" rel="stylesheet">
+    <link th:href="@{/css/widgets.css}" rel="stylesheet">
+    <link th:href="@{/css/style.css}" rel="stylesheet">
+    <link th:href="@{/css/style-responsive.css}" rel="stylesheet"/>
+    <link th:href="@{/css/xcharts.min.css}" rel="stylesheet">
+    <link th:href="@{/css/jquery-ui-1.10.4.min.css}" rel="stylesheet">
     <!-- =======================================================
       Theme Name: NiceAdmin
       Theme URL: https://bootstrapmade.com/nice-admin-bootstrap-admin-html-template/
@@ -50,12 +51,12 @@
 
     <header class="header dark-bg">
         <div class="toggle-nav">
-            <div class="icon-reorder tooltips" data-original-title="Toggle Navigation" data-placement="bottom"><i class="icon_menu"></i></div>
+            <div class="icon-reorder tooltips" data-original-title="Toggle Navigation" data-placement="bottom"><i
+                    class="icon_menu"></i></div>
         </div>
 
         <!--logo start-->
-        <a href="index.html" class="logo">Literature <span class="lite"> Garden </span></a>
-        <!--logo end-->
+        <a th:href="@{/}" class="logo">Literature <span class="lite"> Garden </span></a>        <!--logo end-->
 
         <div class="nav search-row" id="top_menu">
             <!--  search form start -->
@@ -74,7 +75,7 @@
             <li class="dropdown">
                 <a data-toggle="dropdown" class="dropdown-toggle" href="#">
                             <span class="profile-ava">
-                                <img alt="" src="img/avatar1_small.jpg">
+                                  <img alt="" th:src="@{/img/avatar1_small.jpg}">
                             </span>
                     <span class="username">Jenifer Smith</span>
                     <b class="caret"></b>
@@ -82,25 +83,22 @@
                 <ul class="dropdown-menu extended logout">
                     <div class="log-arrow-up"></div>
                     <li class="eborder-top">
-                        <a href="#"><i class="icon_profile"></i> My Profile</a>
+                        <a th:href="@{/profile}"><i class="icon_profile"></i> My Profile</a>
                     </li>
                     <li>
-                        <a href="#"><i class="icon_mail_alt"></i> My Inbox</a>
+                        <a th:href="@{/inbox}"><i class="icon_mail_alt"></i> My Inbox</a>
                     </li>
                     <li>
-                        <a href="#"><i class="icon_clock_alt"></i> Timeline</a>
+                        <a th:href="@{/timeline}"><i class="icon_clock_alt"></i> Timeline</a>
                     </li>
                     <li>
-                        <a href="#"><i class="icon_chat_alt"></i> Chats</a>
+                        <a th:href="@{/chats}"><i class="icon_chat_alt"></i> Chats</a>
                     </li>
                     <li>
-                        <a href="assets/login.html"><i class="icon_key_alt"></i> Log Out</a>
+                        <a th:href="@{/logout}"><i class="icon_key_alt"></i> Log Out</a>
                     </li>
                     <li>
-                        <a href="documentation.html"><i class="icon_key_alt"></i> Documentation</a>
-                    </li>
-                    <li>
-                        <a href="documentation.html"><i class="icon_key_alt"></i> Documentation</a>
+                        <a th:href="@{/documentation}"><i class="icon_key_alt"></i> Documentation</a>
                     </li>
                 </ul>
             </li>
@@ -116,25 +114,15 @@
         <div id="sidebar" class="nav-collapse ">
             <!-- sidebar menu start-->
             <ul class="sidebar-menu">
-                <!--<li class="active">
-                    <a class="" href="index.html">
-                        <i class="icon_house_alt"></i>
-                        <span>Dashboard</span>
-                    </a>
-                </li>-->
-                <li><a class="" href="/book"><i class="icon_document_alt"></i>Книги</a></li>
-                <li><a class="" href="/genre"><i class="icon_document_alt"></i>Жанри</a></li>
-                <li><a class="" href="/receipt"><i class="icon_document_alt"></i>Чеки</a></li>
-                <li><a class="" href="/bookcopy"><i class="icon_document_alt"></i>Примірники</a></li>
-                <li><a class="" href="/clientcard"><i class="icon_document_alt"></i>Карти клієнтів</a></li>
-                <li><a class="" href="/worker"><i class="icon_document_alt"></i>Працівники</a></li>
-                <li><a class="" href="/review"><i class="icon_document_alt"></i>Відгуки</a></li>
-
-
-
-
+                <li><a class="" th:href="@{/book}"><i class="icon_document_alt"></i>Книги</a></li>
+                <li><a class="" th:href="@{/genre}"><i class="icon_document_alt"></i>Жанри</a></li>
+                <li><a class="" th:href="@{/receipt}"><i class="icon_document_alt"></i>Чеки</a></li>
+                <li><a class="" th:href="@{/bookcopy}"><i class="icon_document_alt"></i>Примірники</a></li>
+                <li><a class="" th:href="@{/clientcard}"><i class="icon_document_alt"></i>Карти клієнтів</a></li>
+                <li><a class="" th:href="@{/worker}"><i class="icon_document_alt"></i>Працівники</a></li>
+                <li><a class="" th:href="@{/review}"><i class="icon_document_alt"></i>Відгуки</a></li>
             </ul>
-            <!-- sidebar menu end-->
+            ]
         </div>
     </aside>
     <!--sidebar end-->
@@ -166,58 +154,59 @@
 <!-- container section start -->
 
 <!-- javascripts -->
-<script src="js/jquery.js"></script>
-<script src="js/jquery-ui-1.10.4.min.js"></script>
-<script src="js/jquery-1.8.3.min.js"></script>
-<script type="text/javascript" src="js/jquery-ui-1.9.2.custom.min.js"></script>
+<script th:src="@{/js/jquery.js}"></script>
+<script th:src="@{/js/jquery-ui-1.10.4.min.js}"></script>
+<script th:src="@{/js/jquery-1.8.3.min.js}"></script>
+<script th:src="@{/js/jquery-ui-1.9.2.custom.min.js}" type="text/javascript"></script>
 <!-- bootstrap -->
-<script src="js/bootstrap.min.js"></script>
+<script th:src="@{/js/bootstrap.min.js}"></script>
 <!-- nice scroll -->
-<script src="js/jquery.scrollTo.min.js"></script>
-<script src="js/jquery.nicescroll.js" type="text/javascript"></script>
+<script th:src="@{/js/jquery.scrollTo.min.js}"></script>
+<script th:src="@{/js/jquery.nicescroll.js}" type="text/javascript"></script>
 <!-- charts scripts -->
-<script src="assets/jquery-knob/js/jquery.knob.js"></script>
-<script src="js/jquery.sparkline.js" type="text/javascript"></script>
-<script src="assets/jquery-easy-pie-chart/jquery.easy-pie-chart.js"></script>
-<script src="js/owl.carousel.js"></script>
+<script th:src="@{/assets/jquery-knob/js/jquery.knob.js}"></script>
+<script th:src="@{/js/jquery.sparkline.js}" type="text/javascript"></script>
+<script th:src="@{/assets/jquery-easy-pie-chart/jquery.easy-pie-chart.js}"></script>
+<script th:src="@{/js/owl.carousel.js}"></script>
 <!-- jQuery full calendar -->
-<<script src="js/fullcalendar.min.js"></script>
+<script th:src="@{/js/fullcalendar.min.js}"></script>
 <!-- Full Google Calendar - Calendar -->
-<script src="assets/fullcalendar/fullcalendar/fullcalendar.js"></script>
+<script th:src="@{/assets/fullcalendar/fullcalendar/fullcalendar.js}"></script>
 <!--script for this page only-->
-<script src="js/calendar-custom.js"></script>
-<script src="js/jquery.rateit.min.js"></script>
+<script th:src="@{/js/calendar-custom.js}"></script>
+<script th:src="@{/js/jquery.rateit.min.js}"></script>
 <!-- custom select -->
-<script src="js/jquery.customSelect.min.js"></script>
-<script src="assets/chart-master/Chart.js"></script>
+<script th:src="@{/js/jquery.customSelect.min.js}"></script>
+<script th:src="@{/assets/chart-master/Chart.js}"></script>
 
 <!--custome script for all page-->
-<script src="js/scripts.js"></script>
+<script th:src="@{/js/scripts.js}"></script>
 <!-- custom script for this page-->
-<script src="js/sparkline-chart.js"></script>
-<script src="js/easy-pie-chart.js"></script>
-<script src="js/jquery-jvectormap-1.2.2.min.js"></script>
-<script src="js/jquery-jvectormap-world-mill-en.js"></script>
-<script src="js/xcharts.min.js"></script>
-<script src="js/jquery.autosize.min.js"></script>
-<script src="js/jquery.placeholder.min.js"></script>
-<script src="js/gdp-data.js"></script>
-<script src="js/morris.min.js"></script>
-<script src="js/sparklines.js"></script>
-<script src="js/charts.js"></script>
-<script src="js/jquery.slimscroll.min.js"></script>
+<script th:src="@{/js/sparkline-chart.js}"></script>
+<script th:src="@{/js/easy-pie-chart.js}"></script>
+<script th:src="@{/js/jquery-jvectormap-1.2.2.min.js}"></script>
+<script th:src="@{/js/jquery-jvectormap-world-mill-en.js}"></script>
+<script th:src="@{/js/xcharts.min.js}"></script>
+<script th:src="@{/js/jquery.autosize.min.js}"></script>
+<script th:src="@{/js/jquery.placeholder.min.js}"></script>
+<script th:src="@{/js/gdp-data.js}"></script>
+<script th:src="@{/js/morris.min.js}"></script>
+<script th:src="@{/js/sparklines.js}"></script>
+<script th:src="@{/js/charts.js}"></script>
+<script th:src="@{/js/jquery.slimscroll.min.js}"></script>
+
 <script>
     //knob
-    $(function() {
+    $(function () {
         $(".knob").knob({
-            'draw': function() {
+            'draw': function () {
                 $(this.i).val(this.cv + '%')
             }
         })
     });
 
     //carousel
-    $(document).ready(function() {
+    $(document).ready(function () {
         $("#owl-slider").owlCarousel({
             navigation: true,
             slideSpeed: 300,
@@ -229,12 +218,12 @@
 
     //custom select box
 
-    $(function() {
+    $(function () {
         $('select.styled').customSelect();
     });
 
     /* ---------- Map ---------- */
-    $(function() {
+    $(function () {
         $('#map').vectorMap({
             map: 'world_mill_en',
             series: {
@@ -245,7 +234,7 @@
                 }]
             },
             backgroundColor: '#eef3f7',
-            onLabelShow: function(e, el, code) {
+            onLabelShow: function (e, el, code) {
                 el.html(el.html() + ' (GDP - ' + gdpData[code] + ')');
             }
         });
