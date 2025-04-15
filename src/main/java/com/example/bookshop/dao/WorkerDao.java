@@ -114,21 +114,22 @@ public class WorkerDao {
         }
 
     }
-    /*public void deleteById(Long id) {
-        String query = "DELETE FROM genre WHERE Id_genre = ?";
+
+    public void deleteByTabNo(String tabNumber) {
+        String query = "DELETE FROM worker WHERE Tab_number = ?";
 
         try (Connection conn = daoConnection.getConnection();
              PreparedStatement ps = conn.prepareStatement(query)) {
 
-            ps.setLong(1, id);
+            ps.setString(1, tabNumber);
             ps.executeUpdate();
 
         } catch (SQLException e) {
-            throw new RuntimeException("Cannot delete genre", e);
+            throw new RuntimeException("Cannot delete a worker", e);
         }
     }
 
-    public Genre findById(Long id) {
+    /*public Genre findById(Long id) {
         String query = "SELECT Id_genre, Genre_name, Genre_description, Number_of_books FROM genre WHERE Id_genre = ?";
         Genre genre = null;
 

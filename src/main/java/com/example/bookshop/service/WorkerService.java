@@ -28,11 +28,11 @@ public class WorkerService {
         return workerDao.existsByTabNumber(tabNumber);
     }
 
-    /*public void delete(Long id) {
-        workerDao.deleteById(id);
+    public void delete(String tabNumber) {
+        workerDao.deleteByTabNo(tabNumber);
     }
 
-    public Genre getById(Long id) {
+    /*public Genre getById(Long id) {
         return workerDao.findById(id).orElse(null);
     }*/
 }

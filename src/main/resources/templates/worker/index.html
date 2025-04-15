@@ -42,7 +42,15 @@
                             <div class="btn-group">
                                 <a class="btn btn-primary" href="#"><i class="icon_info"></i></a>
                                 <a class="btn btn-success" href="#"><i class="icon_pencil-edit"></i></a>
-                                <a class="btn btn-danger" href="#"><i class="icon_trash"></i></a>
+                                <a class="btn btn-danger"
+                                   th:data-tab-number="${worker.tabNumber}" onclick="return confirmDelete(this)"
+                                   th:href="@{'/worker/delete/'+${worker.tabNumber}}"><i class="icon_trash"></i></a>
+                                <script>
+                                    function confirmDelete(button) {
+                                        const tabNumber = button.getAttribute('data-tab-number');
+                                        return confirm('Видалити працівника з табельним номером ' + tabNumber + '?');
+                                    }
+                                </script>
                             </div>
                         </td>
                     </tr>
