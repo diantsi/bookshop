@@ -62,8 +62,15 @@ public class WorkerController {
 
     @ModelAttribute("worker")
     public Worker getWorker() {
-        return new Worker();  // Тобі потрібно мати клас Worker з полем tabNumber
+        return new Worker();
     }
+
+    @RequestMapping(value = "/worker/delete/{tabNumber}", method = {RequestMethod.GET, RequestMethod.DELETE})
+    public String deleteGenre(@PathVariable String tabNumber) {
+        workerService.delete(tabNumber);
+        return "redirect:/worker";
+    }
+
 /*
     @GetMapping("/edit_genre/{id}")
     public String editGenre(@PathVariable Long id, Model model) {
@@ -73,16 +80,5 @@ public class WorkerController {
     }
 
 
-    @PostMapping("/genres")
-    public String saveGenre(Genre genre) {
-        workerService.saveGenre(genre);
-        return "redirect:/genre";
-    }
-
-    @RequestMapping(value = "/genres/delete/{id}", method = {RequestMethod.GET, RequestMethod.DELETE})
-    public String deleteGenre(@PathVariable Long id) {
-        workerService.delete(id);
-        return "redirect:/genre";
-    }
  */
 }
