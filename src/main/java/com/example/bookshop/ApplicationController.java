@@ -41,10 +41,10 @@ public class ApplicationController {
 //        return "/genre/index";
 //    }
 
-    @GetMapping({"/receipt", "/receipt.html"})
-    public String receipt(){
-        return "/receipt/index";
-    }
+//    @GetMapping({"/receipt", "/receipt.html"})
+//    public String receipt(){
+//        return "/receipt/index";
+//    }
 
     @GetMapping({"/review", "/review.html"})
     public String review(){

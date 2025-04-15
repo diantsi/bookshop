@@ -134,16 +134,39 @@ INSERT INTO `worker` (`Tab_number`, `Surname`, `First_name`, `Middle_name`, `Occ
 -- Table structure for table `receipt`
 --
 
+
+
+
+CREATE TABLE IF NOT EXISTS `client_card` (
+                                             `ID_number` varchar(32) NOT NULL,
+                                             `Surname` varchar(30) NOT NULL,
+                                             `First_name` varchar(30) NOT NULL,
+                                             `Middle_name` varchar(30) NULL,
+                                             `Phone_number` varchar(13) NOT NULL,
+                                             `Registration_date` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+                                             `Date_of_birth` date NOT NULL,
+                                             `Age` int NOT NULL,
+                                             `Email_addres` varchar(30) NOT NULL,
+                                             `Bonus_number` int NOT NULL,
+                                             PRIMARY KEY (`ID_number`),
+                                             UNIQUE KEY (`Phone_number`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+
+INSERT INTO `client_card` (`ID_number`, `Surname`, `First_name`, `Middle_name`, `Phone_number`, `Registration_date`, `Date_of_birth`, `Age`, `Email_addres`, `Bonus_number`) VALUES
+                                                                                                                                                                                 ('CL001', 'Тралалейло' , 'Тралала', 'Тралалейлович', '+380501234567', '2023-01-15', '1990-05-20', 33, 'tralaleylo@gmail.com', 100),
+                                                                                                                                                                                 ('CL002', 'Балеріна', 'Капучіна', 'Сергіївна', '+380671234568', '2023-02-20', '1985-08-12', 38, 'capuchina@ukma.edu.ua', 150),
+                                                                                                                                                                                 ('CL003', 'Тунг', 'Тунг', NULL, '+380931234569', '2023-03-10', '1995-11-30', 28, 'mctung@gmail,com', 75);
+
 CREATE TABLE IF NOT EXISTS `receipt` (
                                          `ID_number_of_check` int(11) NOT NULL AUTO_INCREMENT,
                                          `Date_buy` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-                                         `sum_of_check` decimal(13,2) NOT NULL,
-                                         `User_bonus_number` varchar(30) NULL,
+                                         `Sum_of_check` decimal(13,2) NOT NULL,
+                                         `User_bonus_number` int(30) NULL,
                                          `ID_number_client` varchar(30) NULL,
                                          `Tab_number_worker` varchar(30) NOT NULL,
                                          PRIMARY KEY (`ID_number_of_check`),
-                                         FOREIGN KEY (`ID_number_client`) REFERENCES `worker`(`Tab_number`) ON DELETE NO ACTION ON UPDATE CASCADE,
-                                         FOREIGN KEY (`User_bonus_number`) REFERENCES `worker`(`Tab_number`) ON DELETE NO ACTION ON UPDATE CASCADE,
+                                         FOREIGN KEY (`ID_number_client`) REFERENCES `client_card`(`ID_number`) ON DELETE NO ACTION ON UPDATE CASCADE,
                                          FOREIGN KEY (`Tab_number_worker`) REFERENCES `worker`(`Tab_number`) ON DELETE NO ACTION ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=15;
 
@@ -152,9 +175,9 @@ CREATE TABLE IF NOT EXISTS `receipt` (
 --
 
 INSERT INTO `receipt` (`ID_number_of_check`, `Date_buy`, `sum_of_check`, `User_bonus_number`, `ID_number_client`, `Tab_number_worker`) VALUES
-                                                                                                                                           (1, '2023-10-01 12:00:00', 150.00, NULL, 'T001', 'T001'),
-                                                                                                                                           (2, '2023-10-02 14:30:00', 200.00, NULL, 'T002', 'T002'),
-                                                                                                                                           (3, '2023-10-03 16:45:00', 100.00, NULL, NULL, 'T003');
+                                                                                                                                           (1, '2023-10-01 12:00:00', 150.00, NULL, 'CL001', 'T001'),
+                                                                                                                                           (2, '2023-10-02 14:30:00', 200.00, NULL, 'CL003', 'T002'),
+                                                                                                                                           (3, '2023-10-03 16:45:00', 100.00, NULL, 'CL002', 'T003');
 
 -- --------------------------------------------------------
 
