@@ -6,7 +6,6 @@ public class Genre {
     private String description;
     private int numberOfBooks;
 
-    // конструктори
     public Genre() {}
     public Genre(Long id, String name, String description, int numberOfBooks) {
         this.id = id;
@@ -15,7 +14,6 @@ public class Genre {
         this.numberOfBooks = numberOfBooks;
     }
 
-    // геттери та сеттери
     public Long getId() { return id; }
     public void setId(Long id) { this.id = id; }
 

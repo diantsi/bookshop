@@ -51,9 +51,9 @@ public class ApplicationController {
         return "/review/index";
     }
 
-    @GetMapping({"/worker", "/worker.html"})
-    public String worker(){
-        return "/worker/index";
-    }
+//    @GetMapping({"/worker", "/worker.html"})
+//    public String worker(){
+//        return "/worker/index";
+//    }
 }
 

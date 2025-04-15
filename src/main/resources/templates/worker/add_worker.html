@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="_layout">
+<head>
+    <meta charset="UTF-8">
+    <title>Add worker</title>
+</head>
+<body>
+<div layout:fragment="content">
+
+    <div class="container" style="width: 70%">
+        <div class="row">
+
+            <form class="form-horizontal " th:action="@{/workers}" th:object="${worker}" method="post">
+                <div class="col-lg-10">
+                    <section class="panel">
+                        <header class="panel-heading">
+                            Add new worker
+                        </header>
+                        <div class="panel-body">
+
+                            <div class="form-group">
+                                <label class="control-label col-sm-4">Tab number</label>
+                                <div class="col-sm-6">
+                                    <input type="text" th:field="*{tabNumber}" class="form-control" required
+                                           th:classappend="${#fields.hasErrors('tabNumber')} ? 'is-invalid'"/>
+                                    <div th:if="${#fields.hasErrors('tabNumber')}" th:errors="*{tabNumber}"
+                                         class="text-danger"></div>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="control-label col-sm-4">Surname</label>
+                                <div class="col-sm-6">
+                                    <input type="text" th:field="*{surname}" size="16" class="form-control" required>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="control-label col-sm-4">First name</label>
+                                <div class="col-sm-6">
+                                    <input type="text" th:field="*{firstName}" size="16" class="form-control" required>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="control-label col-sm-4">Middle name</label>
+                                <div class="col-sm-6">
+                                    <input type="text" th:field="*{middleName}" size="16" class="form-control">
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="control-label col-sm-4">Position</label>
+                                <div class="col-sm-6">
+                                    <input type="text" th:field="*{occupation}" size="16" class="form-control" required>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="control-label col-sm-4">Salary</label>
+                                <div class="col-sm-6">
+                                    <input type="number" th:field="*{salary}" size="16" class="form-control" required
+                                           th:classappend="${#fields.hasErrors('salary')} ? 'is-invalid'"/>
+                                    <div th:if="${#fields.hasErrors('salary')}" th:errors="*{salary}"
+                                         class="text-danger"></div>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="control-label col-sm-4">Starting work date</label>
+                                <div class="col-sm-6">
+                                    <input type="date" th:field="*{startWorkingDate}" size="16" class="form-control"
+                                           required>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="control-label col-sm-4">Birth date</label>
+                                <div class="col-sm-6">
+                                    <input type="date" th:field="*{dateOfBirth}" size="16" class="form-control" required
+                                           th:classappend="${#fields.hasErrors('dateOfBirth')} ? 'is-invalid'"/>
+                                    <div th:if="${#fields.hasErrors('dateOfBirth')}" th:errors="*{dateOfBirth}"
+                                         class="text-danger"></div>
+                                </div>
+                            </div>
+
+                            <div class="form-group" style="display: none;">
+                                <input type="hidden" th:field="*{age}" value="0">
+                            </div>
+
+                            <div class="form-group">
+                                <label class="control-label col-sm-4">City</label>
+                                <div class="col-sm-6">
+                                    <input type="text" th:field="*{city}" size="16" class="form-control" required>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="control-label col-sm-4">Street</label>
+                                <div class="col-sm-6">
+                                    <input type="text" th:field="*{street}" size="16" class="form-control" required>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="control-label col-sm-4">Building</label>
+                                <div class="col-sm-6">
+                                    <input type="text" th:field="*{building}" size="16" class="form-control" required>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="control-label col-sm-4">Flat</label>
+                                <div class="col-sm-6">
+                                    <input type="number" th:field="*{flat}" size="16" class="form-control">
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="control-label col-sm-4">Index</label>
+                                <div class="col-sm-6">
+                                    <input type="number" th:field="*{index}" size="16" class="form-control" required>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="control-label col-sm-4">Email</label>
+                                <div class="col-sm-6">
+                                    <input type="email" th:field="*{email}" size="16" class="form-control" required>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="control-label col-sm-4">Password</label>
+                                <div class="col-sm-6">
+                                    <input type="text" th:field="*{password}" size="16" class="form-control" required>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="control-label col-sm-4">Phone number</label>
+                                <div class="col-sm-6">
+                                    <input type="text" th:field="*{phoneNumber}" size="16" class="form-control"
+                                           required>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+
+                    <section class="panel">
+                        <p th:if="${error}" th:text="${error}" style="color:red;"></p>
+                        <div class="panel-body">
+                            <button type="submit" href="/add_worker" data-toggle="modal" class="btn btn-success">
+                                Confirm
+                            </button>
+                            <a href="/worker" data-toggle="modal" class="btn btn-warning">
+                                Cancel
+                            </a>
+                        </div>
+                    </section>
+                </div>
+            </form>
+        </div>
+        </section>
+    </div>
+</div>
+</div>
+
+</div>
+</body>
+</html>
