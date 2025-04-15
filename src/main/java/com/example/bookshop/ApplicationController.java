@@ -21,10 +21,10 @@ public class ApplicationController {
         return "_layout";
     }
 
-    @GetMapping({"/book", "/book.html"})
-    public String book(){
-        return "/book/index";
-    }
+//    @GetMapping({"/book", "/book.html"})
+//    public String book(){
+//        return "/book/index";
+//    }
 
     @GetMapping({"/bookcopy", "/bookcopy.html"})
     public String bookcopy(){
