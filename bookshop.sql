@@ -58,6 +58,7 @@ INSERT INTO `genre` (`Id_genre`,`Genre_name`, `Genre_description`, `Number_of_bo
 
 CREATE TABLE IF NOT EXISTS `book` (
                                       `ISBN` varchar(30) NOT NULL,
+                                       `Image` varchar(255) NOT NULL,
                                       `Book_name` varchar(50) NOT NULL,
                                       `Number_of_pages` int(11) NOT NULL,
                                       `Type_of_cover` varchar(15) NOT NULL,
@@ -77,17 +78,17 @@ CREATE TABLE IF NOT EXISTS `book` (
 -- Dumping data for table `book`
 --
 
-INSERT INTO `book` (`ISBN`, `Book_name`, `Number_of_pages`, `Type_of_cover`, `Book_language`, `Year_of_publication`, `Weight`, `Height`, `Width`, `Thickness`, `Book_price`, `Number_of_instances`, `Adults_only_status`) VALUES
-                                                                                                                                                                                                                              ('978-0-7475-3269-9', 'Гаррі Поттер і філософський камінь', 223, 'М’яка', 'Українська', 1997, 0.35, 19.5, 12.5, 2.7, 250.00, 30, 0), -- Added to fix genre_book reference
-                                                                                                                                                                                                                              ('978-0-7432-7356-5', 'Убити пересмішника', 281, 'Тверда', 'Англійська', 1960, 0.45, 21.5, 14.5, 3.5, 300.00, 12, 0),
-                                                                                                                                                                                                                              ('978-1-4028-9462-6', 'Великий Гетсбі', 180, 'Тверда', 'Англійська', 1925, 0.4, 20.5, 13.5, 3.0, 280.00, 18, 0),
-                                                                                                                                                                                                                              ('978-1-56619-909-4', '1984', 328, 'М’яка', 'Англійська', 1949, 0.4, 20.0, 13.0, 2.8, 200.00, 20, 0),
-                                                                                                                                                                                                                              ('978-1-56619-909-5', 'Старий і море', 128, 'Тверда', 'Англійська', 1952, 0.3, 18.5, 11.5, 2.0, 150.00, 15, 0),
-                                                                                                                                                                                                                              ('978-11-12-67-9-99', 'Об\'єктно-орієнтоване програмування', 400, 'Тверда', 'Українська', 2010, 0.5, 20.5, 13.5, 2.5, 200.00, 12, 1), -- Price corrected to 200.00
-                                                                                                                                                                                                                              ('978-3-16-148410-1', 'Гаррі Поттер і філософський камінь', 223, 'М’яка', 'Англійська', 1997, 0.35, 19.5, 12.5, 2.7, 250.00, 30, 0),
-                                                                                                                                                                                                                              ('978-3-16-148410-2', '451 градус за Фаренгейтом', 158, 'М’яка', 'Англійська', 1953, 0.25, 19.0, 12.0, 2.5, 220.00, 22, 1),
-                                                                                                                                                                                                                              ('978-5-699-12345-6', 'Тіні забутих предків', 336, 'Тверда', 'Українська', 2020, 0.45, 20.5, 13.5, 2.5, 250.00, 15, 0),
-                                                                                                                                                                                                                              ('978-966-14-8523-4', 'Код да Вінчі', 512, 'Тверда', 'Українська', 2015, 0.55, 21.0, 14.0, 3.2, 300.00, 10, 0);
+INSERT INTO `book` (`ISBN`, `Image`,`Book_name`, `Number_of_pages`, `Type_of_cover`, `Book_language`, `Year_of_publication`, `Weight`, `Height`, `Width`, `Thickness`, `Book_price`, `Number_of_instances`, `Adults_only_status`) VALUES
+                                                                                                                                                                                                                              ('978-0-7475-3269-9', 'https://upload.wikimedia.org/wikipedia/uk/c/c5/%D0%93%D0%9F%D0%A4%D0%9A%D0%9F%D0%BE%D1%81%D1%82%D0%B5%D1%80.jpg', 'Гаррі Поттер і філософський камінь', 223, 'М’яка', 'Українська', 1997, 0.35, 19.5, 12.5, 2.7, 250.00, 30, 0), -- Added to fix genre_book reference
+                                                                                                                                                                                                                              ('978-0-7432-7356-5', 'https://static.yakaboo.ua/media/cloudflare/product/webp/600x840/w/b/wbfmksgwaj4.jpg','Убити пересмішника', 281, 'Тверда', 'Англійська', 1960, 0.45, 21.5, 14.5, 3.5, 300.00, 12, 0),
+                                                                                                                                                                                                                              ('978-1-4028-9462-6', 'https://content1.rozetka.com.ua/goods/images/big/422876821.jpg','Великий Гетсбі', 180, 'Тверда', 'Англійська', 1925, 0.4, 20.5, 13.5, 3.0, 280.00, 18, 0),
+                                                                                                                                                                                                                              ('978-1-56619-909-4', 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRjaG-BkRQ3W6fNlmYNchCdHUNaeNowg_L_1A&s',  '1984', 328, 'М’яка', 'Англійська', 1949, 0.4, 20.0, 13.0, 2.8, 200.00, 20, 0),
+                                                                                                                                                                                                                              ('978-1-56619-909-5', 'https://upload.wikimedia.org/wikipedia/uk/6/66/Staryy_i_more_00.png','Старий і море', 128, 'Тверда', 'Англійська', 1952, 0.3, 18.5, 11.5, 2.0, 150.00, 15, 0),
+                                                                                                                                                                                                                              ('978-11-12-67-9-99', 'https://op.ua/images/common/7/8/6/3/61951519dcaae.png','Об\'єктно-орієнтоване програмування', 400, 'Тверда', 'Українська', 2010, 0.5, 20.5, 13.5, 2.5, 200.00, 12, 1), -- Price corrected to 200.00
+                                                                                                                                                                                                                              ('978-3-16-148410-1', 'https://readeat.com/storage/app/uploads/public/670/3bb/bf3/6703bbbf352d7552251412.jpg','Гаррі Поттер і філософський камінь', 223, 'М’яка', 'Англійська', 1997, 0.35, 19.5, 12.5, 2.7, 250.00, 30, 0),
+                                                                                                                                                                                                                              ('978-3-16-148410-2', 'https://bookchef.ua/upload/iblock/178/178b08674b5836bc01ce123570bb753d.jpg','451 градус за Фаренгейтом', 158, 'М’яка', 'Англійська', 1953, 0.25, 19.0, 12.0, 2.5, 220.00, 22, 1),
+                                                                                                                                                                                                                              ('978-5-699-12345-6','https://nashformat.ua/files/products/929760.800x800.jpg', 'Тіні забутих предків', 336, 'Тверда', 'Українська', 2020, 0.45, 20.5, 13.5, 2.5, 250.00, 15, 0),
+                                                                                                                                                                                                                              ('978-966-14-8523-4', 'https://bookclub.ua/images/db/goods/61489_122019.jpg','Код да Вінчі', 512, 'Тверда', 'Українська', 2015, 0.55, 21.0, 14.0, 3.2, 300.00, 10, 0);
 
 -- --------------------------------------------------------
 
@@ -193,6 +194,14 @@ CREATE TABLE IF NOT EXISTS `instance` (
                                           FOREIGN KEY (`ISBN_book`) REFERENCES `book`(`ISBN`) ON DELETE NO ACTION ON UPDATE CASCADE,
                                           FOREIGN KEY (`ID_number_of_check`) REFERENCES `receipt`(`ID_number_of_check`) ON DELETE NO ACTION ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=6;
+
+
+INSERT INTO `instance` (`instance_code`, `ID_number_of_check`, `ISBN_book`) VALUES
+                                                                                                                             (1, 1, '978-0-7475-3269-9'),
+                                                                                                                             (2, 2, '978-0-7432-7356-5'),
+                                                                                                                             (3, 3, '978-1-4028-9462-6'),
+                                                                                                                             (4, NULL, '978-1-56619-909-4'),
+                                                                                                                             (5, NULL, '978-1-56619-909-5');
 
 -- --------------------------------------------------------
 
