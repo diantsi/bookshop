@@ -21,15 +21,15 @@ public class ApplicationController {
         return "_layout";
     }
 
-    @GetMapping({"/book", "/book.html"})
-    public String book(){
-        return "/book/index";
-    }
+//    @GetMapping({"/book", "/book.html"})
+//    public String book(){
+//        return "/book/index";
+//    }
 
-    @GetMapping({"/bookcopy", "/bookcopy.html"})
-    public String bookcopy(){
-        return "/bookcopy/index";
-    }
+//    @GetMapping({"/bookcopy", "/bookcopy.html"})
+//    public String bookcopy(){
+//        return "/bookcopy/index";
+//    }
 
     @GetMapping({"/clientcard", "/clientcard.html"})
     public String clientcard(){
@@ -41,10 +41,10 @@ public class ApplicationController {
 //        return "/genre/index";
 //    }
 
-    @GetMapping({"/receipt", "/receipt.html"})
-    public String receipt(){
-        return "/receipt/index";
-    }
+//    @GetMapping({"/receipt", "/receipt.html"})
+//    public String receipt(){
+//        return "/receipt/index";
+//    }
 
     @GetMapping({"/review", "/review.html"})
     public String review(){

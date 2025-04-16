@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{_layout}">
+<head>
+    <meta charset="UTF-8">
+    <title>Info</title>
+</head>
+<body>
+<div layout:fragment="content">
+    <h1>Book Info</h1>
+    <a href="/book" data-toggle="modal" class="btn btn-warning">
+        <-
+    </a>
+    <div class="container" style="width: 70%; background-color: #FFFFFF; padding: 20px; border-radius: 8px;">
+        <div class="col-lg-6" th:action="@{/books}" method="post">
+            <img th:src="@{${book.image}}"
+                 style="width: 100%; height: 100%; object-fit: cover;"/>
+        </div>
+        <div class="col-lg-6">
+            <h3 th:text="${book.ISBN}"></h3>
+            <h2 th:text="${book.name}"></h2>
+            <h4 th:text="${book.pages}"></h4>
+            <h4 th:text="${book.cover}"></h4>
+            <h4 th:text="${book.language}"></h4>
+            <h4 th:text="${book.year}"></h4>
+            <h4 th:text="${book.width}"></h4>
+            <h4 th:text="${book.height}"></h4>
+            <h4 th:text="${book.weight}"></h4>
+            <h4 th:text="${book.thickness}"></h4>
+            <h4 th:text="${book.price}"></h4>
+            <h4 th:text="${book.quantity}"></h4>
+            <h4 th:text="${book.adultsOnly}"></h4>
+        </div>
+    </div>
+</div>
+</div>
+
+</body>
+</html>

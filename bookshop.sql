@@ -58,6 +58,7 @@ INSERT INTO `genre` (`Id_genre`,`Genre_name`, `Genre_description`, `Number_of_bo
 
 CREATE TABLE IF NOT EXISTS `book` (
                                       `ISBN` varchar(30) NOT NULL,
+                                       `Image` varchar(255) NOT NULL,
                                       `Book_name` varchar(50) NOT NULL,
                                       `Number_of_pages` int(11) NOT NULL,
                                       `Type_of_cover` varchar(15) NOT NULL,
@@ -77,17 +78,17 @@ CREATE TABLE IF NOT EXISTS `book` (
 -- Dumping data for table `book`
 --
 
-INSERT INTO `book` (`ISBN`, `Book_name`, `Number_of_pages`, `Type_of_cover`, `Book_language`, `Year_of_publication`, `Weight`, `Height`, `Width`, `Thickness`, `Book_price`, `Number_of_instances`, `Adults_only_status`) VALUES
-                                                                                                                                                                                                                              ('978-0-7475-3269-9', 'Гаррі Поттер і філософський камінь', 223, 'М’яка', 'Українська', 1997, 0.35, 19.5, 12.5, 2.7, 250.00, 30, 0), -- Added to fix genre_book reference
-                                                                                                                                                                                                                              ('978-0-7432-7356-5', 'Убити пересмішника', 281, 'Тверда', 'Англійська', 1960, 0.45, 21.5, 14.5, 3.5, 300.00, 12, 0),
-                                                                                                                                                                                                                              ('978-1-4028-9462-6', 'Великий Гетсбі', 180, 'Тверда', 'Англійська', 1925, 0.4, 20.5, 13.5, 3.0, 280.00, 18, 0),
-                                                                                                                                                                                                                              ('978-1-56619-909-4', '1984', 328, 'М’яка', 'Англійська', 1949, 0.4, 20.0, 13.0, 2.8, 200.00, 20, 0),
-                                                                                                                                                                                                                              ('978-1-56619-909-5', 'Старий і море', 128, 'Тверда', 'Англійська', 1952, 0.3, 18.5, 11.5, 2.0, 150.00, 15, 0),
-                                                                                                                                                                                                                              ('978-11-12-67-9-99', 'Об\'єктно-орієнтоване програмування', 400, 'Тверда', 'Українська', 2010, 0.5, 20.5, 13.5, 2.5, 200.00, 12, 1), -- Price corrected to 200.00
-                                                                                                                                                                                                                              ('978-3-16-148410-1', 'Гаррі Поттер і філософський камінь', 223, 'М’яка', 'Англійська', 1997, 0.35, 19.5, 12.5, 2.7, 250.00, 30, 0),
-                                                                                                                                                                                                                              ('978-3-16-148410-2', '451 градус за Фаренгейтом', 158, 'М’яка', 'Англійська', 1953, 0.25, 19.0, 12.0, 2.5, 220.00, 22, 1),
-                                                                                                                                                                                                                              ('978-5-699-12345-6', 'Тіні забутих предків', 336, 'Тверда', 'Українська', 2020, 0.45, 20.5, 13.5, 2.5, 250.00, 15, 0),
-                                                                                                                                                                                                                              ('978-966-14-8523-4', 'Код да Вінчі', 512, 'Тверда', 'Українська', 2015, 0.55, 21.0, 14.0, 3.2, 300.00, 10, 0);
+INSERT INTO `book` (`ISBN`, `Image`,`Book_name`, `Number_of_pages`, `Type_of_cover`, `Book_language`, `Year_of_publication`, `Weight`, `Height`, `Width`, `Thickness`, `Book_price`, `Number_of_instances`, `Adults_only_status`) VALUES
+                                                                                                                                                                                                                              ('978-0-7475-3269-9', 'https://upload.wikimedia.org/wikipedia/uk/c/c5/%D0%93%D0%9F%D0%A4%D0%9A%D0%9F%D0%BE%D1%81%D1%82%D0%B5%D1%80.jpg', 'Гаррі Поттер і філософський камінь', 223, 'М’яка', 'Українська', 1997, 0.35, 19.5, 12.5, 2.7, 250.00, 30, 0), -- Added to fix genre_book reference
+                                                                                                                                                                                                                              ('978-0-7432-7356-5', 'https://static.yakaboo.ua/media/cloudflare/product/webp/600x840/w/b/wbfmksgwaj4.jpg','Убити пересмішника', 281, 'Тверда', 'Англійська', 1960, 0.45, 21.5, 14.5, 3.5, 300.00, 12, 0),
+                                                                                                                                                                                                                              ('978-1-4028-9462-6', 'https://content1.rozetka.com.ua/goods/images/big/422876821.jpg','Великий Гетсбі', 180, 'Тверда', 'Англійська', 1925, 0.4, 20.5, 13.5, 3.0, 280.00, 18, 0),
+                                                                                                                                                                                                                              ('978-1-56619-909-4', 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRjaG-BkRQ3W6fNlmYNchCdHUNaeNowg_L_1A&s',  '1984', 328, 'М’яка', 'Англійська', 1949, 0.4, 20.0, 13.0, 2.8, 200.00, 20, 0),
+                                                                                                                                                                                                                              ('978-1-56619-909-5', 'https://upload.wikimedia.org/wikipedia/uk/6/66/Staryy_i_more_00.png','Старий і море', 128, 'Тверда', 'Англійська', 1952, 0.3, 18.5, 11.5, 2.0, 150.00, 15, 0),
+                                                                                                                                                                                                                              ('978-11-12-67-9-99', 'https://op.ua/images/common/7/8/6/3/61951519dcaae.png','Об\'єктно-орієнтоване програмування', 400, 'Тверда', 'Українська', 2010, 0.5, 20.5, 13.5, 2.5, 200.00, 12, 1), -- Price corrected to 200.00
+                                                                                                                                                                                                                              ('978-3-16-148410-1', 'https://readeat.com/storage/app/uploads/public/670/3bb/bf3/6703bbbf352d7552251412.jpg','Гаррі Поттер і філософський камінь', 223, 'М’яка', 'Англійська', 1997, 0.35, 19.5, 12.5, 2.7, 250.00, 30, 0),
+                                                                                                                                                                                                                              ('978-3-16-148410-2', 'https://bookchef.ua/upload/iblock/178/178b08674b5836bc01ce123570bb753d.jpg','451 градус за Фаренгейтом', 158, 'М’яка', 'Англійська', 1953, 0.25, 19.0, 12.0, 2.5, 220.00, 22, 1),
+                                                                                                                                                                                                                              ('978-5-699-12345-6','https://nashformat.ua/files/products/929760.800x800.jpg', 'Тіні забутих предків', 336, 'Тверда', 'Українська', 2020, 0.45, 20.5, 13.5, 2.5, 250.00, 15, 0),
+                                                                                                                                                                                                                              ('978-966-14-8523-4', 'https://bookclub.ua/images/db/goods/61489_122019.jpg','Код да Вінчі', 512, 'Тверда', 'Українська', 2015, 0.55, 21.0, 14.0, 3.2, 300.00, 10, 0);
 
 -- --------------------------------------------------------
 
@@ -134,16 +135,39 @@ INSERT INTO `worker` (`Tab_number`, `Surname`, `First_name`, `Middle_name`, `Occ
 -- Table structure for table `receipt`
 --
 
+
+
+
+CREATE TABLE IF NOT EXISTS `client_card` (
+                                             `ID_number` varchar(32) NOT NULL,
+                                             `Surname` varchar(30) NOT NULL,
+                                             `First_name` varchar(30) NOT NULL,
+                                             `Middle_name` varchar(30) NULL,
+                                             `Phone_number` varchar(13) NOT NULL,
+                                             `Registration_date` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+                                             `Date_of_birth` date NOT NULL,
+                                             `Age` int NOT NULL,
+                                             `Email_addres` varchar(30) NOT NULL,
+                                             `Bonus_number` int NOT NULL,
+                                             PRIMARY KEY (`ID_number`),
+                                             UNIQUE KEY (`Phone_number`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+
+INSERT INTO `client_card` (`ID_number`, `Surname`, `First_name`, `Middle_name`, `Phone_number`, `Registration_date`, `Date_of_birth`, `Age`, `Email_addres`, `Bonus_number`) VALUES
+                                                                                                                                                                                 ('CL001', 'Тралалейло' , 'Тралала', 'Тралалейлович', '+380501234567', '2023-01-15', '1990-05-20', 33, 'tralaleylo@gmail.com', 100),
+                                                                                                                                                                                 ('CL002', 'Балеріна', 'Капучіна', 'Сергіївна', '+380671234568', '2023-02-20', '1985-08-12', 38, 'capuchina@ukma.edu.ua', 150),
+                                                                                                                                                                                 ('CL003', 'Тунг', 'Тунг', NULL, '+380931234569', '2023-03-10', '1995-11-30', 28, 'mctung@gmail,com', 75);
+
 CREATE TABLE IF NOT EXISTS `receipt` (
                                          `ID_number_of_check` int(11) NOT NULL AUTO_INCREMENT,
                                          `Date_buy` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-                                         `sum_of_check` decimal(13,2) NOT NULL,
-                                         `User_bonus_number` varchar(30) NULL,
+                                         `Sum_of_check` decimal(13,2) NOT NULL,
+                                         `User_bonus_number` int(30) NULL,
                                          `ID_number_client` varchar(30) NULL,
                                          `Tab_number_worker` varchar(30) NOT NULL,
                                          PRIMARY KEY (`ID_number_of_check`),
-                                         FOREIGN KEY (`ID_number_client`) REFERENCES `worker`(`Tab_number`) ON DELETE NO ACTION ON UPDATE CASCADE,
-                                         FOREIGN KEY (`User_bonus_number`) REFERENCES `worker`(`Tab_number`) ON DELETE NO ACTION ON UPDATE CASCADE,
+                                         FOREIGN KEY (`ID_number_client`) REFERENCES `client_card`(`ID_number`) ON DELETE NO ACTION ON UPDATE CASCADE,
                                          FOREIGN KEY (`Tab_number_worker`) REFERENCES `worker`(`Tab_number`) ON DELETE NO ACTION ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=15;
 
@@ -152,9 +176,9 @@ CREATE TABLE IF NOT EXISTS `receipt` (
 --
 
 INSERT INTO `receipt` (`ID_number_of_check`, `Date_buy`, `sum_of_check`, `User_bonus_number`, `ID_number_client`, `Tab_number_worker`) VALUES
-                                                                                                                                           (1, '2023-10-01 12:00:00', 150.00, NULL, 'T001', 'T001'),
-                                                                                                                                           (2, '2023-10-02 14:30:00', 200.00, NULL, 'T002', 'T002'),
-                                                                                                                                           (3, '2023-10-03 16:45:00', 100.00, NULL, NULL, 'T003');
+                                                                                                                                           (1, '2023-10-01 12:00:00', 150.00, NULL, 'CL001', 'T001'),
+                                                                                                                                           (2, '2023-10-02 14:30:00', 200.00, NULL, 'CL003', 'T002'),
+                                                                                                                                           (3, '2023-10-03 16:45:00', 100.00, NULL, 'CL002', 'T003');
 
 -- --------------------------------------------------------
 
@@ -170,6 +194,14 @@ CREATE TABLE IF NOT EXISTS `instance` (
                                           FOREIGN KEY (`ISBN_book`) REFERENCES `book`(`ISBN`) ON DELETE NO ACTION ON UPDATE CASCADE,
                                           FOREIGN KEY (`ID_number_of_check`) REFERENCES `receipt`(`ID_number_of_check`) ON DELETE NO ACTION ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=6;
+
+
+INSERT INTO `instance` (`instance_code`, `ID_number_of_check`, `ISBN_book`) VALUES
+                                                                                                                             (1, 1, '978-0-7475-3269-9'),
+                                                                                                                             (2, 2, '978-0-7432-7356-5'),
+                                                                                                                             (3, 3, '978-1-4028-9462-6'),
+                                                                                                                             (4, NULL, '978-1-56619-909-4'),
+                                                                                                                             (5, NULL, '978-1-56619-909-5');
 
 -- --------------------------------------------------------
 
