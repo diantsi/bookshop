@@ -26,10 +26,10 @@ public class ApplicationController {
 //        return "/book/index";
 //    }
 
-    @GetMapping({"/bookcopy", "/bookcopy.html"})
-    public String bookcopy(){
-        return "/bookcopy/index";
-    }
+//    @GetMapping({"/bookcopy", "/bookcopy.html"})
+//    public String bookcopy(){
+//        return "/bookcopy/index";
+//    }
 
     @GetMapping({"/clientcard", "/clientcard.html"})
     public String clientcard(){
