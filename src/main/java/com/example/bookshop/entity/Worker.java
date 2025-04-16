@@ -18,8 +18,11 @@ package com.example.bookshop.entity;
 //                                        `password` varchar(255) NOT NULL, -- Increased length for hashed passwords
 //                                        `Phone_number` varchar(13) NOT NULL,
 
+import com.example.bookshop.dto.WorkerDto;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.web.bind.annotation.ModelAttribute;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.Period;
 
@@ -29,23 +32,23 @@ public class Worker {
     private String firstName;       //display
     private String middleName; //
     private String occupation;      //display
-    private double salary;
+    private BigDecimal salary;
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
     private LocalDate startWorkingDate;
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
     private LocalDate dateOfBirth;
-    private int age;
+    private Integer age;
     private String city;
     private String street;
     private String building;
-    private int flat; //
-    private int index;
+    private Integer flat; //
+    private Integer index;
     private String email;          //display
     private String password;
     private String phoneNumber;
 
-    private boolean hasFlat;
-
     public Worker() {}
-    public Worker(String tabNumber, String surname, String firstName, String middleName, String occupation, double salary, LocalDate startWorkingDate, LocalDate dateOfBirth, int age, String city, String street, String building, int flat, int index, String email, String password, String phoneNumber) {
+    public Worker(String tabNumber, String surname, String firstName, String middleName, String occupation, BigDecimal salary, LocalDate startWorkingDate, LocalDate dateOfBirth, Integer age, String city, String street, String building, Integer flat, Integer index, String email, String password, String phoneNumber) {
         this.tabNumber = tabNumber;
         this.surname = surname;
         this.firstName = firstName;
@@ -63,10 +66,8 @@ public class Worker {
         this.email = email;
         this.password = password;
         this.phoneNumber = phoneNumber;
-        this.hasFlat = true;
-
     }
-    public Worker(String tabNumber, String surname, String firstName, String occupation, double salary, LocalDate startWorkingDate, LocalDate dateOfBirth, int age, String city, String street, String building, int flat, int index, String email, String password, String phoneNumber) {
+    public Worker(String tabNumber, String surname, String firstName, String occupation, BigDecimal salary, LocalDate startWorkingDate, LocalDate dateOfBirth, Integer age, String city, String street, String building, Integer flat, Integer index, String email, String password, String phoneNumber) {
         this.tabNumber = tabNumber;
         this.surname = surname;
         this.firstName = firstName;
@@ -83,10 +84,10 @@ public class Worker {
         this.email = email;
         this.password = password;
         this.phoneNumber = phoneNumber;
-        this.hasFlat = true;
+        //this.hasFlat = true;
 
     }
-    public Worker(String tabNumber, String surname, String firstName, String middleName, String occupation, double salary, LocalDate startWorkingDate, LocalDate dateOfBirth, int age, String city, String street, String building, int index, String email, String password, String phoneNumber) {
+    public Worker(String tabNumber, String surname, String firstName, String middleName, String occupation, BigDecimal salary, LocalDate startWorkingDate, LocalDate dateOfBirth, Integer age, String city, String street, String building, Integer index, String email, String password, String phoneNumber) {
         this.tabNumber = tabNumber;
         this.surname = surname;
         this.firstName = firstName;
@@ -103,10 +104,10 @@ public class Worker {
         this.email = email;
         this.password = password;
         this.phoneNumber = phoneNumber;
-        this.hasFlat = false;
+        //this.hasFlat = false;
 
     }
-    public Worker(String tabNumber, String surname, String firstName, String occupation, double salary, LocalDate startWorkingDate, LocalDate dateOfBirth, int age, String city, String street, String building, int index, String email, String password, String phoneNumber) {
+    public Worker(String tabNumber, String surname, String firstName, String occupation, BigDecimal salary, LocalDate startWorkingDate, LocalDate dateOfBirth, Integer age, String city, String street, String building, Integer index, String email, String password, String phoneNumber) {
         this.tabNumber = tabNumber;
         this.surname = surname;
         this.firstName = firstName;
@@ -122,9 +123,10 @@ public class Worker {
         this.email = email;
         this.password = password;
         this.phoneNumber = phoneNumber;
-        this.hasFlat = false;
+        //this.hasFlat = false;
 
     }
+
     public Worker(String tabNumber, String surname, String firstName, String occupation, String email) {
         this.tabNumber = tabNumber;
         this.surname = surname;
@@ -179,11 +181,11 @@ public class Worker {
         this.occupation = occupation;
     }
 
-    public double getSalary() {
+    public BigDecimal getSalary() {
         return salary;
     }
 
-    public void setSalary(double salary) {
+    public void setSalary(BigDecimal salary) {
         this.salary = salary;
     }
 
@@ -203,16 +205,16 @@ public class Worker {
         this.dateOfBirth = dateOfBirth;
     }
 
-    public int calculateAge() {
+    public Integer calculateAge() {
         if (dateOfBirth == null) return 0;
         return Period.between(dateOfBirth, LocalDate.now()).getYears();
     }
 
-    public int getAge() {
+    public Integer getAge() {
         return age;
     }
 
-    public void setAge(int age) {
+    public void setAge(Integer age) {
         this.age = age;
     }
 
@@ -241,22 +243,22 @@ public class Worker {
     }
 
     public boolean hasFlat() {
-        return hasFlat;
+        return flat!=null;
     }
 
-    public int getFlat() {
+    public Integer getFlat() {
         return flat;
     }
 
-    public void setFlat(int flat) {
+    public void setFlat(Integer flat) {
         this.flat = flat;
     }
 
-    public int getIndex() {
+    public Integer getIndex() {
         return index;
     }
 
-    public void setIndex(int index) {
+    public void setIndex(Integer index) {
         this.index = index;
     }
 
@@ -291,5 +293,31 @@ public class Worker {
         return this;
     }
 
+    /*public WorkerDto toDto() {
+        WorkerDto workerDto = new WorkerDto();
+        workerDto.setTabNumber(this.tabNumber);
+        workerDto.setSurname(this.surname);
+        workerDto.setFirstName(this.firstName);
+        workerDto.setMiddleName(this.middleName);
+        workerDto.setOccupation(this.occupation);
+        workerDto.setSalary(this.salary);
+
+        workerDto.setStartWorkingDate(this.startWorkingDate);
+        workerDto.setDateOfBirth(this.dateOfBirth);
+        // Перетворення LocalDate → String у форматі yyyy-MM-dd
+        workerDto.setStartWorkingDateString(this.startWorkingDate != null ? this.startWorkingDate.toString() : "");
+        workerDto.setDateOfBirthString(this.dateOfBirth != null ? this.dateOfBirth.toString() : "");
+
+        workerDto.setCity(this.city);
+        workerDto.setStreet(this.street);
+        workerDto.setBuilding(this.building);
+        workerDto.setFlat(this.flat);
+        workerDto.setIndex(this.index);
+        workerDto.setEmail(this.email);
+        workerDto.setPassword(this.password);
+        workerDto.setPhoneNumber(this.phoneNumber);
+
+        return workerDto;
+    }*/
 
 }

@@ -24,6 +24,11 @@ public class WorkerService {
         workerDao.saveWorker(newWorker);
     }
 
+    public void editWorker(Worker newWorker, String oldTabNumber) {
+        workerDao.editWorker(newWorker, oldTabNumber);
+    }
+
+
     public boolean existsByTabNumber(String tabNumber){
         return workerDao.existsByTabNumber(tabNumber);
     }
@@ -32,7 +37,7 @@ public class WorkerService {
         workerDao.deleteByTabNo(tabNumber);
     }
 
-    /*public Genre getById(Long id) {
-        return workerDao.findById(id).orElse(null);
-    }*/
+    public Worker getByTabNumber(String tabNumber) {
+        return workerDao.findByTabNumber(tabNumber).orElse(null);
+    }
 }
