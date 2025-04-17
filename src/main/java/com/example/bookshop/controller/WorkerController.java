@@ -2,6 +2,7 @@ package com.example.bookshop.controller;
 
 import com.example.bookshop.entity.Worker;
 import com.example.bookshop.service.WorkerService;
+import jakarta.annotation.Nullable;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -38,6 +39,7 @@ public class WorkerController {
         Worker worker = workerService.getByTabNumber(tabNumber);
         model.addAttribute("worker", worker);
         model.addAttribute("oldTabNumber", worker.getTabNumber());
+        model.addAttribute("newPassword", "");
         return "worker/edit_worker";
     }
 
@@ -78,7 +80,7 @@ public class WorkerController {
     }
 
     @RequestMapping(value="/worker/edit/{tabNumber}", method = {RequestMethod.GET, RequestMethod.POST})
-    public String editWorker(@ModelAttribute("worker") Worker worker, BindingResult result, @RequestParam("oldTabNumber") String oldTabNumber, Model model) {
+    public String editWorker(@ModelAttribute("worker") Worker worker, BindingResult result, @RequestParam("oldTabNumber") String oldTabNumber,  @RequestParam("newPassword") String newPassword, Model model) {
         // Тут виконується валідація
         if (!worker.getTabNumber().equals(oldTabNumber)) {
             if(workerService.existsByTabNumber(worker.getTabNumber())){
@@ -97,7 +99,7 @@ public class WorkerController {
             return "worker/edit_worker"; // Просто повертаємо назву шаблону, не редірект!
         }
 
-        workerService.editWorker(worker, oldTabNumber);
+        workerService.editWorker(worker, oldTabNumber, newPassword);
         return "redirect:/worker";
 
     }

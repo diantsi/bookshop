@@ -119,6 +119,7 @@ public class WorkerDao {
     }
 
     public void editWorker(Worker worker, String oldTabNumber) {
+        if(worker.getPassword() != null) {}
         String query = "UPDATE worker SET Tab_number = ?, Surname = ?, First_name = ?, Middle_name = ?, Occupation = ?, Salary = ?, Start_working_date = ?, Date_of_birth = ?, Age = ?, City = ?, Street = ?, Building = ?, Flat = ?, `Index` = ?, Email_address = ?, password = ?, Phone_number = ? WHERE Tab_number = ?";
         try (Connection conn = daoConnection.getConnection();
              PreparedStatement ps = conn.prepareStatement(query)) {
@@ -149,6 +150,46 @@ public class WorkerDao {
             ps.setString(16, worker.getPassword());
             ps.setString(17, worker.getPhoneNumber());
             ps.setString(18, oldTabNumber);
+
+            ps.executeUpdate();
+
+        } catch (SQLException e) {
+            throw new RuntimeException("Cannot edit worker", e);
+        }
+
+    }
+
+    public void editWorkerWithoutPassword(Worker worker, String oldTabNumber) {
+        if(worker.getPassword() != null) {}
+        String query = "UPDATE worker SET Tab_number = ?, Surname = ?, First_name = ?, Middle_name = ?, Occupation = ?, Salary = ?, Start_working_date = ?, Date_of_birth = ?, Age = ?, City = ?, Street = ?, Building = ?, Flat = ?, `Index` = ?, Email_address = ?, Phone_number = ? WHERE Tab_number = ?";
+        try (Connection conn = daoConnection.getConnection();
+             PreparedStatement ps = conn.prepareStatement(query)) {
+
+            ps.setString(1, worker.getTabNumber());
+            ps.setString(2, worker.getSurname());
+            ps.setString(3, worker.getFirstName());
+            if (worker.hasMiddleName()) {
+                ps.setString(4, worker.getMiddleName());
+            } else {
+                ps.setObject(4, null, Types.VARCHAR);
+            }
+            ps.setString(5, worker.getOccupation());
+            ps.setObject(6, worker.getSalary(), Types.DECIMAL);
+            ps.setObject(7, worker.getStartWorkingDate(), Types.DATE);
+            ps.setObject(8, worker.getDateOfBirth(), Types.DATE);
+            ps.setInt(9, worker.calculateAge());
+            ps.setString(10, worker.getCity());
+            ps.setString(11, worker.getStreet());
+            ps.setString(12, worker.getBuilding());
+            if (worker.hasFlat()) {
+                ps.setInt(13, worker.getFlat());
+            } else {
+                ps.setObject(13, null, Types.INTEGER);
+            }
+            ps.setInt(14, worker.getIndex());
+            ps.setString(15, worker.getEmail());
+            ps.setString(16, worker.getPhoneNumber());
+            ps.setString(17, oldTabNumber);
 
             ps.executeUpdate();
 

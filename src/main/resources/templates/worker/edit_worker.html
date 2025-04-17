@@ -137,19 +137,20 @@
                             </div>
 
                             <div class="form-group">
-                                <label class="control-label col-sm-4">Password</label>
-                                <div class="col-sm-6">
-                                    <input type="text" th:field="*{password}" size="16" class="form-control" required>
-                                </div>
-                            </div>
-
-                            <div class="form-group">
                                 <label class="control-label col-sm-4">Phone number</label>
                                 <div class="col-sm-6">
                                     <input type="text" th:field="*{phoneNumber}" size="16" class="form-control"
                                            required>
                                 </div>
                             </div>
+
+                            <div class="form-group">
+                                <label class="control-label col-sm-4" style="display: none"  id="password-field">Password</label>
+                                <div class="col-sm-6">
+                                    <input id="password" name="newPassword" type="hidden" th:value="${newPassword}" size="16" class="form-control" required >
+                                </div>
+                            </div>
+
                         </div>
                     </section>
 
@@ -162,6 +163,21 @@
                             <a href="/worker" data-toggle="modal" class="btn btn-warning">
                                 Cancel
                             </a>
+                            <a id="password-btn" type="button" onclick="openPasswordField()" class="btn btn-danger">
+                                Assign new password
+                            </a>
+                            <script>
+                                function openPasswordField() {
+                                    if(confirm('Змінити пароль для цього працівника? \n(старий пароль буде видалено зараз без можливості відновлення)')){
+                                        const field = document.getElementById("password-field");
+                                        field.style.display = (field.style.display === "none") ? "block" : "none";
+                                        const button = document.getElementById("password-btn");
+                                        button.style.display = "none";
+                                        const input = document.getElementById("password");
+                                        input.type = "text";
+                                    }
+                                }
+                            </script>
                         </div>
                     </section>
                 </div>
