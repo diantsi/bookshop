@@ -1,12 +1,8 @@
 package com.example.bookshop.service;
 
-import com.example.bookshop.Sha256PasswordEncoder;
-import com.example.bookshop.dao.GenreDao;
+import com.example.bookshop.security.Sha256PasswordEncoder;
 import com.example.bookshop.dao.WorkerDao;
-import com.example.bookshop.entity.Genre;
 import com.example.bookshop.entity.Worker;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;

@@ -2,24 +2,29 @@ package com.example.bookshop;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
 public class ApplicationController {
 
-    @GetMapping({"/index", "/index.html"})
-    public String home(){
-        return "index";
-    }
+    @Controller
+    @RequestMapping("/manager")
+    public class ManagerController {
 
-    @GetMapping({"/index2", "/index2.html"})
-    public String home2(){
-        return "index2";
-    }
+        @GetMapping({"/index", "/index.html", "/home"})
+        public String home() {
+            return "index";
+        }
 
-    @GetMapping({"/_layout", "/_layout.html"})
-    public String layout(){
-        return "_layout";
-    }
+        @GetMapping({"/index2", "/index2.html"})
+        public String home2() {
+            return "index2";
+        }
+
+        @GetMapping({"/_layout", "/_layout.html"})
+        public String layout() {
+            return "_layout";
+        }
 
 //    @GetMapping({"/book", "/book.html"})
 //    public String book(){
@@ -31,10 +36,10 @@ public class ApplicationController {
 //        return "/bookcopy/index";
 //    }
 
-    @GetMapping({"/clientcard", "/clientcard.html"})
-    public String clientcard(){
-        return "/clientcard/index";
-    }
+        @GetMapping({"/clientcard", "/clientcard.html"})
+        public String clientcard() {
+            return "/clientcard/index";
+        }
 
 //    @GetMapping({"/genre", "/genre.html"})
 //    public String genre(){
@@ -46,14 +51,15 @@ public class ApplicationController {
 //        return "/receipt/index";
 //    }
 
-    @GetMapping({"/review", "/review.html"})
-    public String review(){
-        return "/review/index";
-    }
+        @GetMapping({"/review", "/review.html"})
+        public String review() {
+            return "/review/index";
+        }
 
 //    @GetMapping({"/worker", "/worker.html"})
 //    public String worker(){
 //        return "/worker/index";
 //    }
+    }
 }
 

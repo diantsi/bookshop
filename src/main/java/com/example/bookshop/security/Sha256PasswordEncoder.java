@@ -1,4 +1,4 @@
-package com.example.bookshop;
+package com.example.bookshop.security;
 
 import org.springframework.security.crypto.password.PasswordEncoder;
 
