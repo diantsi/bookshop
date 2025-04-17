@@ -9,6 +9,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 
 import java.util.List;
 
@@ -20,6 +21,9 @@ public class BookController {
     public BookController(BookService bookService) {
         this.bookService = bookService;
     }
+    @Controller
+    @RequestMapping("/manager")
+    public class ManagerController {
     @GetMapping({"/book", "/book.html"})
     public String showBooksPage(Model model) {
         List<Book> books = bookService.getAllBooks();
@@ -37,5 +41,5 @@ public class BookController {
         Book book = bookService.getByIsbn(isbn);
         model.addAttribute("book", book);
         return "book/book_info";
-    }
+    }}
 }
