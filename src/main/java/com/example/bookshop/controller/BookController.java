@@ -2,6 +2,7 @@ package com.example.bookshop.controller;
 
 
 import com.example.bookshop.entity.Book;
+import com.example.bookshop.entity.Genre;
 import com.example.bookshop.service.BookService;
 import com.example.bookshop.service.GenreService;
 import org.springframework.stereotype.Controller;
