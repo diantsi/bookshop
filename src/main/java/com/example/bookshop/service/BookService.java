@@ -26,6 +26,13 @@ public class BookService {
         bookDao.saveBook(book);
     }
 
+    public void updateBook(Book book) {
+        if (book.getISBN() == null || book.getISBN().isEmpty()) {
+            throw new IllegalArgumentException("ISBN is required");
+        }
+        bookDao.updateBook(book);
+    }
+
     public Book getByIsbn(String isbn) {
         return bookDao.findByIsbn(isbn);
     }

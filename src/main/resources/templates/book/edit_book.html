@@ -11,7 +11,8 @@
 
     <div class="container" style="width: 70%">
         <div class="row">
-            <form class="form-horizontal " th:action="@{/book/update/{isbn}(isbn=${book.ISBN})}" method="put">
+            <form class="form-horizontal " th:action="@{/book/update/{isbn}(isbn=${book.ISBN})}" method="post">
+                <input type="hidden" name="ISBN" th:value="${book.ISBN}"/>
                 <div class="col-lg-8">
                     <section class="panel">
                         <header class="panel-heading">
@@ -21,25 +22,25 @@
                             <div class="form-group">
                                 <label class="control-label col-sm-4">Image URL</label>
                                 <div class="col-sm-6">
-                                    <input type="text" th:value="${book.image}" class="form-control"/>
+                                    <input type="text" name="image" th:value="${book.image}" class="form-control"/>
                                 </div>
                             </div>
                             <div class="form-group">
                                 <label class="control-label col-sm-4">Name</label>
                                 <div class="col-sm-6">
-                                    <input type="text"  th:value="${book.name}"  class="form-control" required/>
+                                    <input type="text" name="name" th:value="${book.name}" class="form-control" required/>
                                 </div>
                             </div>
                             <div class="form-group">
                                 <label class="control-label col-sm-4">Number of Pages</label>
                                 <div class="col-sm-6">
-                                    <input type="number" th:value="${book.pages}" class="form-control" required/>
+                                    <input type="number" name="pages" th:value="${book.pages}" class="form-control" required/>
                                 </div>
                             </div>
                             <div class="form-group">
                                 <label class="control-label col-sm-4">Type of cover</label>
                                 <div class="col-sm-6">
-                                    <select th:value="${book.cover}" class="form-control" required>
+                                    <select name="cover" th:value="${book.cover}" class="form-control" required>
                                         <option value="М'яка">М'яка </option>
                                         <option value="Тверда"> Тверда </option>
                                         <option value="Спеціальна"> Спеціальна </option>
@@ -49,37 +50,37 @@
                             <div class="form-group">
                                 <label class="control-label col-sm-4">Language</label>
                                 <div class="col-sm-6">
-                                    <input type="text" th:value="${book.language}" class="form-control" required/>
+                                    <input type="text" name="language" th:value="${book.language}" class="form-control" required/>
                                 </div>
                             </div>
                             <div class="form-group">
                                 <label class="control-label col-sm-4">Year of publication</label>
                                 <div class="col-sm-6">
-                                    <input type="number" th:value="${book.year}" class="form-control" required/>
+                                    <input type="number" name="year" th:value="${book.year}" class="form-control" required/>
                                 </div>
                             </div>
                             <div class="form-group">
                                 <label class="control-label col-sm-4">Width (cm)</label>
                                 <div class="col-sm-6">
-                                    <input type="number" step="0.1" th:value="${book.width}" class="form-control" required/>
+                                    <input type="number" step="0.1" name="width" th:value="${book.width}" class="form-control" required/>
                                 </div>
                             </div>
                             <div class="form-group">
                                 <label class="control-label col-sm-4">Height (cm)</label>
                                 <div class="col-sm-6">
-                                    <input type="number" step="0.1" th:value="${book.height}" class="form-control" required/>
+                                    <input type="number" step="0.1" name="height" th:value="${book.height}" class="form-control" required/>
                                 </div>
                             </div>
                             <div class="form-group">
                                 <label class="control-label col-sm-4">Weight (g)</label>
                                 <div class="col-sm-6">
-                                    <input type="number" th:value="${book.weight}" class="form-control" required/>
+                                    <input type="number" name="weight" th:value="${book.weight}" class="form-control" required/>
                                 </div>
                             </div>
                             <div class="form-group">
                                 <label class="control-label col-sm-4">Thickness (cm)</label>
                                 <div class="col-sm-6">
-                                    <input type="number" step="0.1" th:value="${book.thickness}" class="form-control" required/>
+                                    <input type="number" step="0.1" name="thickness" th:value="${book.thickness}" class="form-control" required/>
                                 </div>
                             </div>
                             <div class="form-group">
@@ -87,7 +88,7 @@
                                 <div class="col-sm-6">
                                     <div class="checkbox">
                                         <label>
-                                            <input type="checkbox" th:value="${book.adultsOnly}" required/> For adults only
+                                            <input type="checkbox" name="adultsOnly" th:checked="${book.adultsOnly}"/> For adults only
                                         </label>
                                     </div>
                                 </div>
@@ -95,13 +96,13 @@
                             <div class="form-group">
                                 <label class="control-label col-sm-4">Quantity</label>
                                 <div class="col-sm-6">
-                                    <input type="number" th:value="${book.quantity}" class="form-control" required/>
+                                    <input type="number" name="quantity" th:value="${book.quantity}" class="form-control" required/>
                                 </div>
                             </div>
                             <div class="form-group">
                                 <label class="control-label col-sm-4">Price</label>
                                 <div class="col-sm-6">
-                                    <input type="number" step="0.10" th:value="${book.price}" class="form-control" required/>
+                                    <input type="number" step="0.10" name="price" th:value="${book.price}" class="form-control" required/>
                                 </div>
                             </div>
                         </div>
@@ -121,8 +122,6 @@
             </form>
         </div>
     </div>
-
-
 </div>
 </body>
 </html>

@@ -58,9 +58,9 @@ public class BookController {
         return "book/edit_book";
     }
 
-    @RequestMapping(value = "/book/update/{isbn}", method = {RequestMethod.GET, RequestMethod.PUT})
+    @RequestMapping(value = "/book/update/{isbn}", method = RequestMethod.POST)
     public String save(Book book, @PathVariable String isbn) {
-        bookService.saveBook(book);
+        bookService.updateBook(book);
         return "redirect:/book";
     }
 

@@ -174,6 +174,32 @@ public class BookDao {
         }
     }
 
+    public void updateBook(Book book) {
+        String query = "UPDATE book SET Image = ?, Book_name = ?, Number_of_pages = ?, Type_of_cover = ?, " +
+                "Book_language = ?, Year_of_publication = ?, Weight = ?, Height = ?, Width = ?, Thickness = ?, " +
+                "Book_price = ?, Number_of_instances = ?, Adults_only_status = ? WHERE ISBN = ?";
+        try (Connection connection = daoConnection.getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+            preparedStatement.setString(1, book.getImage());
+            preparedStatement.setString(2, book.getName());
+            preparedStatement.setInt(3, book.getPages());
+            preparedStatement.setString(4, book.getCover());
+            preparedStatement.setString(5, book.getLanguage());
+            preparedStatement.setInt(6, book.getYear());
+            preparedStatement.setFloat(7, book.getWeight());
+            preparedStatement.setFloat(8, book.getHeight());
+            preparedStatement.setFloat(9, book.getWidth());
+            preparedStatement.setFloat(10, book.getThickness());
+            preparedStatement.setDouble(11, book.getPrice());
+            preparedStatement.setInt(12, book.getQuantity());
+            preparedStatement.setBoolean(13, book.getAdultsOnly());
+            preparedStatement.setString(14, book.getISBN());
+
+            preparedStatement.executeUpdate();
+        } catch (SQLException e) {
+            throw new RuntimeException("Cannot update book", e);
+        }
+    }
 
     public void saveBook(Book book) {
         String query = "INSERT INTO book (ISBN, Image, Book_name, Number_of_pages, Type_of_cover, Book_language, " +
