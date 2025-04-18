@@ -1,8 +1,7 @@
 package com.example.bookshop.service;
-import com.example.bookshop.dao.BookDao;
 
+import com.example.bookshop.dao.BookDao;
 import com.example.bookshop.entity.Book;
-import com.example.bookshop.entity.Genre;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -19,7 +18,11 @@ public class BookService {
     public List<Book> getAllBooks() {
         return bookDao.findAll();
     }
+
     public void saveBook(Book book) {
+        if (book.getISBN() == null || book.getISBN().isEmpty()) {
+            throw new IllegalArgumentException("ISBN is required");
+        }
         bookDao.saveBook(book);
     }
 
@@ -27,5 +30,7 @@ public class BookService {
         return bookDao.findByIsbn(isbn);
     }
 
-
+    public void deleteByIsbn(String isbn) {
+        bookDao.delete(isbn);
+    }
 }

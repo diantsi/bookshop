@@ -378,8 +378,15 @@ INSERT INTO `review` (`ordered_number`, `user_name`, `user_email`, `number_of_ch
 --
 -- Trigger to update `number_of_books` in `genre`
 --
+-- Drop existing triggers if they exist
+DROP TRIGGER IF EXISTS `update_genre_book_count`;
+DROP TRIGGER IF EXISTS `update_genre_book_count_delete`;
+DROP TRIGGER IF EXISTS `after_book_delete`;
 
+-- Set delimiter for trigger creation
 DELIMITER //
+
+-- Trigger to update genre count when a book-genre relationship is added
 CREATE TRIGGER `update_genre_book_count`
     AFTER INSERT ON `genre_book`
     FOR EACH ROW
@@ -392,9 +399,8 @@ BEGIN
     )
     WHERE `Id_genre` = NEW.`Id_genre`;
 END//
-DELIMITER ;
 
-DELIMITER //
+-- Trigger to update genre count when a book-genre relationship is removed
 CREATE TRIGGER `update_genre_book_count_delete`
     AFTER DELETE ON `genre_book`
     FOR EACH ROW
@@ -407,8 +413,28 @@ BEGIN
     )
     WHERE `Id_genre` = OLD.`Id_genre`;
 END//
+
+-- Trigger to update genre count when a book is deleted
+DELIMITER //
+
+CREATE TRIGGER `after_book_delete`
+    AFTER DELETE ON `book`
+    FOR EACH ROW
+BEGIN
+    -- Update all genres that had this book
+    UPDATE `genre` g
+    SET g.`Number_of_books` = (
+        SELECT COUNT(*)
+        FROM `genre_book` gb
+        WHERE gb.`Id_genre` = g.`Id_genre`
+    );
+
+
+END//
+
 DELIMITER ;
 
+-- Update initial counts (run once after data is loaded)
 UPDATE `genre` g
 SET `number_of_books` = (
     SELECT COUNT(*)
