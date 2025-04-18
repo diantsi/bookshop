@@ -40,8 +40,11 @@
                                 <a class="btn btn-success"
                                    th:href="@{'/edit_genre/' + ${genre.id}}"><i class="icon_pencil-edit"></i></a>
                                 <a class="btn btn-danger"
-                                   onclick="return confirm('sure?')"
-                                   th:href="@{'/genres/delete/' + ${genre.id}}"><i class="icon_trash"></i></a>
+                                   th:disabled="${genre.numberOfBooks > 0}"
+                                   onclick="return confirm('Are you sure?')"
+                                   th:href="@{'/genres/delete/' + ${genre.id}}">
+                                    <i class="icon_trash"></i>
+                                </a>
                             </div>
                         </td>
                     </tr>

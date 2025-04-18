@@ -1,5 +1,8 @@
 package com.example.bookshop.entity;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class Book {
     private String ISBN;
     private String image;
@@ -18,6 +21,11 @@ private Double price;
 private Integer quantity;
 
 private Boolean adultsOnly;
+private List<Genre> genres = new ArrayList<>();
+
+
+public Book() {
+    }
 
     public Book(String ISBN, String image, String name, Integer pages, String cover, String language, Integer year, Float width, Float height, Float weight, Float thickness, Double price, Integer quantity, Boolean adultsOnly) {
         this.ISBN = ISBN;
@@ -34,6 +42,14 @@ private Boolean adultsOnly;
         this.price = price;
         this.quantity = quantity;
         this.adultsOnly = adultsOnly;
+    }
+
+    public List<Genre> getGenres() {
+        return genres;
+    }
+
+    public void setGenres(List<Genre> genres) {
+        this.genres = genres;
     }
 
     public String getISBN() {

@@ -11,7 +11,7 @@
 
     <div class="container" style="width: 70%">
         <div class="row">
-            <form class="form-horizontal " th:action="@{/genres}" method="post">
+            <form class="form-horizontal " th:action="@{'/genre/update/'+${genre.id}}" method="put">
                 <input type="hidden" name="id" th:value="${genre.id}">
                 <div class="col-lg-8">
                     <section class="panel">
@@ -22,13 +22,13 @@
                             <div class="form-group">
                                 <label class="control-label col-sm-4">Name</label>
                                 <div class="col-sm-6">
-                                    <input type="text" name="name" th:value="${genre.name}" size="16" class="form-control">
+                                    <input type="text" name="name" th:value="${genre.name}" size="16" class="form-control" required>
                                 </div>
                             </div>
                             <div class="form-group">
                                 <label class="control-label col-sm-4">Description</label>
                                 <div class="col-sm-6">
-                                    <input type="text" name="description" th:value="${genre.description}" size="16" class="form-control">
+                                    <input type="text" name="description" th:value="${genre.description}" size="16" class="form-control"required>
                                 </div>
                             </div>
                             <div class="form-group" style="display: none;">

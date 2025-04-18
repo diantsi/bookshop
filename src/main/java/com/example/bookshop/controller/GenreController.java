@@ -50,4 +50,10 @@ public class GenreController {
         genreService.delete(id);
         return "redirect:/genre";
     }
+
+    @RequestMapping(value = "/genre/update/{id}", method = {RequestMethod.GET, RequestMethod.PUT})
+    public String save(Genre genre, @PathVariable Long id) {
+        genreService.saveGenre(genre);
+        return "redirect:/genre";
+    }
 }
