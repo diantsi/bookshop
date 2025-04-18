@@ -198,12 +198,12 @@ public class BookDao {
             preparedStatement.executeUpdate();
 
             // Save genres if provided
-            if (book.getGenres() != null && !book.getGenres().isEmpty()) {
-                List<Long> genreIds = book.getGenres().stream()
-                        .map(Genre::getId)
-                        .collect(Collectors.toList());
-                saveBookGenres(book.getISBN(), genreIds);
-            }
+//            if (book.getGenres() != null && !book.getGenres().isEmpty()) {
+//                List<Long> genreIds = book.getGenres().stream()
+//                        .map(Genre::getId)
+//                        .collect(Collectors.toList());
+//                saveBookGenres(book.getISBN(), genreIds);
+//            }
         } catch (SQLException e) {
             e.printStackTrace();
         }
