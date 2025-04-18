@@ -45,6 +45,8 @@ public class BookDao {
                         rs.getBoolean("Adults_only_status")
                 );
                 book.setGenres(findGenresByIsbn(book.getISBN(), connection));
+                book.setAuthors(findAuthorsByIsbn(book.getISBN(), connection));
+                book.setTranslators(findTranslatorsByIsbn(book.getISBN(), connection));
                 books.add(book);
             }
         } catch (SQLException e) {
@@ -52,7 +54,6 @@ public class BookDao {
         }
         return books;
     }
-
 
 
     public Book findByIsbn(String isbn) {
@@ -82,12 +83,57 @@ public class BookDao {
                         rs.getBoolean("Adults_only_status")
                 );
                 book.setGenres(findGenresByIsbn(book.getISBN(), connection));
+                book.setAuthors(findAuthorsByIsbn(book.getISBN(), connection));
+                book.setTranslators(findTranslatorsByIsbn(book.getISBN(), connection));
             }
         } catch (SQLException e) {
             throw new RuntimeException("Cannot find book", e);
         }
         return book;
 
+    }
+
+    private List<Book.Translator> findTranslatorsByIsbn(String isbn, Connection connection) {
+        List<Book.Translator> translators = new ArrayList<>();
+        String query = "SELECT t.Id_translator, t.Full_name " +
+                "FROM translator t JOIN book_translator bt ON t.Id_translator = bt.Id_translator " +
+                "WHERE bt.ISBN = ?";
+        try (PreparedStatement ps = connection.prepareStatement(query)) {
+            ps.setString(1, isbn);
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                Book.Translator translator = new Book.Translator(
+                        rs.getLong("Id_translator"),
+                        rs.getString("Full_name")
+                );
+                translators.add(translator);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return translators;
+
+}
+
+    private List<Book.Author> findAuthorsByIsbn(String isbn, Connection connection) {
+        List<Book.Author> authors = new ArrayList<>();
+        String authorQuery = "SELECT a.Id_author, a.Full_name " +
+                "FROM author a JOIN book_author ab ON a.Id_author = ab.Id_author " +
+                "WHERE ab.ISBN = ?";
+        try (PreparedStatement ps = connection.prepareStatement(authorQuery)) {
+            ps.setString(1, isbn);
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                Book.Author author = new Book.Author(
+                        rs.getLong("Id_author"),
+                        rs.getString("Full_name")
+                );
+                authors.add(author);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return authors;
     }
 
 
@@ -127,7 +173,6 @@ public class BookDao {
             throw new RuntimeException("Cannot save book genres", e);
         }
     }
-
 
 
     public void saveBook(Book book) {

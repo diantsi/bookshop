@@ -7,24 +7,26 @@ public class Book {
     private String ISBN;
     private String image;
     private String name;
-private Integer pages;
-private String cover;
-private String language;
-private Integer year;
+    private Integer pages;
+    private String cover;
+    private String language;
+    private Integer year;
 
-private Float width;
-private Float height;
-private Float weight;
-private Float thickness;
+    private Float width;
+    private Float height;
+    private Float weight;
+    private Float thickness;
 
-private Double price;
-private Integer quantity;
+    private Double price;
+    private Integer quantity;
 
-private Boolean adultsOnly;
-private List<Genre> genres = new ArrayList<>();
+    private Boolean adultsOnly;
+    private List<Genre> genres = new ArrayList<>();
+    private List<Author> authors = new ArrayList<>();
+    private List<Translator> translators = new ArrayList<>();
 
 
-public Book() {
+    public Book() {
     }
 
     public Book(String ISBN, String image, String name, Integer pages, String cover, String language, Integer year, Float width, Float height, Float weight, Float thickness, Double price, Integer quantity, Boolean adultsOnly) {
@@ -50,6 +52,21 @@ public Book() {
 
     public void setGenres(List<Genre> genres) {
         this.genres = genres;
+    }
+
+    public List<Author> getAuthors() {
+        return authors;
+    }
+
+    public void setAuthors(List<Author> authors) {
+        this.authors = authors;
+    }
+    public List<Translator> getTranslators() {
+        return translators;
+    }
+
+    public void setTranslators(List<Translator> translators) {
+        this.translators = translators;
     }
 
     public String getISBN() {
@@ -163,4 +180,76 @@ public Book() {
     public void setAdultsOnly(Boolean adultsOnly) {
         this.adultsOnly = adultsOnly;
     }
+
+
+    public static class Author {
+        private Long id;
+        private String fullName;
+
+        public Author(Long id, String fullName) {
+            this.id = id;
+            this.fullName = fullName;
+        }
+
+        public Long getId() {
+            return id;
+        }
+
+        public void setId(Long id) {
+            this.id = id;
+        }
+
+        public String getFullName() {
+            return fullName;
+        }
+
+        public void setFullName(String fullName) {
+            this.fullName = fullName;
+        }
+
+
+        @Override
+        public String toString() {
+            return "{" +
+                    "id=" + id +
+                    ", fullName='" + fullName + '\'' +
+                    '}';
+        }
+    }
+
+
+    public static class Translator {
+        private Long id;
+        private String fullName;
+
+        public Translator(Long id, String fullName) {
+            this.id = id;
+            this.fullName = fullName;
+        }
+
+        public Long getId() {
+            return id;
+        }
+
+        public void setId(Long id) {
+            this.id = id;
+        }
+
+        public String getFullName() {
+            return fullName;
+        }
+
+        public void setFullName(String fullName) {
+            this.fullName = fullName;
+        }
+
+        @Override
+        public String toString() {
+            return "{" +
+                    "id=" + id +
+                    ", fullName='" + fullName + '\'' +
+                    '}';
+        }
+    }
+
 }
