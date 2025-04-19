@@ -1,6 +1,8 @@
 package com.example.bookshop;
 
+import com.example.bookshop.security.LoginController;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
@@ -12,7 +14,9 @@ public class ApplicationController {
     public class ManagerController {
 
         @GetMapping({"/index", "/index.html", "/home"})
-        public String home() {
+        public String home(Model model) {
+            model.addAttribute("instances", LoginController.SURNAME);
+            model.addAttribute("instances", LoginController.FIRST_NAME);
             return "index";
         }
 

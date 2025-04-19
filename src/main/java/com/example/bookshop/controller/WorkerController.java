@@ -15,7 +15,7 @@ import java.util.List;
 @Controller
 public class WorkerController {
 
-    private final WorkerService workerService;
+    public final WorkerService workerService;
 
     public WorkerController(WorkerService service) {
         this.workerService = service;

@@ -14,6 +14,7 @@ import java.util.List;
 @Service
 public class CustomUserDetailsService implements UserDetailsService {
 
+
     @Autowired
     private WorkerDao userDao;
 
@@ -21,10 +22,13 @@ public class CustomUserDetailsService implements UserDetailsService {
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
         Worker user = userDao.findByEmail(email).orElse(null);
 
+
         return new org.springframework.security.core.userdetails.User(
                 user.getEmail(),
                 user.getPassword(),
                 List.of(new SimpleGrantedAuthority(user.getOccupation()))
         );
     }
+
+
 }

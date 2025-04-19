@@ -1,5 +1,7 @@
 package com.example.bookshop.security;
 
+import com.example.bookshop.entity.Worker;
+import com.example.bookshop.service.WorkerService;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.stereotype.Controller;
@@ -7,6 +9,12 @@ import org.springframework.web.bind.annotation.GetMapping;
 
 @Controller
 public class LoginController {
+
+    public static String TAB_NUMBER;
+    public static String FIRST_NAME;
+    public static String SURNAME;
+    public static String USER;
+
 
     @GetMapping("/login")
     public String loginPage() {
@@ -21,6 +29,12 @@ public class LoginController {
 
         for (GrantedAuthority authority : authentication.getAuthorities()) {
             String role = authority.getAuthority();
+
+            USER = authentication.getName();
+            System.out.println(USER);
+            /*TAB_NUMBER = userDetails.getTabNumber();
+            FIRST_NAME= userDetails.getFirstName();
+            SURNAME = userDetails.getSurname();*/
 
             if ("Менеджер".equals(role)) {
                 return "redirect:/manager/home";

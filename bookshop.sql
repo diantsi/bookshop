@@ -352,6 +352,7 @@ CREATE TABLE IF NOT EXISTS `review` (
                                         `user_name` varchar(30) NOT NULL,
                                         `user_email` varchar(30) NOT NULL,
                                         `number_of_chars` int(11) NOT NULL,
+                                        `text` varchar(500) NULL,
                                         `grade` int(11) NOT NULL,
                                         `review_date` date NOT NULL,
                                         `review_status` varchar(20) NOT NULL,
@@ -368,10 +369,10 @@ CREATE TABLE IF NOT EXISTS `review` (
 -- Dumping data for table `review`
 --
 
-INSERT INTO `review` (`ordered_number`, `user_name`, `user_email`, `number_of_chars`, `grade`, `review_date`, `review_status`, `ISBN_book`, `answered_number`, `tab_number_of_worker`) VALUES
-                                                                                                                                                                                           (1, 'John Doe', 'john.doe@example.com', 150, 5, '2023-10-01', 'approved', '978-5-699-12345-6', NULL, 'T001'),
-                                                                                                                                                                                           (2, 'Jane Smith', 'jane.smith@example.com', 200, 4, '2023-10-02', 'pending', '978-966-14-8523-4', 1, 'T002'),
-                                                                                                                                                                                           (3, 'Alice Johnson', 'alice.johnson@example.com', 100, 3, '2023-10-03', 'rejected', '978-1-56619-909-4', NULL, NULL);
+INSERT INTO `review` (`ordered_number`, `user_name`, `user_email`, `number_of_chars`, `text`, `grade`, `review_date`, `review_status`, `ISBN_book`, `answered_number`, `tab_number_of_worker`) VALUES
+                                                                                                                                                                                           (1, 'John Doe', 'john.doe@example.com', 12, 'Крута книжка',5, '2023-10-01', 'approved', '978-5-699-12345-6', NULL, 'T001'),
+                                                                                                                                                                                           (2, 'Jane Smith', 'jane.smith@example.com', 21, 'На один раз нормально', 4, '2023-10-02', 'pending', '978-966-14-8523-4', 1, NULL),
+                                                                                                                                                                                           (3, 'Alice Johnson', 'alice.johnson@example.com', 100, 'aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa', 3, '2023-10-03', 'rejected', '978-1-56619-909-4', NULL, 'T002');
 
 -- --------------------------------------------------------
 
