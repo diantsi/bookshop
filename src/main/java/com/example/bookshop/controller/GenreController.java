@@ -22,7 +22,7 @@ public class GenreController {
     public String showCategoriesPage(Model model) {
         List<Genre> genres = genreService.getAllGenres();
         model.addAttribute("genres", genres);
-        return "genre/index"; // посилається на genre.index.html
+        return "genre/index";
     }
 
 

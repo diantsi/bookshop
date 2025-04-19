@@ -45,6 +45,8 @@ public class BookDao {
                         rs.getBoolean("Adults_only_status")
                 );
                 book.setGenres(findGenresByIsbn(book.getISBN(), connection));
+                book.setAuthors(findAuthorsByIsbn(book.getISBN(), connection));
+                book.setTranslators(findTranslatorsByIsbn(book.getISBN(), connection));
                 books.add(book);
             }
         } catch (SQLException e) {
@@ -52,7 +54,6 @@ public class BookDao {
         }
         return books;
     }
-
 
 
     public Book findByIsbn(String isbn) {
@@ -82,12 +83,57 @@ public class BookDao {
                         rs.getBoolean("Adults_only_status")
                 );
                 book.setGenres(findGenresByIsbn(book.getISBN(), connection));
+                book.setAuthors(findAuthorsByIsbn(book.getISBN(), connection));
+                book.setTranslators(findTranslatorsByIsbn(book.getISBN(), connection));
             }
         } catch (SQLException e) {
             throw new RuntimeException("Cannot find book", e);
         }
         return book;
 
+    }
+
+    private List<Book.Translator> findTranslatorsByIsbn(String isbn, Connection connection) {
+        List<Book.Translator> translators = new ArrayList<>();
+        String query = "SELECT t.Id_translator, t.Full_name " +
+                "FROM translator t JOIN book_translator bt ON t.Id_translator = bt.Id_translator " +
+                "WHERE bt.ISBN = ?";
+        try (PreparedStatement ps = connection.prepareStatement(query)) {
+            ps.setString(1, isbn);
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                Book.Translator translator = new Book.Translator(
+                        rs.getLong("Id_translator"),
+                        rs.getString("Full_name")
+                );
+                translators.add(translator);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return translators;
+
+}
+
+    private List<Book.Author> findAuthorsByIsbn(String isbn, Connection connection) {
+        List<Book.Author> authors = new ArrayList<>();
+        String authorQuery = "SELECT a.Id_author, a.Full_name " +
+                "FROM author a JOIN book_author ab ON a.Id_author = ab.Id_author " +
+                "WHERE ab.ISBN = ?";
+        try (PreparedStatement ps = connection.prepareStatement(authorQuery)) {
+            ps.setString(1, isbn);
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                Book.Author author = new Book.Author(
+                        rs.getLong("Id_author"),
+                        rs.getString("Full_name")
+                );
+                authors.add(author);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return authors;
     }
 
 
@@ -128,7 +174,32 @@ public class BookDao {
         }
     }
 
+    public void updateBook(Book book) {
+        String query = "UPDATE book SET Image = ?, Book_name = ?, Number_of_pages = ?, Type_of_cover = ?, " +
+                "Book_language = ?, Year_of_publication = ?, Weight = ?, Height = ?, Width = ?, Thickness = ?, " +
+                "Book_price = ?, Number_of_instances = ?, Adults_only_status = ? WHERE ISBN = ?";
+        try (Connection connection = daoConnection.getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+            preparedStatement.setString(1, book.getImage());
+            preparedStatement.setString(2, book.getName());
+            preparedStatement.setInt(3, book.getPages());
+            preparedStatement.setString(4, book.getCover());
+            preparedStatement.setString(5, book.getLanguage());
+            preparedStatement.setInt(6, book.getYear());
+            preparedStatement.setFloat(7, book.getWeight());
+            preparedStatement.setFloat(8, book.getHeight());
+            preparedStatement.setFloat(9, book.getWidth());
+            preparedStatement.setFloat(10, book.getThickness());
+            preparedStatement.setDouble(11, book.getPrice());
+            preparedStatement.setInt(12, book.getQuantity());
+            preparedStatement.setBoolean(13, book.getAdultsOnly());
+            preparedStatement.setString(14, book.getISBN());
 
+            preparedStatement.executeUpdate();
+        } catch (SQLException e) {
+            throw new RuntimeException("Cannot update book", e);
+        }
+    }
 
     public void saveBook(Book book) {
         String query = "INSERT INTO book (ISBN, Image, Book_name, Number_of_pages, Type_of_cover, Book_language, " +
@@ -153,12 +224,12 @@ public class BookDao {
             preparedStatement.executeUpdate();
 
             // Save genres if provided
-            if (book.getGenres() != null && !book.getGenres().isEmpty()) {
-                List<Long> genreIds = book.getGenres().stream()
-                        .map(Genre::getId)
-                        .collect(Collectors.toList());
-                saveBookGenres(book.getISBN(), genreIds);
-            }
+//            if (book.getGenres() != null && !book.getGenres().isEmpty()) {
+//                List<Long> genreIds = book.getGenres().stream()
+//                        .map(Genre::getId)
+//                        .collect(Collectors.toList());
+//                saveBookGenres(book.getISBN(), genreIds);
+//            }
         } catch (SQLException e) {
             e.printStackTrace();
         }

@@ -42,6 +42,7 @@ public class BookController {
         return "book/add_book";
     }
 
+
     @RequestMapping(value = "/book/delete/{isbn}", method = {RequestMethod.GET, RequestMethod.DELETE})
     public String deleteBook(@PathVariable String isbn) {
         bookService.deleteByIsbn(isbn);
@@ -49,10 +50,27 @@ public class BookController {
     }
 
 
-    @GetMapping("/book_info/{isbn}")
+    @GetMapping("/edit_book/{isbn}")
     public String editBook(@PathVariable String isbn, Model model) {
+        Book book = bookService.getByIsbn(isbn);
+        model.addAttribute("book", book);
+        model.addAttribute("genres", genreService.getAllGenres());
+        return "book/edit_book";
+    }
+
+    @RequestMapping(value = "/book/update/{isbn}", method = RequestMethod.POST)
+    public String save(Book book, @PathVariable String isbn) {
+        bookService.updateBook(book);
+        return "redirect:/book";
+    }
+
+    @GetMapping("/book_info/{isbn}")
+    public String infoBook(@PathVariable String isbn, Model model) {
         Book book = bookService.getByIsbn(isbn);
         model.addAttribute("book", book);
         return "book/book_info";
     }}
+
+
+
 
