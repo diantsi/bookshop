@@ -24,12 +24,14 @@
                         <th><i class="glyphicon-info-sign"></i> id </th>
                         <th><i class="icon_calendar"></i> receipt id </th>
                         <th><i class="glyphicon-bookmark"></i> book isbn </th>
+                        <th><i class="icon_genius"></i> book name </th>
                         <th><i class="icon_cogs"></i> actions </th>
                     </tr>
                     <tr th:each="instance : ${instances}">
                         <td th:text="${instance.id}"></td>
                         <td th:text="${instance.receipt_id}"></td>
                         <td th:text="${instance.ISBN}"></td>
+                        <td th:text="${instance.book_name}"></td>
                         <td>
                             <div class="btn-group">
                                 <a class="btn btn-primary"

@@ -7,6 +7,8 @@ public class BookInstance {
     private Long receipt_id;
     private String ISBN;
 
+    private String book_name;
+
     public BookInstance() {
     }
 
@@ -18,6 +20,13 @@ public class BookInstance {
 
     public Long getId() {
         return id;
+    }
+
+    public String getBook_name() {
+        return book_name;
+    }
+    public void setBook_name(String book_name) {
+        this.book_name = book_name;
     }
 
     public void setId(Long id) {
