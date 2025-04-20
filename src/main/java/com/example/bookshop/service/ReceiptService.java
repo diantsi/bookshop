@@ -1,9 +1,8 @@
 package com.example.bookshop.service;
 
-import com.example.bookshop.dao.ReceiptDao;
-
 import com.example.bookshop.entity.Receipt;
 import org.springframework.stereotype.Service;
+import com.example.bookshop.dao.ReceiptDao;
 
 import java.util.List;
 

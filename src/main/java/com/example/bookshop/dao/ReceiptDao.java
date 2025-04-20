@@ -19,7 +19,18 @@ public class ReceiptDao {
 
     public List<Receipt> findAll() {
         List<Receipt> receipts = new ArrayList<>();
-        String query = "SELECT Id_number_of_check, Date_buy, Sum_of_check, User_bonus_number, ID_number_client, Tab_number_worker  FROM receipt";
+        String query = "SELECT " +
+                "r.Id_number_of_check, " +
+                "r.Date_buy, " +
+                "r.Sum_of_check, " +
+                "r.User_bonus_number, " +
+                "r.ID_number_client, " +
+                "CONCAT(c.Surname, ' ', c.First_name) AS Client_full_name," +
+                "r.Tab_number_worker, " +
+                "CONCAT(w.Surname, ' ', w.First_name) AS Worker_full_name " +
+                "FROM receipt r " +
+                "INNER JOIN worker w ON r.Tab_number_worker = w.Tab_number " +
+                "INNER JOIN client_card c ON r.ID_number_client = c.ID_number";
 
         try (Connection conn = daoConnection.getConnection();
              PreparedStatement ps = conn.prepareStatement(query);
@@ -34,6 +45,8 @@ public class ReceiptDao {
                         rs.getString("ID_number_client"),
                         rs.getString("Tab_number_worker")
                 );
+                receipt.setClient_full_name(rs.getString("Client_full_name"));
+                receipt.setWorker_full_name(rs.getString("Worker_full_name"));
                 receipts.add(receipt);
             }
 

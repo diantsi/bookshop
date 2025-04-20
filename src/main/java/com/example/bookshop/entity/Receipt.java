@@ -9,7 +9,9 @@ public class Receipt {
     private Double totalPrice;
     private Integer bonuses;
     private String client_id;
+    private String worker_full_name;
     private String worker_id;
+    private String client_full_name;
 
 
     public Receipt() {
@@ -70,6 +72,20 @@ public class Receipt {
     public void setWorker_id(String work_id) {
         this.worker_id = work_id;
     }
+
+    public String getWorker_full_name() {
+        return worker_full_name;
+    }
+    public void setWorker_full_name(String worker_full_name) {
+        this.worker_full_name = worker_full_name;
+    }
+    public String getClient_full_name() {
+        return client_full_name;
+    }
+    public void setClient_full_name(String client_full_name) {
+        this.client_full_name = client_full_name;
+    }
+
 
     public Receipt orElse(Object o) {
         if(this == null) {

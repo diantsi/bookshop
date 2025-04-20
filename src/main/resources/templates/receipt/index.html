@@ -26,8 +26,10 @@
                         <th><i class="icon_calendar"></i> date buy </th>
                         <th><i class="icon_wallet"></i> sum </th>
                         <th><i class="icon_star"></i> bonuses </th>
-                        <th><i class="icon_id_alt"></i>  client </th>
-                        <th><i class="icon_id-2"></i> worker </th>
+                        <th><i class="icon_id_alt"></i>  client id</th>
+                        <th><i class="icon_profile"></i> client full name </th>
+                        <th><i class="icon_id-2"></i> worker id</th>
+                        <th><i class="icon_profile"></i> worker full name </th>
                         <th><i class="icon_cogs"></i> actions </th>
                     </tr>
                     <tr th:each="receipt : ${receipts}">
@@ -36,7 +38,9 @@
                         <td th:text="${receipt.totalPrice}"></td>
                         <td th:text="${receipt.bonuses}"></td>
                         <td th:text="${receipt.client_id}"></td>
+                        <td th:text="${receipt.client_full_name}"></td>
                         <td th:text="${receipt.worker_id}"></td>
+                        <td th:text="${receipt.worker_full_name}"></td>
                         <td>
                             <div class="btn-group">
                                 <a class="btn btn-primary" href="#"><i class="icon_info"></i></a>
