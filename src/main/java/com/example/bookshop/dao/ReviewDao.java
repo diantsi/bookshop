@@ -85,7 +85,7 @@ public class ReviewDao {
 //                                        `tab_number_of_worker` varchar(30) NULL,
 
     public void saveReview(Review review) {
-        String query = "INSERT INTO review (user_name, user_email, number_of_chars, text, grade, review_date, review_status, ISBN_book, tab_number_of_worker) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
+        String query = "INSERT INTO review (user_name, user_email, number_of_chars, text, grade, review_date, review_status, ISBN_book, answered_number, tab_number_of_worker) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
         try (Connection conn = daoConnection.getConnection();
              PreparedStatement ps = conn.prepareStatement(query)) {
 
@@ -101,8 +101,12 @@ public class ReviewDao {
             ps.setObject(6, review.getDate(), Types.DATE);
             ps.setString(7, review.getStatus());
             ps.setString(8, review.getBookISBN());
-            //ps.setInt(9, 0);
-            ps.setString(9, review.getTabNumber());
+            if (review.getNumberOfAnswer() != null) {
+                ps.setInt(9, review.getNumberOfAnswer());
+            } else {
+                ps.setObject(9, null, Types.INTEGER);
+            }
+            ps.setString(10, review.getTabNumber());
 
             ps.executeUpdate();
 

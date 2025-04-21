@@ -1,6 +1,7 @@
 package com.example.bookshop.controller;
 
 import com.example.bookshop.dao.WorkerDao;
+import com.example.bookshop.entity.Book;
 import com.example.bookshop.entity.Genre;
 import com.example.bookshop.entity.Review;
 import com.example.bookshop.entity.Worker;
@@ -23,10 +24,14 @@ public class ReviewController {
 
     private final ReviewService reviewService;
     private final WorkerService workerService;
+    private final BookService bookService;
 
-    public ReviewController(ReviewService reviewService, WorkerService workerService) {
+
+    public ReviewController(ReviewService reviewService, WorkerService workerService, BookService bookService) {
         this.reviewService = reviewService;
         this.workerService = workerService;
+        this.bookService = bookService;
+
     }
 
     @ModelAttribute("review")
@@ -44,6 +49,10 @@ public class ReviewController {
 
     @GetMapping("/add_review")
     public String addReview(Model model) {
+        List<Book> books = bookService.getAllBooks();
+        model.addAttribute("books", books);
+        List<Review> reviews = reviewService.getAllReviews();
+        model.addAttribute("reviews", reviews);
         return "review/add_review";
     }
 
@@ -68,7 +77,6 @@ public class ReviewController {
         }*/
 
         review.setNumberOfChars(review.getText().length());
-        review.setBookISBN("978-0-7475-3269-9");
         Optional<Worker> worker = workerService.findByTabEmail(LoginController.USER);
         review.setTabNumber(worker.get().getTabNumber());
 

@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Controller
 public class BookController {
@@ -23,6 +24,21 @@ public class BookController {
         this.bookService = bookService;
         this.genreService = genreService;
     }
+
+    // Метод для фільтрації книг
+    @GetMapping("/books")
+    public String searchBooks(@RequestParam(required = false, defaultValue = "") String query, Model model) {
+        List<Book> books = bookService.getAllBooks();
+        List<Book> filteredBooks = books.stream()
+                .filter(book -> book.getName().toLowerCase().contains(query.toLowerCase()) ||
+                        book.getISBN().contains(query))
+                .collect(Collectors.toList());
+        model.addAttribute("books", filteredBooks);
+        model.addAttribute("query", query);  // Повертаємо введене значення для фільтра
+        return "review/add_review";  // Ваша HTML сторінка
+    }
+
+
     @GetMapping({"/book", "/book.html"})
     public String showBooksPage(Model model) {
         List<Book> books = bookService.getAllBooks();

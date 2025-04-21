@@ -20,13 +20,11 @@
                         </header>
                         <div class="panel-body">
 
-                            <div class="form-group">
+                            <div class="form-group" style="display: none;">
                                 <label class="control-label col-sm-4">Id</label>
                                 <div class="col-sm-6">
-                                    <input type="text" th:field="*{id}" class="form-control" required
-                                           th:classappend="${#fields.hasErrors('id')} ? 'is-invalid'"/>
-                                    <div th:if="${#fields.hasErrors('id')}" th:errors="*{id}"
-                                         class="text-danger"></div>
+                                    <input type="hidden" th:field="*{id}" value="0">
+
                                 </div>
                             </div>
 
@@ -92,14 +90,26 @@
                             <div class="form-group">
                                 <label class="control-label col-sm-4">Book ISBN</label>
                                 <div class="col-sm-6">
-                                    <input type="text" th:field="*{bookISBN}" size="16" class="form-control" required>
+                                    <select th:field="*{bookISBN}" class="form-control book-select" required>
+                                        <option value="">Choose a book</option>
+                                        <option th:each="book : ${books}"
+                                                th:value="${book.getISBN()}"
+                                                th:text="${book.getName() + ' (' + book.getISBN() + ')'}">
+                                        </option>
+                                    </select>
                                 </div>
                             </div>
 
-                            <div class="form-group" style="display: none;">
-                                <label class="control-label col-sm-4">Number of answers</label>
+                            <div class="form-group">
+                                <label class="control-label col-sm-4">This review is an answer for</label>
                                 <div class="col-sm-6">
-                                    <input type="hidden" th:field="*{numberOfAnswers}" value="0">
+                                    <select th:field="*{numberOfAnswer}" class="form-control answered-select">
+                                        <option value="">Choose a review</option>
+                                        <option th:each="review : ${reviews}"
+                                                th:value="${review.getId()}"
+                                                th:text="${review.getId() + ' &nbsp;&nbsp;&nbsp;&nbsp; [ ' + review.getText() + ' ]'}">
+                                        </option>
+                                    </select>
                                 </div>
                             </div>
 
@@ -133,5 +143,43 @@
 </div>
 
 </div>
+
+<!-- Select2 CSS -->
+<link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+
+<!-- jQuery (обов'язково перед Select2!) -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+<!-- Select2 JS -->
+<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+
+<script>
+    /*document.getElementById('book').addEventListener('input', function () {
+        var query = this.value.toLowerCase();
+        var options = document.querySelectorAll('select[name="bookISBN"] option');
+
+        options.forEach(function(option) {
+            var bookName = option.textContent.toLowerCase();
+            var isBookMatch = bookName.includes(query);
+            option.style.display = isBookMatch ? 'block' : 'none';
+        });
+    });*/
+    $(document).ready(function() {
+        $('.book-select').select2({
+            placeholder: "Choose a book",
+            allowClear: true,
+            width: '100%'
+        });
+    });
+    $(document).ready(function() {
+        $('.answered-select').select2({
+            placeholder: "Choose an answer",
+            allowClear: true,
+            width: '100%'
+        });
+    });
+</script>
+
+
 </body>
 </html>

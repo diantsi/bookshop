@@ -28,14 +28,14 @@ public class Review {
     private String status;
 
     private String bookISBN;                 //TODO: випадаючий список з реальної бд з пошуком
-    private Integer numberOfAnswers;
+    private Integer numberOfAnswer;
     private String tabNumber;                //TODO: підтягується системою
 
 
     public Review() {
     }
 
-    public Review(Integer id, String userName, String userEmail, Integer numberOfChars, String text, Integer grade, LocalDate date, String status, String bookISBN, Integer numberOfAnswers, String tabNumber) {
+    public Review(Integer id, String userName, String userEmail, Integer numberOfChars, String text, Integer grade, LocalDate date, String status, String bookISBN, Integer numberOfAnswer, String tabNumber) {
         this.id = id;
         this.userName = userName;
         this.userEmail = userEmail;
@@ -45,7 +45,7 @@ public class Review {
         this.text = text;
         this.status = status;
         this.bookISBN = bookISBN;
-        this.numberOfAnswers = numberOfAnswers;
+        this.numberOfAnswer = numberOfAnswer;
         this.tabNumber = tabNumber;
     }
 
@@ -121,12 +121,12 @@ public class Review {
         this.bookISBN = bookISBN;
     }
 
-    public Integer getNumberOfAnswers() {
-        return numberOfAnswers;
+    public Integer getNumberOfAnswer() {
+        return numberOfAnswer;
     }
 
-    public void setNumberOfAnswers(Integer numberOfAnswers) {
-        this.numberOfAnswers = numberOfAnswers;
+    public void setNumberOfAnswer(Integer numberOfAnswers) {
+        this.numberOfAnswer = numberOfAnswer;
     }
 
     public String getTabNumber() {
