@@ -28,6 +28,8 @@
                         <th><i class="icon_comment"></i> Text</th>
                         <th><i class="icon_check_alt2"></i> Status </th>
                         <th><i class="icon_book"></i> Book ISBN </th>
+                        <th><i class="icon_cogs"></i> actions </th>
+
 
                     </tr>
                     <tr th:each="review : ${reviews}">
@@ -38,16 +40,21 @@
                         <td th:text="${review.status}"></td>
                         <td th:text="${review.bookISBN}"></td>
 
+
                         <td>
                             <div class="btn-group">
                                 <a class="btn btn-primary" href="#"><i class="icon_info"></i></a>
                                 <a class="btn btn-success"
                                    th:href="@{'/edit_review/' + ${review.id}}"><i class="icon_pencil-edit"></i></a>
                                 <a class="btn btn-danger"
-                                   onclick="return confirm('Are you sure?')"
-                                   th:href="@{'/reviews/delete/' + ${review.id}}">
-                                    <i class="icon_trash"></i>
-                                </a>
+                                   th:data-id="${review.id}" onclick="return confirmDelete(this)"
+                                   th:href="@{'/review/delete/'+${review.id}}"><i class="icon_trash"></i></a>
+                                <script>
+                                    function confirmDelete(button) {
+                                        const id = button.getAttribute('data-id');
+                                        return confirm('Видалити відгук ' + id + '?');
+                                    }
+                                </script>
                             </div>
                         </td>
                     </tr>

@@ -20,7 +20,7 @@ public class ReviewService {
         return reviewDao.findAll();
     }
 
-    /*public void saveReview(Review review) {
+    public void saveReview(Review review) {
         reviewDao.saveReview(review);
     }
 
@@ -28,7 +28,7 @@ public class ReviewService {
         reviewDao.deleteById(id);
     }
 
-    public Review getById(Integer id) {
+    /*public Review getById(Integer id) {
         return reviewDao.findById(id).orElse(null);
     }*/
 }

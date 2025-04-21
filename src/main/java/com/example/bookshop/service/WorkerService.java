@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 
 @Service
 public class WorkerService {
@@ -41,6 +42,10 @@ public class WorkerService {
 
     public boolean existsByTabNumber(String tabNumber){
         return workerDao.existsByTabNumber(tabNumber);
+    }
+
+    public Optional<Worker> findByTabEmail(String email){
+        return workerDao.findByEmail(email);
     }
 
     public void delete(String tabNumber) {

@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="_layout">
+<head>
+    <meta charset="UTF-8">
+    <title>Add review</title>
+</head>
+<body>
+<div layout:fragment="content">
+
+    <div class="container" style="width: 70%">
+        <div class="row">
+
+            <form class="form-horizontal " th:action="@{/reviews}" th:object="${review}" method="post">
+                <div class="col-lg-10">
+                    <section class="panel">
+                        <header class="panel-heading">
+                            Add new review
+                        </header>
+                        <div class="panel-body">
+
+                            <div class="form-group">
+                                <label class="control-label col-sm-4">Id</label>
+                                <div class="col-sm-6">
+                                    <input type="text" th:field="*{id}" class="form-control" required
+                                           th:classappend="${#fields.hasErrors('id')} ? 'is-invalid'"/>
+                                    <div th:if="${#fields.hasErrors('id')}" th:errors="*{id}"
+                                         class="text-danger"></div>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="control-label col-sm-4">Username</label>
+                                <div class="col-sm-6">
+                                    <input type="text" th:field="*{userName}" size="16" class="form-control" required>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="control-label col-sm-4">User email</label>
+                                <div class="col-sm-6">
+                                    <input type="text" th:field="*{userEmail}" size="16" class="form-control" required>
+                                </div>
+                            </div>
+
+                            <div class="form-group" style="display: none;">
+                                <label class="control-label col-sm-4">Number of chars</label>
+                                <div class="col-sm-6">
+                                    <input type="hidden" th:field="*{numberOfChars}" value="0">
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="control-label col-sm-4">Text</label>
+                                <div class="col-sm-6">
+                                    <input type="text" th:field="*{text}" size="16" class="form-control">
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="control-label col-sm-4">Grade</label>
+                                <div class="col-sm-6">
+                                    <select th:field="*{grade}" class="form-control" required>
+                                        <option value="1"> 1 </option>
+                                        <option value="2"> 2 </option>
+                                        <option value="3"> 3 </option>
+                                        <option value="4"> 4 </option>
+                                        <option value="5"> 5 </option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="control-label col-sm-4">Date</label>
+                                <div class="col-sm-6">
+                                    <input type="date" th:field="*{date}" size="16" class="form-control" required>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="control-label col-sm-4">Status</label>
+                                <div class="col-sm-6">
+                                    <select th:field="*{status}" class="form-control" required>
+                                        <option value="approved"> approved </option>
+                                        <option value="pending"> pending </option>
+                                        <option value="rejected"> rejected </option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="control-label col-sm-4">Book ISBN</label>
+                                <div class="col-sm-6">
+                                    <input type="text" th:field="*{bookISBN}" size="16" class="form-control" required>
+                                </div>
+                            </div>
+
+                            <div class="form-group" style="display: none;">
+                                <label class="control-label col-sm-4">Number of answers</label>
+                                <div class="col-sm-6">
+                                    <input type="hidden" th:field="*{numberOfAnswers}" value="0">
+                                </div>
+                            </div>
+
+                            <div class="form-group" style="display: none;">
+                                <label class="control-label col-sm-4">Tab number</label>
+                                <div class="col-sm-6">
+                                    <input type="hidden" th:field="*{tabNumber}" value="0">
+                                </div>
+                            </div>
+
+                        </div>
+                    </section>
+
+                    <section class="panel">
+                        <p th:if="${error}" th:text="${error}" style="color:red;"></p>
+                        <div class="panel-body">
+                            <button type="submit" href="/add_review" data-toggle="modal" class="btn btn-success">
+                                Confirm
+                            </button>
+                            <a href="/review" data-toggle="modal" class="btn btn-warning">
+                                Cancel
+                            </a>
+                        </div>
+                    </section>
+                </div>
+            </form>
+        </div>
+        </section>
+    </div>
+</div>
+</div>
+
+</div>
+</body>
+</html>

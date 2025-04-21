@@ -20,16 +20,16 @@ public class Review {
     private Integer id;
     private String userName;
     private String userEmail;
-    private Integer numberOfChars;
+    private Integer numberOfChars;           //TODO: обраховується
     private String text;
     private Integer grade;
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private LocalDate date;
     private String status;
 
-    private String bookISBN;
+    private String bookISBN;                 //TODO: випадаючий список з реальної бд з пошуком
     private Integer numberOfAnswers;
-    private String tabNumber;
+    private String tabNumber;                //TODO: підтягується системою
 
 
     public Review() {
