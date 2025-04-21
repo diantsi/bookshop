@@ -116,86 +116,39 @@ public class ReviewDao {
 
     }
 
-    /*public void editWorker(Worker worker, String oldTabNumber) {
-        if(worker.getPassword() != null) {}
-        String query = "UPDATE worker SET Tab_number = ?, Surname = ?, First_name = ?, Middle_name = ?, Occupation = ?, Salary = ?, Start_working_date = ?, Date_of_birth = ?, Age = ?, City = ?, Street = ?, Building = ?, Flat = ?, `Index` = ?, Email_address = ?, password = ?, Phone_number = ? WHERE Tab_number = ?";
+    public void editReview(Review review) {
+        String query = "UPDATE review SET user_name = ?, user_email = ?, number_of_chars = ?, text = ?, grade = ?, review_date = ?, review_status = ?, ISBN_book = ?, answered_number = ?, tab_number_of_worker = ? WHERE ordered_number = ?";
         try (Connection conn = daoConnection.getConnection();
              PreparedStatement ps = conn.prepareStatement(query)) {
 
-            ps.setString(1, worker.getTabNumber());
-            ps.setString(2, worker.getSurname());
-            ps.setString(3, worker.getFirstName());
-            if (worker.hasMiddleName()) {
-                ps.setString(4, worker.getMiddleName());
+            ps.setString(1, review.getUserName());
+            ps.setString(2, review.getUserEmail());
+            ps.setInt(3, review.getNumberOfChars());
+            if (review.getText() != null) {
+                ps.setString(4, review.getText());
             } else {
                 ps.setObject(4, null, Types.VARCHAR);
             }
-            ps.setString(5, worker.getOccupation());
-            ps.setObject(6, worker.getSalary(), Types.DECIMAL);
-            ps.setObject(7, worker.getStartWorkingDate(), Types.DATE);
-            ps.setObject(8, worker.getDateOfBirth(), Types.DATE);
-            ps.setInt(9, worker.calculateAge());
-            ps.setString(10, worker.getCity());
-            ps.setString(11, worker.getStreet());
-            ps.setString(12, worker.getBuilding());
-            if (worker.hasFlat()) {
-                ps.setInt(13, worker.getFlat());
+            ps.setInt(5, review.getGrade());
+            ps.setObject(6, review.getDate(), Types.DATE);
+            ps.setString(7, review.getStatus());
+            ps.setString(8, review.getBookISBN());
+            if (review.getNumberOfAnswer() != null) {
+                ps.setInt(9, review.getNumberOfAnswer());
             } else {
-                ps.setObject(13, null, Types.INTEGER);
+                ps.setObject(9, null, Types.INTEGER);
             }
-            ps.setInt(14, worker.getIndex());
-            ps.setString(15, worker.getEmail());
-            ps.setString(16, worker.getPassword());
-            ps.setString(17, worker.getPhoneNumber());
-            ps.setString(18, oldTabNumber);
+            ps.setString(10, review.getTabNumber());
+            ps.setInt(11, review.getId());
 
             ps.executeUpdate();
 
         } catch (SQLException e) {
-            throw new RuntimeException("Cannot edit worker", e);
+            throw new RuntimeException("Cannot edit review", e);
         }
 
     }
 
-    public void editWorkerWithoutPassword(Worker worker, String oldTabNumber) {
-        if(worker.getPassword() != null) {}
-        String query = "UPDATE worker SET Tab_number = ?, Surname = ?, First_name = ?, Middle_name = ?, Occupation = ?, Salary = ?, Start_working_date = ?, Date_of_birth = ?, Age = ?, City = ?, Street = ?, Building = ?, Flat = ?, `Index` = ?, Email_address = ?, Phone_number = ? WHERE Tab_number = ?";
-        try (Connection conn = daoConnection.getConnection();
-             PreparedStatement ps = conn.prepareStatement(query)) {
-
-            ps.setString(1, worker.getTabNumber());
-            ps.setString(2, worker.getSurname());
-            ps.setString(3, worker.getFirstName());
-            if (worker.hasMiddleName()) {
-                ps.setString(4, worker.getMiddleName());
-            } else {
-                ps.setObject(4, null, Types.VARCHAR);
-            }
-            ps.setString(5, worker.getOccupation());
-            ps.setObject(6, worker.getSalary(), Types.DECIMAL);
-            ps.setObject(7, worker.getStartWorkingDate(), Types.DATE);
-            ps.setObject(8, worker.getDateOfBirth(), Types.DATE);
-            ps.setInt(9, worker.calculateAge());
-            ps.setString(10, worker.getCity());
-            ps.setString(11, worker.getStreet());
-            ps.setString(12, worker.getBuilding());
-            if (worker.hasFlat()) {
-                ps.setInt(13, worker.getFlat());
-            } else {
-                ps.setObject(13, null, Types.INTEGER);
-            }
-            ps.setInt(14, worker.getIndex());
-            ps.setString(15, worker.getEmail());
-            ps.setString(16, worker.getPhoneNumber());
-            ps.setString(17, oldTabNumber);
-
-            ps.executeUpdate();
-
-        } catch (SQLException e) {
-            throw new RuntimeException("Cannot edit worker", e);
-        }
-
-    }*/
 
     public void deleteById(Integer id) {
         String query = "DELETE FROM review WHERE ordered_number = ?";
@@ -210,51 +163,54 @@ public class ReviewDao {
             throw new RuntimeException("Cannot delete a review", e);
         }
     }
-
-    /*public Worker findByTabNumber(String tabNumber) {
-        String query = "SELECT Tab_number, Surname, First_name, Middle_name, Occupation, Salary, Start_working_date, Date_of_birth, Age, City, Street, Building, Flat, `Index`, Email_address, password, Phone_number FROM worker WHERE Tab_number = ?";
-        Worker worker = null;
+//`ordered_number` int(11) NOT NULL AUTO_INCREMENT,
+//                                        `user_name` varchar(30) NOT NULL,
+//                                        `user_email` varchar(30) NOT NULL,
+//                                        `number_of_chars` int(11) NOT NULL,
+//                                        `text` varchar(500) NULL,
+//                                        `grade` int(11) NOT NULL,
+//                                        `review_date` date NOT NULL,
+//            `review_status` varchar(20) NOT NULL,
+//                                        `ISBN_book` varchar(30) NOT NULL,
+//                                        `answered_number` int(11) NULL,
+//                                        `tab_number_of_worker` varchar(30) NULL,
+    public Review findById(Integer id) {
+        String query = "SELECT ordered_number, user_name, user_email, number_of_chars, text, grade, review_date, review_status, ISBN_book, answered_number, tab_number_of_worker FROM review WHERE ordered_number = ?";
+        Review review = null;
 
         try (Connection conn = daoConnection.getConnection();
              PreparedStatement ps = conn.prepareStatement(query)) {
 
-            ps.setString(1, tabNumber);
+            ps.setInt(1, id);
             ResultSet rs = ps.executeQuery();
 
             if (rs.next()) {
-                String tabNum = rs.getString("Tab_number");
-                String surname = rs.getString("Surname");
-                String firstName = rs.getString("First_name");
-                String middleName = rs.getString("Middle_name");
-                String occupation = rs.getString("Occupation");
-                BigDecimal salary = rs.getBigDecimal("Salary");
-                LocalDate startDate = rs.getDate("Start_working_date").toLocalDate();
-                LocalDate birthDate = rs.getDate("Date_of_birth").toLocalDate();
-                Integer age = rs.getInt("Age");
-                String city = rs.getString("City");
-                String street = rs.getString("Street");
-                String building = rs.getString("Building");
-                Integer flat = rs.getInt("Flat");
-                Integer index = rs.getInt("Index");
-                String email = rs.getString("Email_address");
-                String password = rs.getString("password");
-                String phone = rs.getString("Phone_number");
+                Integer idNum = rs.getInt("ordered_number");
+                String userName = rs.getString("user_name");
+                String userEmail = rs.getString("user_email");
+                Integer numberOfChars = rs.getInt("number_of_chars");
+                String text = rs.getString("text");
+                Integer grade = rs.getInt("grade");
+                LocalDate date = rs.getDate("review_date").toLocalDate();
+                String status = rs.getString("review_status");
+                String bookISBN = rs.getString("ISBN_book");
+                Integer numberOfAnswer = rs.getInt("answered_number");
+                String tabNumber = rs.getString("tab_number_of_worker");
 
-                worker = new Worker(
-                        tabNum, surname, firstName, middleName,
-                        occupation, salary, startDate, birthDate, age,
-                        city, street, building,
-                        flat, index, email, password, phone);
+                review = new Review(
+                        idNum, userName, userEmail, numberOfChars,
+                        text, grade, date, status, bookISBN,
+                        numberOfAnswer, tabNumber);
             }
 
         } catch (SQLException e) {
-            throw new RuntimeException("Cannot find worker", e);
+            throw new RuntimeException("Cannot find review", e);
         }
 
-        return worker;
+        return review;
     }
 
-    public Optional<Worker> findByEmail(String emailToFind) {
+    /*public Optional<Worker> findByEmail(String emailToFind) {
         String query = "SELECT Tab_number, Surname, First_name, Middle_name, Occupation, Salary, Start_working_date, Date_of_birth, Age, City, Street, Building, Flat, `Index`, Email_address, password, Phone_number FROM worker WHERE Email_address = ?";
         Worker worker = null;
 

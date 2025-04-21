@@ -4,9 +4,12 @@ import com.example.bookshop.dao.GenreDao;
 import com.example.bookshop.dao.ReviewDao;
 import com.example.bookshop.entity.Genre;
 import com.example.bookshop.entity.Review;
+import com.example.bookshop.entity.Worker;
+import com.example.bookshop.security.Sha256PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Objects;
 
 @Service
 public class ReviewService {
@@ -28,7 +31,11 @@ public class ReviewService {
         reviewDao.deleteById(id);
     }
 
-    /*public Review getById(Integer id) {
+    public Review getById(Integer id) {
         return reviewDao.findById(id).orElse(null);
-    }*/
+    }
+
+    public void editReview(Review newReview) {
+        reviewDao.editReview(newReview);
+    }
 }

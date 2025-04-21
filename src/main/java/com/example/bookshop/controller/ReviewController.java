@@ -64,29 +64,46 @@ public class ReviewController {
 
     @PostMapping("/reviews")
     public String saveReview(@ModelAttribute("review") Review review, BindingResult result) {
-        // Тут виконується валідація
-        /*if(reviewService.existsByTabId(review.getId())){
-            result.rejectValue("id", "error.id", "Відгук з таким номером вже існує!");
-        }*/
-
-        /*if (review.getSalary().compareTo(BigDecimal.ZERO)<0) {
-            result.rejectValue("salary", "error.salary", "Зарплата не може бути від’ємною.");
-        }
-        if (worker.calculateAge() < 18) {
-            result.rejectValue("dateOfBirthString", "error.dateOfBirthString", "Працівнику має бути не менше 18 років.");
-        }*/
-
         review.setNumberOfChars(review.getText().length());
         Optional<Worker> worker = workerService.findByTabEmail(LoginController.USER);
         review.setTabNumber(worker.get().getTabNumber());
-
-
 
         if (result.hasErrors()) {
             return "review/add_review";
         }
 
         reviewService.saveReview(review);
+        return "redirect:/review";
+    }
+
+    @GetMapping("/edit_review/{id}")
+    public String editReview(@PathVariable Integer id, Model model) {
+        Review review = reviewService.getById(id);
+        model.addAttribute("review", review);
+        List<Book> books = bookService.getAllBooks();
+        model.addAttribute("books", books);
+        List<Review> reviews = reviewService.getAllReviews();
+        model.addAttribute("reviews", reviews);
+        System.out.println(review.getBookISBN());
+        System.out.println(review.getNumberOfAnswer());
+        return "review/edit_review";
+    }
+
+    @RequestMapping(value="/review/edit/{id}", method = {RequestMethod.GET, RequestMethod.POST})
+    public String editReview(@ModelAttribute("review") Review review, BindingResult result, Model model) {
+
+        if (result.hasErrors()) {
+            List<Book> books = bookService.getAllBooks();
+            model.addAttribute("books", books);
+            List<Review> reviews = reviewService.getAllReviews();
+            model.addAttribute("reviews", reviews);
+            return "review/edit_review";
+        }
+
+        review.setNumberOfChars(review.getText().length());
+        Optional<Worker> worker = workerService.findByTabEmail(LoginController.USER);
+        review.setTabNumber(worker.get().getTabNumber());
+        reviewService.editReview(review);
         return "redirect:/review";
 
     }

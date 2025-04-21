@@ -20,16 +20,16 @@ public class Review {
     private Integer id;
     private String userName;
     private String userEmail;
-    private Integer numberOfChars;           //TODO: обраховується
+    private Integer numberOfChars;
     private String text;
     private Integer grade;
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private LocalDate date;
     private String status;
 
-    private String bookISBN;                 //TODO: випадаючий список з реальної бд з пошуком
+    private String bookISBN;
     private Integer numberOfAnswer;
-    private String tabNumber;                //TODO: підтягується системою
+    private String tabNumber;
 
 
     public Review() {
@@ -125,7 +125,7 @@ public class Review {
         return numberOfAnswer;
     }
 
-    public void setNumberOfAnswer(Integer numberOfAnswers) {
+    public void setNumberOfAnswer(Integer numberOfAnswer) {
         this.numberOfAnswer = numberOfAnswer;
     }
 
@@ -135,5 +135,12 @@ public class Review {
 
     public void setTabNumber(String tabNumber) {
         this.tabNumber = tabNumber;
+    }
+
+    public Review orElse(Object o) {
+        if(this == null) {
+            return null;
+        }
+        return this;
     }
 }

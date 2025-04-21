@@ -12,12 +12,9 @@ import java.util.Optional;
 @Service
 public class WorkerService {
     private final WorkerDao workerDao;
-    //private final PasswordEncoder passwordEncoder;
 
-
-    public WorkerService(WorkerDao workerDao){//, PasswordEncoder passwordEncoder) {
+    public WorkerService(WorkerDao workerDao){
         this.workerDao = workerDao;
-        //this.passwordEncoder = passwordEncoder;
     }
 
     public List<Worker> getAllWorkers() {

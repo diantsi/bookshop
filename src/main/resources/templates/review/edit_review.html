@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="_layout">
+<head>
+    <meta charset="UTF-8">
+    <title>Edit review</title>
+</head>
+<body>
+<div layout:fragment="content">
+
+    <div class="container" style="width: 70%">
+        <div class="row">
+
+            <form class="form-horizontal " th:action="@{'/review/edit/'+${review.id}}" th:object="${review}" method="put">
+                <div class="col-lg-10">
+                    <section class="panel">
+                        <header class="panel-heading">
+                            Add new review
+                        </header>
+                        <div class="panel-body">
+
+                            <div class="form-group" style="display: none;">
+                                <label class="control-label col-sm-4">Id</label>
+                                <div class="col-sm-6">
+                                    <input type="hidden" th:field="*{id}" value="0">
+
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="control-label col-sm-4">Username</label>
+                                <div class="col-sm-6">
+                                    <input type="text" th:field="*{userName}" size="16" class="form-control" required>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="control-label col-sm-4">User email</label>
+                                <div class="col-sm-6">
+                                    <input type="text" th:field="*{userEmail}" size="16" class="form-control" required>
+                                </div>
+                            </div>
+
+                            <div class="form-group" style="display: none;">
+                                <label class="control-label col-sm-4">Number of chars</label>
+                                <div class="col-sm-6">
+                                    <input type="hidden" th:field="*{numberOfChars}" value="0">
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="control-label col-sm-4">Text</label>
+                                <div class="col-sm-6">
+                                    <input type="text" th:field="*{text}" size="16" class="form-control">
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="control-label col-sm-4">Grade</label>
+                                <div class="col-sm-6">
+                                    <select th:field="*{grade}" class="form-control" required>
+                                        <option value="1"> 1 </option>
+                                        <option value="2"> 2 </option>
+                                        <option value="3"> 3 </option>
+                                        <option value="4"> 4 </option>
+                                        <option value="5"> 5 </option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="control-label col-sm-4">Date</label>
+                                <div class="col-sm-6">
+                                    <input type="date" th:field="*{date}" size="16" class="form-control" required>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="control-label col-sm-4">Status</label>
+                                <div class="col-sm-6">
+                                    <select th:field="*{status}" class="form-control" required>
+                                        <option value="approved"> approved </option>
+                                        <option value="pending"> pending </option>
+                                        <option value="rejected"> rejected </option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="control-label col-sm-4">Book ISBN</label>
+                                <div class="col-sm-6">
+                                    <select th:field="*{bookISBN}" class="form-control book-select" required>
+                                        <option value="">Choose a book</option>
+                                        <option th:each="book : ${books}"
+                                                th:value="${book.getISBN()}"
+                                                th:text="${book.getName() + ' (' + book.getISBN() + ')'}">
+                                        </option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="control-label col-sm-4">This review is an answer for</label>
+                                <div class="col-sm-6">
+                                    <select th:field="*{numberOfAnswer}" class="form-control answered-select">
+                                        <option value="">Choose a review</option>
+                                        <option th:each="review : ${reviews}"
+                                                th:value="${review.getId()}"
+                                                th:text="${review.getId() + ' &nbsp;&nbsp;&nbsp;&nbsp; [ ' + review.getText() + ' ]'}">
+                                        </option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="form-group" style="display: none;">
+                                <label class="control-label col-sm-4">Tab number</label>
+                                <div class="col-sm-6">
+                                    <input type="hidden" th:field="*{tabNumber}" value="0">
+                                </div>
+                            </div>
+
+                        </div>
+                    </section>
+
+                    <section class="panel">
+                        <p th:if="${error}" th:text="${error}" style="color:red;"></p>
+                        <div class="panel-body">
+                            <button type="submit" href="/add_review" data-toggle="modal" class="btn btn-success">
+                                Confirm
+                            </button>
+                            <a href="/review" data-toggle="modal" class="btn btn-warning">
+                                Cancel
+                            </a>
+                        </div>
+                    </section>
+                </div>
+            </form>
+        </div>
+        </section>
+    </div>
+</div>
+</div>
+
+</div>
+
+<!-- Select2 CSS -->
+<link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+
+<!-- jQuery (обов'язково перед Select2!) -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+<!-- Select2 JS -->
+<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+
+<script>
+    /*document.getElementById('book').addEventListener('input', function () {
+        var query = this.value.toLowerCase();
+        var options = document.querySelectorAll('select[name="bookISBN"] option');
+
+        options.forEach(function(option) {
+            var bookName = option.textContent.toLowerCase();
+            var isBookMatch = bookName.includes(query);
+            option.style.display = isBookMatch ? 'block' : 'none';
+        });
+    });*/
+    $(document).ready(function() {
+        $('.book-select').select2({
+            placeholder: "Choose a book",
+            allowClear: true,
+            width: '100%'
+        });
+    });
+    $(document).ready(function() {
+        $('.answered-select').select2({
+            placeholder: "Choose an answer",
+            allowClear: true,
+            width: '100%'
+        });
+    });
+</script>
+
+
+</body>
+</html>

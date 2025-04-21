@@ -103,20 +103,5 @@ public class WorkerController {
         return "redirect:/worker";
 
     }
-    /*@RequestMapping(value = "/worker/edit/{tabNumber}", method = {RequestMethod.GET, RequestMethod.PUT})
-    public String editWorker(@PathVariable String tabNumber) {
-        workerService.delete(tabNumber);
-        return "redirect:/worker";
-    }*/
 
-/*
-    @GetMapping("/edit_genre/{id}")
-    public String editGenre(@PathVariable Long id, Model model) {
-        Genre genre = workerService.getById(id);
-        model.addAttribute("genre", genre);
-        return "genre/edit_genre";
-    }
-
-
- */
 }
