@@ -67,65 +67,6 @@ public class Worker {
         this.password = password;
         this.phoneNumber = phoneNumber;
     }
-    public Worker(String tabNumber, String surname, String firstName, String occupation, BigDecimal salary, LocalDate startWorkingDate, LocalDate dateOfBirth, Integer age, String city, String street, String building, Integer flat, Integer index, String email, String password, String phoneNumber) {
-        this.tabNumber = tabNumber;
-        this.surname = surname;
-        this.firstName = firstName;
-        this.occupation = occupation;
-        this.salary = salary;
-        this.startWorkingDate = startWorkingDate;
-        this.dateOfBirth = dateOfBirth;
-        this.age = age;
-        this.city = city;
-        this.street = street;
-        this.building = building;
-        this.flat = flat;
-        this.index = index;
-        this.email = email;
-        this.password = password;
-        this.phoneNumber = phoneNumber;
-        //this.hasFlat = true;
-
-    }
-    public Worker(String tabNumber, String surname, String firstName, String middleName, String occupation, BigDecimal salary, LocalDate startWorkingDate, LocalDate dateOfBirth, Integer age, String city, String street, String building, Integer index, String email, String password, String phoneNumber) {
-        this.tabNumber = tabNumber;
-        this.surname = surname;
-        this.firstName = firstName;
-        this.middleName = middleName;
-        this.occupation = occupation;
-        this.salary = salary;
-        this.startWorkingDate = startWorkingDate;
-        this.dateOfBirth = dateOfBirth;
-        this.age = age;
-        this.city = city;
-        this.street = street;
-        this.building = building;
-        this.index = index;
-        this.email = email;
-        this.password = password;
-        this.phoneNumber = phoneNumber;
-        //this.hasFlat = false;
-
-    }
-    public Worker(String tabNumber, String surname, String firstName, String occupation, BigDecimal salary, LocalDate startWorkingDate, LocalDate dateOfBirth, Integer age, String city, String street, String building, Integer index, String email, String password, String phoneNumber) {
-        this.tabNumber = tabNumber;
-        this.surname = surname;
-        this.firstName = firstName;
-        this.occupation = occupation;
-        this.salary = salary;
-        this.startWorkingDate = startWorkingDate;
-        this.dateOfBirth = dateOfBirth;
-        this.age = age;
-        this.city = city;
-        this.street = street;
-        this.building = building;
-        this.index = index;
-        this.email = email;
-        this.password = password;
-        this.phoneNumber = phoneNumber;
-        //this.hasFlat = false;
-
-    }
 
     public Worker(String tabNumber, String surname, String firstName, String occupation, String email) {
         this.tabNumber = tabNumber;
@@ -293,31 +234,6 @@ public class Worker {
         return this;
     }
 
-    /*public WorkerDto toDto() {
-        WorkerDto workerDto = new WorkerDto();
-        workerDto.setTabNumber(this.tabNumber);
-        workerDto.setSurname(this.surname);
-        workerDto.setFirstName(this.firstName);
-        workerDto.setMiddleName(this.middleName);
-        workerDto.setOccupation(this.occupation);
-        workerDto.setSalary(this.salary);
 
-        workerDto.setStartWorkingDate(this.startWorkingDate);
-        workerDto.setDateOfBirth(this.dateOfBirth);
-        // Перетворення LocalDate → String у форматі yyyy-MM-dd
-        workerDto.setStartWorkingDateString(this.startWorkingDate != null ? this.startWorkingDate.toString() : "");
-        workerDto.setDateOfBirthString(this.dateOfBirth != null ? this.dateOfBirth.toString() : "");
-
-        workerDto.setCity(this.city);
-        workerDto.setStreet(this.street);
-        workerDto.setBuilding(this.building);
-        workerDto.setFlat(this.flat);
-        workerDto.setIndex(this.index);
-        workerDto.setEmail(this.email);
-        workerDto.setPassword(this.password);
-        workerDto.setPhoneNumber(this.phoneNumber);
-
-        return workerDto;
-    }*/
 
 }

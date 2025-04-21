@@ -147,14 +147,14 @@ CREATE TABLE IF NOT EXISTS `client_card` (
                                              `Registration_date` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
                                              `Date_of_birth` date NOT NULL,
                                              `Age` int NOT NULL,
-                                             `Email_addres` varchar(30) NOT NULL,
+                                             `Email_address` varchar(30) NOT NULL,
                                              `Bonus_number` int NOT NULL,
                                              PRIMARY KEY (`ID_number`),
                                              UNIQUE KEY (`Phone_number`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 
-INSERT INTO `client_card` (`ID_number`, `Surname`, `First_name`, `Middle_name`, `Phone_number`, `Registration_date`, `Date_of_birth`, `Age`, `Email_addres`, `Bonus_number`) VALUES
+INSERT INTO `client_card` (`ID_number`, `Surname`, `First_name`, `Middle_name`, `Phone_number`, `Registration_date`, `Date_of_birth`, `Age`, `Email_address`, `Bonus_number`) VALUES
                                                                                                                                                                                  ('CL001', 'Тралалейло' , 'Тралала', 'Тралалейлович', '+380501234567', '2023-01-15', '1990-05-20', 33, 'tralaleylo@gmail.com', 100),
                                                                                                                                                                                  ('CL002', 'Балеріна', 'Капучіна', 'Сергіївна', '+380671234568', '2023-02-20', '1985-08-12', 38, 'capuchina@ukma.edu.ua', 150),
                                                                                                                                                                                  ('CL003', 'Тунг', 'Тунг', NULL, '+380931234569', '2023-03-10', '1995-11-30', 28, 'mctung@gmail,com', 75);

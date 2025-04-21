@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="_layout">
+<head>
+    <meta charset="UTF-8">
+    <title>Add worker</title>
+</head>
+<body>
+<div layout:fragment="content">
+
+    <div class="container" style="width: 70%">
+        <div class="row">
+
+            <form class="form-horizontal " th:action="@{/clientcards}" th:object="${clientcard}" method="post">
+                <div class="col-lg-10">
+                    <section class="panel">
+                        <header class="panel-heading">
+                            Add new client
+                        </header>
+                        <div class="panel-body">
+
+                            <div class="form-group">
+                                <label class="control-label col-sm-4">ID number</label>
+                                <div class="col-sm-6">
+                                    <input type="text" th:field="*{idNumber}" class="form-control" required
+                                           th:classappend="${#fields.hasErrors('idNumber')} ? 'is-invalid'"/>
+                                    <div th:if="${#fields.hasErrors('idNumber')}" th:errors="*{idNumber}"
+                                         class="text-danger"></div>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="control-label col-sm-4">Surname</label>
+                                <div class="col-sm-6">
+                                    <input type="text" th:field="*{surname}" size="16" class="form-control" required>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="control-label col-sm-4">First name</label>
+                                <div class="col-sm-6">
+                                    <input type="text" th:field="*{firstName}" size="16" class="form-control" required>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="control-label col-sm-4">Middle name</label>
+                                <div class="col-sm-6">
+                                    <input type="text" th:field="*{middleName}" size="16" class="form-control">
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="control-label col-sm-4">Phone number</label>
+                                <div class="col-sm-6">
+                                    <input type="text" th:field="*{phoneNumber}" class="form-control" required
+                                           th:classappend="${#fields.hasErrors('phoneNumber')} ? 'is-invalid'"/>
+                                    <div th:if="${#fields.hasErrors('phoneNumber')}" th:errors="*{phoneNumber}"
+                                         class="text-danger"></div>
+                                </div>
+                            </div>
+
+                            <div class="form-group" style="display: none;">
+                                <label class="control-label col-sm-4">Registration date</label>
+                                <div class="col-sm-6">
+                                    <input type="hidden" th:field="*{registrationDate}" size="16" class="form-control">
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="control-label col-sm-4">Birth date</label>
+                                <div class="col-sm-6">
+                                    <input type="date" th:field="*{dateOfBirth}" size="16" class="form-control" required
+                                           th:classappend="${#fields.hasErrors('dateOfBirth')} ? 'is-invalid'"/>
+                                    <div th:if="${#fields.hasErrors('dateOfBirth')}" th:errors="*{dateOfBirth}"
+                                         class="text-danger"></div>
+                                </div>
+                            </div>
+
+                            <div class="form-group" style="display: none;">
+                                <input type="hidden" th:field="*{age}" value="0">
+                            </div>
+
+
+                            <div class="form-group">
+                                <label class="control-label col-sm-4">Email</label>
+                                <div class="col-sm-6">
+                                    <input type="email" th:field="*{email}" size="16" class="form-control" required>
+                                </div>
+                            </div>
+
+                            <div class="form-group" style="display: none;">
+                                <label class="control-label col-sm-4">Number of bonuses</label>
+                                <div class="col-sm-6">
+                                    <input type="hidden" th:field="*{numberOfBonuses}"  value="0">
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+
+                    <section class="panel">
+                        <p th:if="${error}" th:text="${error}" style="color:red;"></p>
+                        <div class="panel-body">
+                            <button type="submit" href="/add_clientcard" data-toggle="modal" class="btn btn-success">
+                                Confirm
+                            </button>
+                            <a href="/clientcard" data-toggle="modal" class="btn btn-warning">
+                                Cancel
+                            </a>
+                        </div>
+                    </section>
+                </div>
+            </form>
+        </div>
+        </section>
+    </div>
+</div>
+</div>
+
+</div>
+</body>
+</html>
