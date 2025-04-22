@@ -23,6 +23,24 @@
             border-radius: 4px;
             box-shadow: 0 2px 4px rgba(0,0,0,0.1);
         }
+        .info-grid {
+            display: grid;
+            grid-template-columns: 150px 1fr;
+            gap: 15px;
+            align-items: baseline;
+        }
+        .info-label {
+            font-weight: bold;
+            color: #555;
+        }
+        .info-value {
+            padding: 5px 0;
+        }
+        .price-section {
+            margin-top: 20px;
+            padding-top: 20px;
+            border-top: 1px solid #eee;
+        }
     </style>
 </head>
 <body>
@@ -39,98 +57,61 @@
             </div>
 
             <div class="book-info">
-                <div class="panel-body">
-                    <h2 th:text="${book.name}" style="margin-top: 0;"></h2>
+                <h2 th:text="${book.name}" style="margin-top: 0;"></h2>
 
-                    <div class="form-group">
-                        <label class="control-label col-sm-3">ISBN</label>
-                        <div class="col-sm-9">
-                            <p class="form-control-static" th:text="${book.ISBN}"></p>
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <label class="control-label col-sm-3">Authors</label>
-                        <div class="col-sm-9">
-                            <p class="form-control-static">
-                                <span th:each="author, iterStat : ${book.authors}"
-                                      th:text="${author.fullName} + (${iterStat.last} ? '' : ', ')"></span>
-                            </p>
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <label class="control-label col-sm-3">Genres</label>
-                        <div class="col-sm-9">
-                            <p class="form-control-static">
-                                <span th:each="genre, iterStat : ${book.genres}"
-                                      th:text="${genre.name} + (${iterStat.last} ? '' : ', ')"></span>
-                            </p>
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <label class="control-label col-sm-3">Year</label>
-                        <div class="col-sm-9">
-                            <p class="form-control-static" th:text="${book.year}"></p>
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <label class="control-label col-sm-3">Pages</label>
-                        <div class="col-sm-9">
-                            <p class="form-control-static" th:text="${book.pages}"></p>
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <label class="control-label col-sm-3">Cover</label>
-                        <div class="col-sm-9">
-                            <p class="form-control-static" th:text="${book.cover}"></p>
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <label class="control-label col-sm-3">Language</label>
-                        <div class="col-sm-9">
-                            <p class="form-control-static" th:text="${book.language}"></p>
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <label class="control-label col-sm-3">Dimensions</label>
-                        <div class="col-sm-9">
-                            <p class="form-control-static">
-                                <span th:text="${book.width} + ' × ' + ${book.height} + ' × ' + ${book.thickness} + ' cm'"></span>
-                            </p>
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <label class="control-label col-sm-3">Weight</label>
-                        <div class="col-sm-9">
-                            <p class="form-control-static" th:text="${book.weight} + ' g'"></p>
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <label class="control-label col-sm-3">Adults only</label>
-                        <div class="col-sm-9">
-                            <p class="form-control-static" th:text="${book.adultsOnly} ? 'Yes' : 'No'"></p>
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <label class="control-label col-sm-3">Quantity</label>
-                        <div class="col-sm-9">
-                            <p class="form-control-static" th:text="${book.quantity}"></p>
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <label class="control-label col-sm-3">Translators</label>
-                        <div class="col-sm-9">
-                            <p class="form-control-static">
-                                <span th:each="translator, iterStat : ${book.translators}"
-                                      th:text="${translator.fullName} + (${iterStat.last} ? '' : ', ')"></span>
-                            </p>
-                        </div>
+                <div class="info-grid">
+                    <div class="info-label">ISBN</div>
+                    <div class="info-value" th:text="${book.ISBN}"></div>
+
+                    <div class="info-label">Authors</div>
+                    <div class="info-value">
+                        <span th:each="author, iterStat : ${book.authors}"
+                              th:text="${author.fullName} + (${iterStat.last} ? '' : ', ')"></span>
                     </div>
 
-                    <div class="form-group" style="margin-top: 30px;">
-                        <label class="control-label col-sm-3" style="font-size: 1.5em;">Price</label>
-                        <div class="col-sm-9">
-                            <h3 class="form-control-static" th:text="${book.price} + ' ₴'" style="margin: 0; color: #d32f2f;"></h3>
-                        </div>
+                    <div class="info-label">Genres</div>
+                    <div class="info-value">
+                        <span th:each="genre, iterStat : ${book.genres}"
+                              th:text="${genre.name} + (${iterStat.last} ? '' : ', ')"></span>
+                    </div>
+
+                    <div class="info-label">Year</div>
+                    <div class="info-value" th:text="${book.year}"></div>
+
+                    <div class="info-label">Pages</div>
+                    <div class="info-value" th:text="${book.pages}"></div>
+
+                    <div class="info-label">Cover</div>
+                    <div class="info-value" th:text="${book.cover}"></div>
+
+                    <div class="info-label">Language</div>
+                    <div class="info-value" th:text="${book.language}"></div>
+
+                    <div class="info-label">Dimensions</div>
+                    <div class="info-value">
+                        <span th:text="${book.width} + ' × ' + ${book.height} + ' × ' + ${book.thickness} + ' cm'"></span>
+                    </div>
+
+                    <div class="info-label">Weight</div>
+                    <div class="info-value" th:text="${book.weight} + ' g'"></div>
+
+                    <div class="info-label">Adults only</div>
+                    <div class="info-value" th:text="${book.adultsOnly} ? 'Yes' : 'No'"></div>
+
+                    <div class="info-label">Quantity</div>
+                    <div class="info-value" th:text="${book.quantity}"></div>
+
+                    <div class="info-label">Translators</div>
+                    <div class="info-value">
+                        <span th:each="translator, iterStat : ${book.translators}"
+                              th:text="${translator.fullName} + (${iterStat.last} ? '' : ', ')"></span>
+                    </div>
+                </div>
+
+                <div class="price-section info-grid">
+                    <div class="info-label" style="font-size: 1.2em;">Price</div>
+                    <div class="info-value">
+                        <h3 style="margin: 0; color: #d32f2f;" th:text="${book.price} + ' ₴'"></h3>
                     </div>
                 </div>
             </div>
