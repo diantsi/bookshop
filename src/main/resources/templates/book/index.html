@@ -44,6 +44,7 @@
                                 <a class="btn btn-success"
                                    th:href="@{'/edit_book/' + ${book.ISBN}}"><i class="icon_pencil-edit"></i></a>
                                 <a class="btn btn-danger"
+                                   th:disabled="${book.quantity > 0}"
                                    onclick="return confirm('sure?')"
                                    th:href="@{'/book/delete/' + ${book.ISBN}}"><i class="icon_trash"></i></a>
                             </div>

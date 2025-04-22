@@ -42,7 +42,12 @@ public class BookInstanceDao {
         try (Connection connection = daoConnection.getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS)) {
 
-            preparedStatement.setLong(1, bookInstance.getReceipt_id());
+            if (bookInstance.getReceipt_id() != null) {
+                preparedStatement.setLong(1, bookInstance.getReceipt_id());
+            } else {
+                preparedStatement.setNull(1, Types.BIGINT);
+            }
+
             preparedStatement.setString(2, bookInstance.getISBN());
             preparedStatement.executeUpdate();
 
@@ -52,7 +57,7 @@ public class BookInstanceDao {
                 }
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            throw new RuntimeException("Error saving book instance", e);
         }
     }
 
@@ -95,7 +100,12 @@ public class BookInstanceDao {
         String query = "UPDATE instance SET ID_number_of_check = ?, ISBN_book = ? WHERE instance_code = ?";
         try (Connection connection = daoConnection.getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(query)) {
-            preparedStatement.setObject(1, bookInstance.getReceipt_id(), Types.BIGINT);
+            if (bookInstance.getReceipt_id() != null) {
+                preparedStatement.setLong(1, bookInstance.getReceipt_id());
+            } else {
+                preparedStatement.setNull(1, Types.BIGINT);
+            }
+
             preparedStatement.setString(2, bookInstance.getISBN());
             preparedStatement.setLong(3, bookInstance.getId());
             preparedStatement.executeUpdate();
@@ -103,6 +113,5 @@ public class BookInstanceDao {
             throw new RuntimeException("Error updating book instance", e);
         }
     }
-
 
 }
