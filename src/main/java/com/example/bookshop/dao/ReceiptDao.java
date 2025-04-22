@@ -81,8 +81,55 @@ public class ReceiptDao {
         }
     }
 
-    public Receipt findReceiptById(Long id) {
-        return null;
+    public Receipt findById(Long id) {
+        String query = "SELECT * FROM receipt WHERE Id_number_of_check = ?";
+        Receipt receipt = null;
+        try (Connection conn = daoConnection.getConnection();
+             PreparedStatement ps = conn.prepareStatement(query)) {
+            ps.setLong(1, id);
+            ResultSet rs = ps.executeQuery();
+            if (rs.next()) {
+                receipt = new Receipt(
+                        rs.getLong("Id_number_of_check"),
+                        rs.getTimestamp("Date_buy"),
+                        rs.getDouble("Sum_of_check"),
+                        rs.getInt("User_bonus_number"),
+                        rs.getString("ID_number_client"),
+                        rs.getString("Tab_number_worker")
+                );
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException("Cannot find receipt", e);
+        }
+        return receipt;
+    }
+
+    public void updateReceipt(Receipt receipt) {
+        String query = "UPDATE receipt SET Date_buy = ?, Sum_of_check = ?, User_bonus_number = ?, ID_number_client = ?, Tab_number_worker = ? WHERE Id_number_of_check = ?";
+        try (Connection conn = daoConnection.getConnection();
+             PreparedStatement ps = conn.prepareStatement(query)) {
+
+            ps.setTimestamp(1, receipt.getTime());
+            ps.setDouble(2, receipt.getTotalPrice());
+            ps.setInt(3, receipt.getBonuses());
+            ps.setString(4, receipt.getClient_id());
+            ps.setString(5, receipt.getWorker_id());
+            ps.setLong(6, receipt.getId());
+            ps.executeUpdate();
+        } catch (SQLException e) {
+            throw new RuntimeException("Cannot update receipt", e);
+        }
+    }
+
+    public void deleteReceipt(Long id) {
+        String query = "DELETE FROM receipt WHERE Id_number_of_check = ?";
+        try (Connection conn = daoConnection.getConnection();
+             PreparedStatement ps = conn.prepareStatement(query)) {
+            ps.setLong(1, id);
+            ps.executeUpdate();
+        } catch (SQLException e) {
+            throw new RuntimeException("Cannot delete receipt", e);
+        }
     }
 
 }

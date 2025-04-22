@@ -21,4 +21,14 @@ public class ReceiptService {
     public void saveReceipt(Receipt receipt) {
         receiptDao.saveReceipt(receipt);
     }
+
+    public Receipt getById(Long id) {
+        return receiptDao.findById(id);
+    }
+    public void update(Receipt receipt) {
+        receiptDao.updateReceipt(receipt);
+    }
+    public void delete(Long id) {
+        receiptDao.deleteReceipt(id);
+    }
 }
