@@ -1,11 +1,14 @@
 package com.example.bookshop.entity;
 
 import java.sql.Timestamp;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 public class Receipt {
 
     private Long id;
-    private Timestamp time;
+    private LocalDateTime time;
+
     private Double totalPrice;
     private Integer bonuses;
     private String client_id;
@@ -16,7 +19,7 @@ public class Receipt {
 
     public Receipt() {
     }
-    public Receipt(Long id, Timestamp time, Double totalPrice, Integer bonuses, String client_id, String work_id) {
+    public Receipt(Long id, LocalDateTime time, Double totalPrice, Integer bonuses, String client_id, String work_id) {
         this.id = id;
         this.time = time;
         this.totalPrice = totalPrice;
@@ -33,11 +36,11 @@ public class Receipt {
         this.id = id;
     }
 
-    public Timestamp getTime() {
+    public LocalDateTime getTime() {
         return time;
     }
 
-    public void setTime(Timestamp time) {
+    public void setTime(LocalDateTime time) {
         this.time = time;
     }
 
@@ -86,6 +89,13 @@ public class Receipt {
         this.client_full_name = client_full_name;
     }
 
+    public String getFormattedDateTime() {
+        if (this.time == null) {
+            return "";
+        }
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm");
+        return this.time.format(formatter);
+    }
 
     public Receipt orElse(Object o) {
         if(this == null) {

@@ -1,10 +1,99 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="_layout">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>Add receipt</title>
 </head>
 <body>
+<div layout:fragment="content">
 
+    <div class="container" style="width: 70%">
+        <div class="row">
+            <form class="form-horizontal " th:action="@{/receipts}" th:object="${receipt}" method="post">
+                <div class="col-lg-8">
+                    <section class="panel">
+                        <header class="panel-heading">
+                            Define new receipt
+                        </header>
+                        <div class="panel-body">
+                            <div class="form-group">
+                                <label class="control-label col-sm-4"> Purchase date </label>
+                                <div class="col-sm-6">
+                                    <input type="datetime-local"
+                                           id="timeInput"
+                                           th:field="*{time}"
+                                           class="form-control"
+                                           onchange="formatDateTime()">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="control-label col-sm-4">Total price</label>
+                                <div class="col-sm-6">
+                                    <input type="text" th:field="*{totalPrice}" size="16" class="form-control" required>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="control-label col-sm-4"> Number of bonuses </label>
+                                <div class="col-sm-6">
+                                    <input type="text" th:field="*{bonuses}" size="16" class="form-control" required>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="control-label col-sm-4">Client</label>
+                                <div class="col-sm-6">
+                                    <select th:field="*{client_id}" class="form-control book-select">
+                                        <option value="">Choose a client  </option>
+                                        <option th:each="client : ${clientCards}"
+                                                th:value="${client.idNumber}"
+                                                th:text="${client.idNumber + ' (' + client.surname + ' ' + client.firstName + ')'}">
+                                        </option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="control-label col-sm-4">Worker </label>
+                                <div class="col-sm-6">
+                                    <select th:field="*{worker_id}" class="form-control book-select" required>
+                                        <option value="">Choose a worker </option>
+                                        <option th:each="worker : ${workers}"
+                                                th:value="${worker.tabNumber}"
+                                                th:text="${worker.tabNumber +  ' (' + worker.surname + ' ' + worker.firstName + ')'}">
+                                        </option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+
+                    <section class="panel">
+                        <div class="panel-body">
+                            <button type="submit" href="/add_receipt" data-toggle="modal" class="btn btn-success">
+                                Confirm
+                            </button>
+                            <a href="/receipt" data-toggle="modal" class="btn btn-warning">
+                                Cancel
+                            </a>
+                        </div>
+                    </section>
+                </div>
+            </form>
+
+        </div>
+    </div>
+
+
+</div>
 </body>
 </html>
+<script>
+    function formatDateTime() {
+        const input = document.getElementById('timeInput');
+        const date = new Date(input.value);
+        const formattedDate = date.toISOString().slice(0, 19).replace('T', ' ');
+        input.value = formattedDate;
+    }
+
+
+

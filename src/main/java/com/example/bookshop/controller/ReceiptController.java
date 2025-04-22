@@ -1,5 +1,6 @@
 package com.example.bookshop.controller;
 
+import com.example.bookshop.entity.BookInstance;
 import com.example.bookshop.entity.Genre;
 import com.example.bookshop.entity.Receipt;
 import com.example.bookshop.service.ClientCardService;
@@ -23,6 +24,11 @@ public class ReceiptController {
         this.receiptService = receiptService;
         this.clientCardService = clientCardService;
         this.workerService = workerService;
+    }
+
+    @ModelAttribute("receipt")
+    public Receipt getReceipt() {
+        return new Receipt();
     }
 
     @GetMapping({"/receipt", "/receipt.html"})

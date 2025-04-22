@@ -4,6 +4,8 @@ import com.example.bookshop.entity.Receipt;
 import org.springframework.stereotype.Repository;
 
 import java.sql.*;
+import java.time.LocalDateTime;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -39,7 +41,7 @@ public class ReceiptDao {
             while (rs.next()) {
                 Receipt receipt = new Receipt(
                         rs.getLong("Id_number_of_check"),
-                        rs.getTimestamp("Date_buy"),
+                        rs.getTimestamp("Date_buy").toLocalDateTime(),
                         rs.getDouble("sum_of_check"),
                         rs.getInt("User_bonus_number"),
                         rs.getString("ID_number_client"),
@@ -63,7 +65,7 @@ public class ReceiptDao {
             try (Connection conn = daoConnection.getConnection();
                  PreparedStatement ps = conn.prepareStatement(query, Statement.RETURN_GENERATED_KEYS)) {
 
-                ps.setTimestamp(1, receipt.getTime());
+                ps.setObject(1, receipt.getTime());
                 ps.setDouble(2, receipt.getTotalPrice());
                 ps.setInt(3, receipt.getBonuses());
                 ps.setString(4, receipt.getClient_id());
@@ -91,7 +93,7 @@ public class ReceiptDao {
             if (rs.next()) {
                 receipt = new Receipt(
                         rs.getLong("Id_number_of_check"),
-                        rs.getTimestamp("Date_buy"),
+                        rs.getTimestamp("Date_buy").toLocalDateTime(),
                         rs.getDouble("Sum_of_check"),
                         rs.getInt("User_bonus_number"),
                         rs.getString("ID_number_client"),
@@ -109,7 +111,7 @@ public class ReceiptDao {
         try (Connection conn = daoConnection.getConnection();
              PreparedStatement ps = conn.prepareStatement(query)) {
 
-            ps.setTimestamp(1, receipt.getTime());
+            ps.setObject(1, receipt.getTime());
             ps.setDouble(2, receipt.getTotalPrice());
             ps.setInt(3, receipt.getBonuses());
             ps.setString(4, receipt.getClient_id());

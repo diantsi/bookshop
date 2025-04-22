@@ -34,7 +34,7 @@
                     </tr>
                     <tr th:each="receipt : ${receipts}">
                         <td th:text="${receipt.id}"></td>
-                        <td th:text="${#dates.format(receipt.time, 'dd/MM/yyyy')}"></td>
+                        <td th:text="${#temporals.format(receipt.time, 'yyyy-MM-dd HH:mm')}"></td>
                         <td th:text="${receipt.totalPrice}"></td>
                         <td th:text="${receipt.bonuses}"></td>
                         <td th:text="${receipt.client_id}"></td>
