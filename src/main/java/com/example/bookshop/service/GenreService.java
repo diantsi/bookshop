@@ -27,6 +27,10 @@ public class GenreService {
         genreDao.deleteById(id);
     }
 
+    public List<Genre> getGenresByIds(List<Long> genreIds) {
+        return genreDao.findByIdIn(genreIds); // Assuming you have this method in GenreDao
+    }
+
     public Genre getById(Long id) {
         return genreDao.findById(id).orElse(null);
     }

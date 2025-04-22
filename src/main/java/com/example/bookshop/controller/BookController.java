@@ -10,6 +10,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -46,10 +47,15 @@ public class BookController {
         return "book/index";
     }
     @PostMapping("/books")
-    public String saveBook(Book book) {
+    public String saveBook(@ModelAttribute Book book,
+                           @RequestParam("genreIds") List<Long> genreIds) {
+        List<Genre> genres = genreService.getGenresByIds(genreIds);
+        book.setGenres(genres);
+
         bookService.saveBook(book);
         return "redirect:/book";
     }
+
 
     @GetMapping("/add_book")
     public String addBook(Model model) {
@@ -71,11 +77,23 @@ public class BookController {
         Book book = bookService.getByIsbn(isbn);
         model.addAttribute("book", book);
         model.addAttribute("genres", genreService.getAllGenres());
+        model.addAttribute("selectedGenreIds", book.getGenres().stream()
+                .map(Genre::getId)
+                .collect(Collectors.toList()));
         return "book/edit_book";
     }
 
     @RequestMapping(value = "/book/update/{isbn}", method = RequestMethod.POST)
-    public String save(Book book, @PathVariable String isbn) {
+    public String save(@ModelAttribute Book book,
+                       @RequestParam("genreIds") String[] genreIdStrings, // Accept as String array
+                       @PathVariable String isbn) {
+        List<Long> genreIds = Arrays.stream(genreIdStrings)
+                .map(Long::parseLong)
+                .collect(Collectors.toList());
+        List<Genre> genres = genreService.getGenresByIds(genreIds);
+        book.setGenres(genres);
+        book.setISBN(isbn);
+
         bookService.updateBook(book);
         return "redirect:/book";
     }

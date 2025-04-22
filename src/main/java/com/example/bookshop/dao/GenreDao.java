@@ -6,6 +6,7 @@ import org.springframework.stereotype.Repository;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Repository
 public class GenreDao {
@@ -116,6 +117,36 @@ public class GenreDao {
         }
 
         return genre;
+    }
+
+
+    public List<Genre> findByIdIn(List<Long> ids) {
+        if (ids == null || ids.isEmpty()) {
+            return new ArrayList<>();
+        }
+        List<Genre> genres = new ArrayList<>();
+        String placeholders = ids.stream().map(id -> "?").collect(Collectors.joining(","));
+        String query = "SELECT * FROM genre WHERE Id_genre IN (" + placeholders + ")";
+        try (Connection connection = daoConnection.getConnection();
+             PreparedStatement ps = connection.prepareStatement(query)) {
+            for (int i = 0; i < ids.size(); i++) {
+                ps.setLong(i + 1, ids.get(i));
+            }
+            try (ResultSet rs = ps.executeQuery()) {
+                while (rs.next()) {
+                    Genre genre = new Genre(
+                            rs.getLong("Id_genre"),
+                            rs.getString("Genre_name"),
+                            rs.getString("Genre_description"),
+                            rs.getInt("Number_of_books")
+                    );
+                    genres.add(genre);
+                }
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException("Error finding genres by IDs", e);
+        }
+        return genres;
     }
 
 

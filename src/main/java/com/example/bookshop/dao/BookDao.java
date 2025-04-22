@@ -178,6 +178,7 @@ public class BookDao {
         String query = "UPDATE book SET Image = ?, Book_name = ?, Number_of_pages = ?, Type_of_cover = ?, " +
                 "Book_language = ?, Year_of_publication = ?, Weight = ?, Height = ?, Width = ?, Thickness = ?, " +
                 "Book_price = ?, Number_of_instances = ?, Adults_only_status = ? WHERE ISBN = ?";
+
         try (Connection connection = daoConnection.getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(query)) {
             preparedStatement.setString(1, book.getImage());
@@ -192,10 +193,22 @@ public class BookDao {
             preparedStatement.setFloat(10, book.getThickness());
             preparedStatement.setDouble(11, book.getPrice());
             preparedStatement.setInt(12, book.getQuantity());
-            preparedStatement.setBoolean(13, book.getAdultsOnly());
+            preparedStatement.setBoolean(13, book.getAdultsOnly() != null ? book.getAdultsOnly() : false);
             preparedStatement.setString(14, book.getISBN());
 
             preparedStatement.executeUpdate();
+
+            String deleteQuery = "DELETE FROM genre_book WHERE Book_ISBN = ?";
+            try (PreparedStatement deleteStmt = connection.prepareStatement(deleteQuery)) {
+                deleteStmt.setString(1, book.getISBN());
+                deleteStmt.executeUpdate();
+            }
+
+            if (book.getGenres() != null && !book.getGenres().isEmpty()) {
+                saveBookGenres(book.getISBN(), book.getGenres().stream()
+                        .map(Genre::getId)
+                        .collect(Collectors.toList()));
+            }
         } catch (SQLException e) {
             throw new RuntimeException("Cannot update book", e);
         }
@@ -220,18 +233,20 @@ public class BookDao {
             preparedStatement.setFloat(11, book.getThickness());
             preparedStatement.setDouble(12, book.getPrice());
             preparedStatement.setInt(13, book.getQuantity());
-            preparedStatement.setBoolean(14, book.getAdultsOnly());
+            if(book.getAdultsOnly() == null) {
+                preparedStatement.setBoolean(14, false);
+            } else {
+                preparedStatement.setBoolean(14, book.getAdultsOnly());
+            }
             preparedStatement.executeUpdate();
 
-            // Save genres if provided
-//            if (book.getGenres() != null && !book.getGenres().isEmpty()) {
-//                List<Long> genreIds = book.getGenres().stream()
-//                        .map(Genre::getId)
-//                        .collect(Collectors.toList());
-//                saveBookGenres(book.getISBN(), genreIds);
-//            }
+            if (book.getGenres() != null && !book.getGenres().isEmpty()) {
+                saveBookGenres(book.getISBN(), book.getGenres().stream()
+                        .map(Genre::getId)
+                        .collect(Collectors.toList()));
+            }
         } catch (SQLException e) {
-            e.printStackTrace();
+            throw new RuntimeException("Cannot save book", e);
         }
     }
 
