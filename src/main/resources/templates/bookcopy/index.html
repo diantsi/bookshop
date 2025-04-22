@@ -3,7 +3,7 @@
       layout:decorate="~{_layout}">
 <head>
     <meta charset="UTF-8">
-    <title>Книги</title>
+    <title>Примірники</title>
 </head>
 <body>
 <div layout:fragment="content">
@@ -11,8 +11,8 @@
 
     <div class="row">
         <div class="panel-body">
-            <a href="/add_genre" data-toggle="modal" class="btn btn-primary">
-                New Book
+            <a href="/add_bookcopy" data-toggle="modal" class="btn btn-primary">
+                New instance
             </a>
 
         </div>
@@ -37,10 +37,10 @@
                                 <a class="btn btn-primary"
                                    th:href="@{'/book_info/' + ${instance.id}}"><i class="icon_info"></i></a>
                                 <a class="btn btn-success"
-                                   th:href="@{'/edit_genre/' + ${instance.id}}"><i class="icon_pencil-edit"></i></a>
+                                   th:href="@{'/edit_bookcopy/' + ${instance.id}}"><i class="icon_pencil-edit"></i></a>
                                 <a class="btn btn-danger"
                                    onclick="return confirm('sure?')"
-                                   th:href="@{'/genres/delete/' + ${instance.id}}"><i class="icon_trash"></i></a>
+                                   th:href="@{'/bookcopy/delete/' + ${instance.id}}"><i class="icon_trash"></i></a>
                             </div>
                         </td>
                     </tr>

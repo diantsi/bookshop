@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="_layout">
+<head>
+    <meta charset="UTF-8">
+    <title>Add book instance</title>
+</head>
+<body>
+<div layout:fragment="content">
+
+    <div class="container" style="width: 70%">
+        <div class="row">
+            <form class="form-horizontal " th:action="@{/bookcopies}" th:object="${bookcopy}" method="post">
+                <div class="col-lg-8">
+                    <section class="panel">
+                        <header class="panel-heading">
+                            Define new book instance
+                        </header>
+                        <div class="panel-body">
+                            <div class="form-group">
+                                <label class="control-label col-sm-4">Receipt</label>
+                                <div class="col-sm-6">
+                                    <select th:field="*{receipt_id}" class="form-control book-select">
+                                        <option value="">Choose a receipt </option>
+                                        <option th:each="receipt : ${receipts}"
+                                                th:value="${receipt.id}"
+                                                th:text="${receipt.id + ' (' + receipt.time + ')'}">
+                                        </option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="control-label col-sm-4">Book </label>
+                                <div class="col-sm-6">
+                                    <select th:field="*{ISBN}" class="form-control book-select" required>
+                                        <option value="">Choose a book</option>
+                                        <option th:each="book : ${books}"
+                                                th:value="${book.getISBN()}"
+                                                th:text="${book.getISBN() + ' (' + book.getName() + ')'}">
+                                        </option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+
+                    <section class="panel">
+                        <div class="panel-body">
+                            <button type="submit" href="/add_bookcopy" data-toggle="modal" class="btn btn-success">
+                                Confirm
+                            </button>
+                            <a href="/bookcopy" data-toggle="modal" class="btn btn-warning">
+                                Cancel
+                            </a>
+                        </div>
+                    </section>
+                </div>
+            </form>
+
+        </div>
+    </div>
+
+
+</div>
+</body>
+</html>

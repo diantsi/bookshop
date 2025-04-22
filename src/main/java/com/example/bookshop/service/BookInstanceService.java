@@ -20,5 +20,21 @@ public class BookInstanceService {
         return bookInstanceDao.findAll();
     }
 
+    public void saveBookInstance(BookInstance bookInstance) {
+        bookInstanceDao.saveBookInstance(bookInstance);
+    }
+    public void deleteBookInstance(Long id) {
+        bookInstanceDao.deleteBookInstance(id);
+    }
+    public BookInstance getById(Long id) {
+        return bookInstanceDao.findById(id);
+    }
+    public void update(BookInstance bookInstance) {
+        if (bookInstance.getId() == null) {
+            throw new IllegalArgumentException("BookInstance ID cannot be null for update");
+        }
+        bookInstanceDao.updateBookInstance(bookInstance);
+    }
+
 
 }
