@@ -61,6 +61,7 @@ public class Book {
     public void setAuthors(List<Author> authors) {
         this.authors = authors;
     }
+
     public List<Translator> getTranslators() {
         return translators;
     }
@@ -181,75 +182,5 @@ public class Book {
         this.adultsOnly = adultsOnly;
     }
 
-
-    public static class Author {
-        private Long id;
-        private String fullName;
-
-        public Author(Long id, String fullName) {
-            this.id = id;
-            this.fullName = fullName;
-        }
-
-        public Long getId() {
-            return id;
-        }
-
-        public void setId(Long id) {
-            this.id = id;
-        }
-
-        public String getFullName() {
-            return fullName;
-        }
-
-        public void setFullName(String fullName) {
-            this.fullName = fullName;
-        }
-
-
-        @Override
-        public String toString() {
-            return "{" +
-                    "id=" + id +
-                    ", fullName='" + fullName + '\'' +
-                    '}';
-        }
-    }
-
-
-    public static class Translator {
-        private Long id;
-        private String fullName;
-
-        public Translator(Long id, String fullName) {
-            this.id = id;
-            this.fullName = fullName;
-        }
-
-        public Long getId() {
-            return id;
-        }
-
-        public void setId(Long id) {
-            this.id = id;
-        }
-
-        public String getFullName() {
-            return fullName;
-        }
-
-        public void setFullName(String fullName) {
-            this.fullName = fullName;
-        }
-
-        @Override
-        public String toString() {
-            return "{" +
-                    "id=" + id +
-                    ", fullName='" + fullName + '\'' +
-                    '}';
-        }
-    }
 
 }

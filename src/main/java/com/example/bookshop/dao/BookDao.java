@@ -1,6 +1,7 @@
 package com.example.bookshop.dao;
 
 
+import com.example.bookshop.entity.Author;
 import com.example.bookshop.entity.Book;
 import com.example.bookshop.entity.Genre;
 import org.springframework.stereotype.Repository;
@@ -46,7 +47,7 @@ public class BookDao {
                 );
                 book.setGenres(findGenresByIsbn(book.getISBN(), connection));
                 book.setAuthors(findAuthorsByIsbn(book.getISBN(), connection));
-                book.setTranslators(findTranslatorsByIsbn(book.getISBN(), connection));
+//                book.setTranslators(findTranslatorsByIsbn(book.getISBN(), connection));
                 books.add(book);
             }
         } catch (SQLException e) {
@@ -84,7 +85,7 @@ public class BookDao {
                 );
                 book.setGenres(findGenresByIsbn(book.getISBN(), connection));
                 book.setAuthors(findAuthorsByIsbn(book.getISBN(), connection));
-                book.setTranslators(findTranslatorsByIsbn(book.getISBN(), connection));
+//                book.setTranslators(findTranslatorsByIsbn(book.getISBN(), connection));
             }
         } catch (SQLException e) {
             throw new RuntimeException("Cannot find book", e);
@@ -93,48 +94,25 @@ public class BookDao {
 
     }
 
-    private List<Book.Translator> findTranslatorsByIsbn(String isbn, Connection connection) {
-        List<Book.Translator> translators = new ArrayList<>();
-        String query = "SELECT t.Id_translator, t.Full_name " +
-                "FROM translator t JOIN book_translator bt ON t.Id_translator = bt.Id_translator " +
-                "WHERE bt.ISBN = ?";
-        try (PreparedStatement ps = connection.prepareStatement(query)) {
-            ps.setString(1, isbn);
-            ResultSet rs = ps.executeQuery();
-            while (rs.next()) {
-                Book.Translator translator = new Book.Translator(
-                        rs.getLong("Id_translator"),
-                        rs.getString("Full_name")
-                );
-                translators.add(translator);
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return translators;
-
-}
-
-    private List<Book.Author> findAuthorsByIsbn(String isbn, Connection connection) {
-        List<Book.Author> authors = new ArrayList<>();
+    private List<Author> findAuthorsByIsbn(String isbn, Connection connection) throws SQLException {
+        List<Author> authors = new ArrayList<>();
         String authorQuery = "SELECT a.Id_author, a.Full_name " +
-                "FROM author a JOIN book_author ab ON a.Id_author = ab.Id_author " +
-                "WHERE ab.ISBN = ?";
+                "FROM author a JOIN book_author ba ON a.Id_author = ba.Id_author " +
+                "WHERE ba.ISBN = ?";
         try (PreparedStatement ps = connection.prepareStatement(authorQuery)) {
             ps.setString(1, isbn);
             ResultSet rs = ps.executeQuery();
             while (rs.next()) {
-                Book.Author author = new Book.Author(
+                Author author = new Author(
                         rs.getLong("Id_author"),
                         rs.getString("Full_name")
                 );
                 authors.add(author);
             }
-        } catch (SQLException e) {
-            e.printStackTrace();
         }
         return authors;
     }
+
 
 
     private List<Genre> findGenresByIsbn(String isbn, Connection connection) throws SQLException {
