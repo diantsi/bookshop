@@ -4,6 +4,7 @@ package com.example.bookshop.dao;
 import com.example.bookshop.entity.Author;
 import com.example.bookshop.entity.Book;
 import com.example.bookshop.entity.Genre;
+import com.example.bookshop.entity.Translator;
 import org.springframework.stereotype.Repository;
 
 import java.sql.*;
@@ -47,7 +48,7 @@ public class BookDao {
                 );
                 book.setGenres(findGenresByIsbn(book.getISBN(), connection));
                 book.setAuthors(findAuthorsByIsbn(book.getISBN(), connection));
-//                book.setTranslators(findTranslatorsByIsbn(book.getISBN(), connection));
+                book.setTranslators(findTranslatorsByIsbn(book.getISBN(), connection));
                 books.add(book);
             }
         } catch (SQLException e) {
@@ -85,7 +86,7 @@ public class BookDao {
                 );
                 book.setGenres(findGenresByIsbn(book.getISBN(), connection));
                 book.setAuthors(findAuthorsByIsbn(book.getISBN(), connection));
-//                book.setTranslators(findTranslatorsByIsbn(book.getISBN(), connection));
+                book.setTranslators(findTranslatorsByIsbn(book.getISBN(), connection));
             }
         } catch (SQLException e) {
             throw new RuntimeException("Cannot find book", e);
@@ -113,6 +114,24 @@ public class BookDao {
         return authors;
     }
 
+    private List<Translator> findTranslatorsByIsbn(String isbn, Connection connection) throws SQLException {
+        List<Translator> translators = new ArrayList<>();
+        String translatorQuery = "SELECT t.Id_translator, t.Full_name " +
+                "FROM translator t JOIN book_translator bt ON t.Id_translator = bt.Id_translator " +
+                "WHERE bt.ISBN = ?";
+        try (PreparedStatement ps = connection.prepareStatement(translatorQuery)) {
+            ps.setString(1, isbn);
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                Translator translator = new Translator(
+                        rs.getLong("Id_translator"),
+                        rs.getString("Full_name")
+                );
+                translators.add(translator);
+            }
+        }
+        return translators;
+    }
 
 
     private List<Genre> findGenresByIsbn(String isbn, Connection connection) throws SQLException {
@@ -223,8 +242,48 @@ public class BookDao {
                         .map(Genre::getId)
                         .collect(Collectors.toList()));
             }
+            if (book.getAuthors() != null && !book.getAuthors().isEmpty()) {
+                saveBookAuthors(book.getISBN(), book.getAuthors().stream()
+                        .map(Author::getId)
+                        .collect(Collectors.toList()));
+            }
+            if (book.getTranslators() != null && !book.getTranslators().isEmpty()) {
+                saveBookTranslators(book.getISBN(), book.getTranslators().stream()
+                        .map(Translator::getId)
+                        .collect(Collectors.toList()));
+            }
         } catch (SQLException e) {
             throw new RuntimeException("Cannot save book", e);
+        }
+    }
+
+    private void saveBookAuthors(String isbn, List<Long> collect) {
+        String query = "INSERT INTO book_author (ISBN, Id_author) VALUES (?, ?)";
+        try (Connection connection = daoConnection.getConnection();
+             PreparedStatement ps = connection.prepareStatement(query)) {
+            for (Long authorId : collect) {
+                ps.setString(1, isbn);
+                ps.setLong(2, authorId);
+                ps.addBatch();
+            }
+            ps.executeBatch();
+        } catch (SQLException e) {
+            throw new RuntimeException("Cannot save book authors", e);
+        }
+    }
+
+    private void saveBookTranslators(String isbn, List<Long> collect) {
+        String query = "INSERT INTO book_translator (ISBN, Id_translator) VALUES (?, ?)";
+        try (Connection connection = daoConnection.getConnection();
+             PreparedStatement ps = connection.prepareStatement(query)) {
+            for (Long translatorId : collect) {
+                ps.setString(1, isbn);
+                ps.setLong(2, translatorId);
+                ps.addBatch();
+            }
+            ps.executeBatch();
+        } catch (SQLException e) {
+            throw new RuntimeException("Cannot save book translators", e);
         }
     }
 

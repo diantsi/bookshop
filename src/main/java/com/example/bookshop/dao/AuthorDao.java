@@ -30,7 +30,7 @@ public class AuthorDao {
             while (rs.next()) {
                 Author author = new Author(
                 rs.getLong("ID_author"),
-                rs.getString("full_name")
+                rs.getString("Full_name")
                  );
                 authors.add(author);
 
@@ -42,7 +42,7 @@ public class AuthorDao {
     }
 
     public void saveAuthor(Author author) {
-        String query = "INSERT INTO author (full_name) VALUES (?)";
+        String query = "INSERT INTO author (Full_name) VALUES (?)";
         try (Connection connection = daoConnection.getConnection();
              java.sql.PreparedStatement preparedStatement = connection.prepareStatement(query)) {
             preparedStatement.setString(1, author.getFull_name());
@@ -53,7 +53,7 @@ public class AuthorDao {
     }
 
     public void updateAuthor(Author author) {
-        String query = "UPDATE author SET full_name = ? WHERE ID_author = ?";
+        String query = "UPDATE author SET Full_name = ? WHERE ID_author = ?";
         try (Connection connection = daoConnection.getConnection();
              java.sql.PreparedStatement preparedStatement = connection.prepareStatement(query)) {
             preparedStatement.setString(1, author.getFull_name());
