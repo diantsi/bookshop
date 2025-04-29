@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{_layout}">
+<head>
+    <meta charset="UTF-8">
+    <title>Manage Authors</title>
+</head>
+<body>
+<div layout:fragment="content">
+    <h1>Manage Authors</h1>
+    <a href="/authors/add" class="btn btn-success">Add New Author</a>
+    <a href="/add_book"  class="btn btn-warning">Back to Books</a>
+
+    <table class="table table-bordered" style="margin-top: 20px;">
+        <thead>
+        <tr>
+            <th>ID</th>
+            <th>Full Name</th>
+            <th>Actions</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="author : ${authors}">
+            <td th:text="${author.id}"></td>
+            <td th:text="${author.full_name}"></td>
+            <td>
+                <a th:href="@{/authors/edit/{id}(id=${author.id})}" class="btn btn-primary btn-sm">Edit</a>
+                <a class="btn btn-danger"
+                   th:disabled="${hasBooksMap[author.id]}"
+                   th:href="@{/authors/delete/{id}(id=${author.id})}"
+                   th:text="Delete"></a>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+</body>
+</html>

@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{_layout}">
+<head>
+    <meta charset="UTF-8">
+    <title>Edit Translator</title>
+</head>
+<body>
+<div layout:fragment="content">
+    <h1>Edit Translator</h1>
+    <a href="/translators" class="btn btn-warning">Back to Translators</a>
+
+    <div class="container" style="width: 50%; background-color: #FFFFFF; padding: 20px; border-radius: 8px; margin-top: 20px;">
+        <form th:action="@{/translators/update/{id}(id=${translator.id})}" method="post" th:object="${translator}">
+            <div class="form-group">
+                <label>Full Name</label>
+                <input type="text" th:field="*{full_name}" class="form-control" required/>
+            </div>
+            <button type="submit" class="btn btn-success">Save Changes</button>
+            <a href="/translators" class="btn btn-warning">Cancel</a>
+        </form>
+    </div>
+</div>
+</body>
+</html>

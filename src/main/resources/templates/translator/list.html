@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{_layout}">
+<head>
+    <meta charset="UTF-8">
+    <title>Manage Translators</title>
+</head>
+<body>
+<div layout:fragment="content">
+    <h1>Manage Translators</h1>
+    <a href="/translators/add" class="btn btn-success">Add New Translator</a>
+    <a href="/add_book" class="btn btn-warning">Back to Books</a>
+
+    <table class="table table-bordered" style="margin-top: 20px;">
+        <thead>
+        <tr>
+            <th>ID</th>
+            <th>Full Name</th>
+            <th>Actions</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="translator : ${translators}">
+            <td th:text="${translator.id}"></td>
+            <td th:text="${translator.full_name}"></td>
+            <td>
+                <a th:href="@{/translators/edit/{id}(id=${translator.id})}" class="btn btn-primary btn-sm">Edit</a>
+                <a th:href="@{/translators/delete/{id}(id=${translator.id})}"
+                   th:class="${hasBooksMap[translator.id]} ? 'btn btn-danger btn-sm disabled' : 'btn btn-danger btn-sm'"
+                   th:attr="onclick=${hasBooksMap[translator.id]} ? '' : 'return confirm(\'Are you sure you want to delete this translator?\')'"
+                   th:text="Delete"></a>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+</body>
+</html>

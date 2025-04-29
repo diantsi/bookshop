@@ -20,8 +20,23 @@ public class AuthorService {
         return authorDao.findAll();
     }
 
+    public Author getAuthorById(Long id) {
+        return authorDao.findById(id);
+    }
+
     public void saveAuthor(Author author) {
-        authorDao.saveAuthor(author);
+        authorDao.save(author);
+    }
+
+    public void updateAuthor(Author author) {
+        authorDao.update(author);
+    }
+
+    public void deleteAuthor(Long id) {
+        authorDao.delete(id);
+    }
+    public boolean hasBooks(Long authorId) {
+        return authorDao.hasBooks(authorId);
     }
 
     public List<Author> getAuthorsByIds(List<Long> ids) {

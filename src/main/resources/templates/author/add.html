@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{_layout}">
+<head>
+    <meta charset="UTF-8">
+    <title>Add Author</title>
+</head>
+<body>
+<div layout:fragment="content">
+    <h1>Add Author</h1>
+    <a href="/authors" class="btn btn-warning">Back to Authors</a>
+
+    <div class="container" style="width: 50%; background-color: #FFFFFF; padding: 20px; border-radius: 8px; margin-top: 20px;">
+        <form th:action="@{/authors}" method="post" th:object="${author}">
+            <div class="form-group">
+                <label>Full Name</label>
+                <input type="text" th:field="*{full_name}" class="form-control" required/>
+            </div>
+            <button type="submit" class="btn btn-success">Save</button>
+            <a href="/authors" class="btn btn-warning">Cancel</a>
+        </form>
+    </div>
+</div>
+</body>
+</html>
