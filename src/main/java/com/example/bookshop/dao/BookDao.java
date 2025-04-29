@@ -195,8 +195,20 @@ public class BookDao {
 
             preparedStatement.executeUpdate();
 
-            String deleteQuery = "DELETE FROM genre_book WHERE Book_ISBN = ?";
-            try (PreparedStatement deleteStmt = connection.prepareStatement(deleteQuery)) {
+            String deleteGenreQuery = "DELETE FROM genre_book WHERE Book_ISBN = ?";
+            try (PreparedStatement deleteStmt = connection.prepareStatement(deleteGenreQuery)) {
+                deleteStmt.setString(1, book.getISBN());
+                deleteStmt.executeUpdate();
+            }
+
+            String deleteAuthorQuery = "DELETE FROM book_author WHERE ISBN = ?";
+            try (PreparedStatement deleteStmt = connection.prepareStatement(deleteAuthorQuery)) {
+                deleteStmt.setString(1, book.getISBN());
+                deleteStmt.executeUpdate();
+            }
+
+            String deleteTranslatorQuery = "DELETE FROM book_translator WHERE ISBN = ?";
+            try (PreparedStatement deleteStmt = connection.prepareStatement(deleteTranslatorQuery)) {
                 deleteStmt.setString(1, book.getISBN());
                 deleteStmt.executeUpdate();
             }
@@ -204,6 +216,18 @@ public class BookDao {
             if (book.getGenres() != null && !book.getGenres().isEmpty()) {
                 saveBookGenres(book.getISBN(), book.getGenres().stream()
                         .map(Genre::getId)
+                        .collect(Collectors.toList()));
+            }
+
+            if (book.getAuthors() != null && !book.getAuthors().isEmpty()) {
+                saveBookAuthors(book.getISBN(), book.getAuthors().stream()
+                        .map(Author::getId)
+                        .collect(Collectors.toList()));
+            }
+
+            if (book.getTranslators() != null && !book.getTranslators().isEmpty()) {
+                saveBookTranslators(book.getISBN(), book.getTranslators().stream()
+                        .map(Translator::getId)
                         .collect(Collectors.toList()));
             }
         } catch (SQLException e) {

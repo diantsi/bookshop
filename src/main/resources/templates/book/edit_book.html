@@ -108,6 +108,18 @@
                                         th:text="${genre.name}"
                                         th:selected="${selectedGenreIds.contains(genre.id)}"></option>
                             </select>
+                            <select name="authorIds" class="form-control" multiple="multiple" required>
+                                <option th:each="author : ${authors}"
+                                        th:value="${author.id}"
+                                        th:text="${author.full_name}"
+                                        th:selected="${selectedGenreIds.contains(author.id)}"></option>
+                            </select>
+                            <select name = "translatorIds" class ="form-control" multiple="multiple" >
+                                <option th:each="translator : ${translators}"
+                                        th:value="${translator.id}"
+                                        th:text="${translator.full_name}"
+                                        th:selected="${selectedGenreIds.contains(translator.id)}"></option>
+                            </select>
                         </div>
                     </section>
 
