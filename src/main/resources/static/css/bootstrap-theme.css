@@ -2786,6 +2786,33 @@ input[type="button"].btn-block {
 .dropdown-toggle:focus {
   outline: 0;
 }
+
+
+.logout-button {
+  color: #797979;
+  background: white;
+  font-size: 16px;
+  padding: 10px 87px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+
+  transition: background-color 0.3s ease, transform 0.3s ease;
+}
+
+.logout-button i {
+  margin-right: 8px;
+}
+
+.logout-button:hover {
+  color: #ff2d55;
+}
+
+.logout-button:focus {
+  outline: none;
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
+}
+
 .dropdown-menu {
   position: absolute;
   top: 100%;
@@ -2825,6 +2852,47 @@ input[type="button"].btn-block {
   color: #2b2b2b;
   white-space: nowrap;
 }
+
+.dropdown-menu > li > form > button {
+  display: block;
+  padding: 3px 20px;
+  clear: both;
+  font-weight: normal;
+  line-height: 1.428571429;
+  color: #2b2b2b;
+  white-space: nowrap;
+}
+
+.dropdown-menu > li > form > button:hover,
+.dropdown-menu > li > form > button:focus {
+  text-decoration: none;
+  color: #ffffff;
+  background-color: #007aff;
+}
+.dropdown-menu > .active > button,
+.dropdown-menu > .active > button:hover,
+.dropdown-menu > .active > button:focus {
+  color: #ffffff;
+  text-decoration: none;
+  outline: 0;
+  background-color: #007aff;
+}
+.dropdown-menu > .disabled > button,
+.dropdown-menu > .disabled > button:hover,
+.dropdown-menu > .disabled > button:focus {
+  color: #d7d7d7;
+}
+.dropdown-menu > .disabled > button:hover,
+.dropdown-menu > .disabled > button:focus {
+  text-decoration: none;
+  background-color: transparent;
+  background-image: none;
+  filter: progid:DXImageTransform.Microsoft.gradient(enabled = false);
+  cursor: not-allowed;
+}
+
+
+
 .dropdown-menu > li > a:hover,
 .dropdown-menu > li > a:focus {
   text-decoration: none;

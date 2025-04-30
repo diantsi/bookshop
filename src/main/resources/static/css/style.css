@@ -1556,32 +1556,6 @@ div[data-role="editor-toolbar"] {
 
 }
 
-.dropdown-menu.extended.logout > li:last-child {
-
-    float: left;
-
-    text-align: left;
-
-    width: 100%;
-
-    background: #688a7e;
-
-}
-
-
-
-.dropdown-menu.extended.logout > li:last-child > a, .dropdown-menu.extended.logout > li:last-child > a:hover {
-
-    color: #fff;
-
-    border-bottom: none !important;
-
-    text-transform: uppercase;
-
-    background-color:#688a7e !important;
-
-}
-
 
 
 .dropdown-menu.extended.logout > li:last-child > a:hover > i{
@@ -2390,7 +2364,7 @@ div[data-role="editor-toolbar"] {
 
 }
 
-}
+
 
 .panel.panel-default.panel-heading {
 
@@ -3004,7 +2978,7 @@ div[data-role="editor-toolbar"] {
 
 }
 
-* /Widget-Content */
+
 
 
 

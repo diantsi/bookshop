@@ -1,10 +1,13 @@
 package com.example.bookshop;
 
+import com.example.bookshop.entity.Worker;
 import com.example.bookshop.security.LoginController;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+
+import java.util.Optional;
 
 @Controller
 public class ApplicationController {
@@ -26,7 +29,7 @@ public class ApplicationController {
         }
 
         @GetMapping({"/_layout", "/_layout.html"})
-        public String layout() {
+        public String layout(Model model) {
             return "_layout";
         }
 

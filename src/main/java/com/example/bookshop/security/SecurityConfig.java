@@ -10,7 +10,7 @@ import org.springframework.security.web.SecurityFilterChain;
 
 @Configuration
 @EnableWebSecurity
-public class SecurityConfig{
+public class SecurityConfig {
 
     @Autowired
     private CustomUserDetailsService userDetailsService;
@@ -34,8 +34,8 @@ public class SecurityConfig{
                 )
                 .logout(logout -> logout
                         .logoutUrl("/logout")
-                        .logoutSuccessUrl("/login?logout")
-                        .permitAll()
+                        .logoutSuccessUrl("/login")
+                        .invalidateHttpSession(true)
                 )
                 .userDetailsService(userDetailsService)
                 .build();

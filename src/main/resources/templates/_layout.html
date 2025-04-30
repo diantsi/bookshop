@@ -10,7 +10,7 @@
     <meta name="keyword" content="Creative, Dashboard, Admin, Template, Theme, Bootstrap, Responsive, Retina, Minimal">
     <link rel="shortcut icon" href="img/favicon.png">
 
-    <title>Creative - Bootstrap Admin Template</title>
+    <title>Літературний сад</title>
 
     <!-- Bootstrap CSS -->
     <link th:href="@{/css/bootstrap.min.css}" rel="stylesheet">
@@ -63,7 +63,7 @@
             <ul class="nav top-menu">
                 <li>
                     <form class="navbar-form">
-                        <input class="form-control" placeholder="Search" type="text">
+                        <!--<input class="form-control" placeholder="Search" type="text">-->
                     </form>
                 </li>
             </ul>
@@ -72,33 +72,23 @@
         <div class="top-nav notification-row"> <!-- notificatoin dropdown start-->
             <!-- alert notification end-->
             <!-- user login dropdown start-->
-            <li class="dropdown">
+            <li class="dropdown" style="display: flex; align-items: center; height: 40px;">
                 <a data-toggle="dropdown" class="dropdown-toggle" href="#">
                             <span class="profile-ava">
-                                  <img alt="" th:src="@{/img/avatar1_small.jpg}">
+                                  <i class="icon_profile"></i>
                             </span>
-                    <span class="username">Jenifer Smith</span>
+                    <span class="username" th:text="${#authentication.name}"></span>
                     <b class="caret"></b>
                 </a>
                 <ul class="dropdown-menu extended logout">
                     <div class="log-arrow-up"></div>
-                    <li class="eborder-top">
-                        <a th:href="@{/profile}"><i class="icon_profile"></i> My Profile</a>
-                    </li>
-                    <li>
-                        <a th:href="@{/inbox}"><i class="icon_mail_alt"></i> My Inbox</a>
-                    </li>
-                    <li>
-                        <a th:href="@{/timeline}"><i class="icon_clock_alt"></i> Timeline</a>
-                    </li>
-                    <li>
-                        <a th:href="@{/chats}"><i class="icon_chat_alt"></i> Chats</a>
-                    </li>
-                    <li>
-                        <a th:href="@{/logout}"><i class="icon_key_alt"></i> Log Out</a>
-                    </li>
-                    <li>
-                        <a th:href="@{/documentation}"><i class="icon_key_alt"></i> Documentation</a>
+                    <li style="">
+                        <form th:action="@{/logout}" method="post" style="text-align: center;">
+                            <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
+                            <span style="padding: 0; margin: 0">
+                    <button type="submit" class="logout-button" >Log Out</button>
+                  </span>
+                        </form>
                     </li>
                 </ul>
             </li>
