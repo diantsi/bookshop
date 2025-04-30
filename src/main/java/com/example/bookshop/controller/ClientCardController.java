@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.math.BigDecimal;
 import java.util.List;
+import java.util.Optional;
 
 @Controller
 public class ClientCardController {
@@ -33,26 +34,55 @@ public class ClientCardController {
         return new ClientCard();
     }
 
+    @GetMapping("/clientcard_info/{idNumber}")
+    public String infoClientCard(@PathVariable String idNumber, Model model) {
+        ClientCard clientCard = clientCardService.getById(idNumber);
+        model.addAttribute("clientcard", clientCard);
+        return "clientcard/clientcard_info";
+    }
+
 
     @GetMapping("/add_clientcard")
     public String addClientCard(Model model) {
         return "clientcard/add_clientcard";
     }
 
-    /*@GetMapping("/edit_worker/{tabNumber}")
-    public String editWorker(@PathVariable String tabNumber, Model model) {
-        Worker worker = workerService.getByTabNumber(tabNumber);
-        model.addAttribute("worker", worker);
-        model.addAttribute("oldTabNumber", worker.getTabNumber());
-        model.addAttribute("newPassword", "");
-        return "worker/edit_worker";
-    }*/
+    @GetMapping("/edit_clientcard/{idNumber}")
+    public String editClientCard(@PathVariable String idNumber, Model model) {
+        ClientCard clientCard = clientCardService.getById(idNumber);
+        model.addAttribute("clientcard", clientCard);
+        return "clientcard/edit_clientcard";
+    }
+
+    @RequestMapping(value = "/clientcard/edit/{idNumber}", method = {RequestMethod.GET, RequestMethod.POST})
+    public String editClientCard(@ModelAttribute("clientcard") ClientCard clientcard, BindingResult result, Model model) {
+        // Тут виконується валідація
+
+        Optional<ClientCard> existsClientCard = clientCardService.findByPhoneNumber(clientcard.getPhoneNumber());
+        if (existsClientCard.isPresent()) {
+            if (!existsClientCard.get().getIdNumber().equals(clientcard.getIdNumber())) {
+                result.rejectValue("phoneNumber", "error.phoneNumber", "Карта іншого клієнта з таким номером телефону вже існує!");
+            }
+        }
+
+        if (clientcard.calculateAge() < 0) {
+            result.rejectValue("dateOfBirth", "error.dateOfBirth", "Клієнт не може бути ненародженим.");
+        }
+
+        if (result.hasErrors()) {
+            return "clientcard/edit_clientcard";
+        }
+
+        clientCardService.editClientCard(clientcard);
+        return "redirect:/clientcard";
+
+    }
 
 
     @PostMapping("/clientcards")
     public String saveClientCard(@ModelAttribute("clientcard") ClientCard clientcard, BindingResult result) {
         // Тут виконується валідація
-        if(clientCardService.existsByIdNumber(clientcard.getIdNumber())){
+        if (clientCardService.existsByIdNumber(clientcard.getIdNumber())) {
             result.rejectValue("idNumber", "error.idNumber", "Карта клієнта з таким ідентифікаційним номером вже існує!");
         }
 
@@ -60,7 +90,7 @@ public class ClientCardController {
             result.rejectValue("dateOfBirth", "error.dateOfBirth", "Клієнт не може бути ненародженим.");
         }
 
-        if(clientCardService.findByPhoneNumber(clientcard.getPhoneNumber()).isPresent()){
+        if (clientCardService.findByPhoneNumber(clientcard.getPhoneNumber()).isPresent()) {
             result.rejectValue("phoneNumber", "error.phoneNumber", "Карта клієнта з таким номером телефону вже існує!");
         }
 

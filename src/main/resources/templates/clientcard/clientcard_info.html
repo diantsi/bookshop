@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="_layout">
+<head>
+    <meta charset="UTF-8">
+    <title>Client card info</title>
+    <style>
+        .info-label {
+            font-weight: bold;
+            color: #555;
+        }
+
+        .info-value {
+            padding: 5px 0;
+        }
+    </style>
+</head>
+<body>
+<div layout:fragment="content">
+    <h1>Worker info</h1>
+    <a href="/clientcard" data-toggle="modal" class="btn btn-warning">
+        ← Back
+    </a>
+
+
+    <div class="container"
+         style="width: 90%; background-color: #FFFFFF; padding: 20px; border-radius: 8px; margin-top: 20px;">
+
+        <h2 th:text="${clientcard.surname}+' '+${clientcard.firstName}" style="margin-top: 0;"></h2>
+
+        <div class="info" style="display: grid; grid-template-columns: 150px 1fr; gap: 15px; align-items: baseline;">
+
+            <div class="info-label">ID номер</div>
+            <div class="info-value" th:text="${clientcard.idNumber}"></div>
+
+            <div class="info-label">Прізвище</div>
+            <div class="info-value" th:text="${clientcard.surname}"></div>
+
+            <div class="info-label">Ім'я</div>
+            <div class="info-value" th:text="${clientcard.firstName}"></div>
+
+            <div class="info-label">По батькові</div>
+            <div class="info-value" th:text="${clientcard.middleName}"></div>
+
+            <div class="info-label">Номер телефону</div>
+            <div class="info-value" th:text="${clientcard.phoneNumber}"></div>
+
+            <div class="info-label">Дата реєстрації</div>
+            <div class="info-value" th:text="${clientcard.registrationDate}"></div>
+
+            <div class="info-label">Дата народження</div>
+            <div class="info-value" th:text="${clientcard.dateOfBirth}"></div>
+
+            <div class="info-label">Вік</div>
+            <div class="info-value" th:text="${clientcard.age}"></div>
+
+            <div class="info-label">Електронна адреса</div>
+            <div class="info-value" th:text="${clientcard.email}"></div>
+
+            <div class="info-label">Кількість бонусів на рахунку</div>
+            <div class="info-value" th:text="${clientcard.numberOfBonuses}"></div>
+
+
+        </div>
+    </div>
+</div>
+
+</body>
+</html>

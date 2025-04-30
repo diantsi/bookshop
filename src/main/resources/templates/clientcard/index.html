@@ -40,7 +40,7 @@
                         <td th:text="${clientcard.numberOfBonuses}"></td>
                         <td>
                             <div class="btn-group">
-                                <a class="btn btn-primary" href="#"><i class="icon_info"></i></a>
+                                <a class="btn btn-primary" th:href="@{'/clientcard_info/'+${clientcard.idNumber}}"><i class="icon_info"></i></a>
                                 <a class="btn btn-success" th:href="@{'/edit_clientcard/'+${clientcard.idNumber}}"><i class="icon_pencil-edit"></i></a>
                                 <a class="btn btn-danger"
                                    th:data-tab-number="${clientcard.idNumber}" onclick="return confirmDelete(this)"

@@ -27,16 +27,9 @@ public class ClientCardService {
         clientCardDao.saveClientCard(clientCard);
     }
 
-    /*public void editWorker(Worker newWorker, String oldTabNumber, String newPassword) {
-        if(!Objects.equals(newPassword, "")) {
-            Sha256PasswordEncoder encoder = new Sha256PasswordEncoder();
-            String hashed = encoder.encode(newPassword);
-            newWorker.setPassword(hashed); // зберігаємо
-            clientCardDao.editWorker(newWorker, oldTabNumber);
-            return;
-        }
-        clientCardDao.editWorkerWithoutPassword(newWorker, oldTabNumber);
-    }*/
+    public void editClientCard(ClientCard newClientCard) {
+        clientCardDao.editClientCard(newClientCard);
+    }
 
 
     public boolean existsByIdNumber(String idNumber){
@@ -49,9 +42,13 @@ public class ClientCardService {
 
     /*public void delete(String tabNumber) {
         clientCardDao.deleteByTabNo(tabNumber);
+    }*/
+
+    public ClientCard getById(String id) {
+        return clientCardDao.findById(id).orElse(null);
     }
 
-    public Worker getByTabNumber(String tabNumber) {
-        return clientCardDao.findByTabNumber(tabNumber).orElse(null);
-    }*/
+    public ClientCard getBySurname(String surname) {
+        return clientCardDao.findBySurname(surname).orElse(null);
+    }
 }

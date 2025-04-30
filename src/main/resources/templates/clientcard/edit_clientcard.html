@@ -4,7 +4,7 @@
       layout:decorate="_layout">
 <head>
     <meta charset="UTF-8">
-    <title>Add client card</title>
+    <title>Edit client card</title>
 </head>
 <body>
 <div layout:fragment="content">
@@ -12,18 +12,18 @@
     <div class="container" style="width: 70%">
         <div class="row">
 
-            <form class="form-horizontal " th:action="@{/clientcards}" th:object="${clientcard}" method="post">
+            <form class="form-horizontal " th:action="@{'/clientcard/edit/'+${clientcard.idNumber}}" th:object="${clientcard}" method="put">
                 <div class="col-lg-10">
                     <section class="panel">
                         <header class="panel-heading">
-                            Add new client
+                            Edit client
                         </header>
                         <div class="panel-body">
 
                             <div class="form-group">
                                 <label class="control-label col-sm-4">ID number</label>
                                 <div class="col-sm-6">
-                                    <input type="text" th:field="*{idNumber}" class="form-control" required
+                                    <input type="text" th:field="*{idNumber}" class="form-control" readonly
                                            th:classappend="${#fields.hasErrors('idNumber')} ? 'is-invalid'"/>
                                     <div th:if="${#fields.hasErrors('idNumber')}" th:errors="*{idNumber}"
                                          class="text-danger"></div>

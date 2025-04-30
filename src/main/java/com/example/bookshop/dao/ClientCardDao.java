@@ -114,38 +114,27 @@ public class ClientCardDao {
 
     }
 
-    /*public void editWorker(Worker worker, String oldTabNumber) {
-        if(worker.getPassword() != null) {}
-        String query = "UPDATE worker SET Tab_number = ?, Surname = ?, First_name = ?, Middle_name = ?, Occupation = ?, Salary = ?, Start_working_date = ?, Date_of_birth = ?, Age = ?, City = ?, Street = ?, Building = ?, Flat = ?, `Index` = ?, Email_address = ?, password = ?, Phone_number = ? WHERE Tab_number = ?";
+    public void editClientCard(ClientCard clientCard) {
+        String query = "UPDATE client_card SET ID_number =?, Surname =?, First_name =?, Middle_name =?, Phone_number =?, Date_of_birth =?, Age =?, Email_address =?, Bonus_number =? WHERE ID_number = ?";
         try (Connection conn = daoConnection.getConnection();
              PreparedStatement ps = conn.prepareStatement(query)) {
 
-            ps.setString(1, worker.getTabNumber());
-            ps.setString(2, worker.getSurname());
-            ps.setString(3, worker.getFirstName());
-            if (worker.hasMiddleName()) {
-                ps.setString(4, worker.getMiddleName());
+            ps.setString(1, clientCard.getIdNumber());
+            ps.setString(2, clientCard.getSurname());
+            ps.setString(3, clientCard.getFirstName());
+            if (clientCard.getMiddleName() != null) {
+                ps.setString(4, clientCard.getMiddleName());
             } else {
                 ps.setObject(4, null, Types.VARCHAR);
             }
-            ps.setString(5, worker.getOccupation());
-            ps.setObject(6, worker.getSalary(), Types.DECIMAL);
-            ps.setObject(7, worker.getStartWorkingDate(), Types.DATE);
-            ps.setObject(8, worker.getDateOfBirth(), Types.DATE);
-            ps.setInt(9, worker.calculateAge());
-            ps.setString(10, worker.getCity());
-            ps.setString(11, worker.getStreet());
-            ps.setString(12, worker.getBuilding());
-            if (worker.hasFlat()) {
-                ps.setInt(13, worker.getFlat());
-            } else {
-                ps.setObject(13, null, Types.INTEGER);
-            }
-            ps.setInt(14, worker.getIndex());
-            ps.setString(15, worker.getEmail());
-            ps.setString(16, worker.getPassword());
-            ps.setString(17, worker.getPhoneNumber());
-            ps.setString(18, oldTabNumber);
+            ps.setString(5, clientCard.getPhoneNumber());
+            //ps.setObject(7, clientCard.getRegistrationDate(), Types.DATE);
+            ps.setObject(6, clientCard.getDateOfBirth(), Types.DATE);
+            ps.setInt(7, clientCard.calculateAge());
+            ps.setString(8, clientCard.getEmail());
+            ps.setInt(9, 0);
+            ps.setString(10, clientCard.getIdNumber());
+
 
             ps.executeUpdate();
 
@@ -155,46 +144,7 @@ public class ClientCardDao {
 
     }
 
-    public void editWorkerWithoutPassword(Worker worker, String oldTabNumber) {
-        if(worker.getPassword() != null) {}
-        String query = "UPDATE worker SET Tab_number = ?, Surname = ?, First_name = ?, Middle_name = ?, Occupation = ?, Salary = ?, Start_working_date = ?, Date_of_birth = ?, Age = ?, City = ?, Street = ?, Building = ?, Flat = ?, `Index` = ?, Email_address = ?, Phone_number = ? WHERE Tab_number = ?";
-        try (Connection conn = daoConnection.getConnection();
-             PreparedStatement ps = conn.prepareStatement(query)) {
-
-            ps.setString(1, worker.getTabNumber());
-            ps.setString(2, worker.getSurname());
-            ps.setString(3, worker.getFirstName());
-            if (worker.hasMiddleName()) {
-                ps.setString(4, worker.getMiddleName());
-            } else {
-                ps.setObject(4, null, Types.VARCHAR);
-            }
-            ps.setString(5, worker.getOccupation());
-            ps.setObject(6, worker.getSalary(), Types.DECIMAL);
-            ps.setObject(7, worker.getStartWorkingDate(), Types.DATE);
-            ps.setObject(8, worker.getDateOfBirth(), Types.DATE);
-            ps.setInt(9, worker.calculateAge());
-            ps.setString(10, worker.getCity());
-            ps.setString(11, worker.getStreet());
-            ps.setString(12, worker.getBuilding());
-            if (worker.hasFlat()) {
-                ps.setInt(13, worker.getFlat());
-            } else {
-                ps.setObject(13, null, Types.INTEGER);
-            }
-            ps.setInt(14, worker.getIndex());
-            ps.setString(15, worker.getEmail());
-            ps.setString(16, worker.getPhoneNumber());
-            ps.setString(17, oldTabNumber);
-
-            ps.executeUpdate();
-
-        } catch (SQLException e) {
-            throw new RuntimeException("Cannot edit worker", e);
-        }
-
-    }
-
+/*
     public void deleteByTabNo(String tabNumber) {
         String query = "DELETE FROM worker WHERE Tab_number = ?";
 
@@ -208,49 +158,77 @@ public class ClientCardDao {
             throw new RuntimeException("Cannot delete a worker", e);
         }
     }
-
-    public Worker findByTabNumber(String tabNumber) {
-        String query = "SELECT Tab_number, Surname, First_name, Middle_name, Occupation, Salary, Start_working_date, Date_of_birth, Age, City, Street, Building, Flat, `Index`, Email_address, password, Phone_number FROM worker WHERE Tab_number = ?";
-        Worker worker = null;
+*/
+    public ClientCard findById(String idNumber) {
+        String query = "SELECT ID_number, Surname, First_name, Middle_name, Phone_number, Registration_date, Date_of_birth, Age, Email_address, Bonus_number FROM client_card WHERE ID_number = ?";
+        ClientCard clientCard = null;
 
         try (Connection conn = daoConnection.getConnection();
              PreparedStatement ps = conn.prepareStatement(query)) {
 
-            ps.setString(1, tabNumber);
+            ps.setString(1, idNumber);
             ResultSet rs = ps.executeQuery();
 
             if (rs.next()) {
-                String tabNum = rs.getString("Tab_number");
+                String idNum = rs.getString("ID_number");
                 String surname = rs.getString("Surname");
                 String firstName = rs.getString("First_name");
                 String middleName = rs.getString("Middle_name");
-                String occupation = rs.getString("Occupation");
-                BigDecimal salary = rs.getBigDecimal("Salary");
-                LocalDate startDate = rs.getDate("Start_working_date").toLocalDate();
+                String phone = rs.getString("Phone_number");
+                LocalDate registrationDate = rs.getDate("Registration_date").toLocalDate();
                 LocalDate birthDate = rs.getDate("Date_of_birth").toLocalDate();
                 Integer age = rs.getInt("Age");
-                String city = rs.getString("City");
-                String street = rs.getString("Street");
-                String building = rs.getString("Building");
-                Integer flat = rs.getInt("Flat");
-                Integer index = rs.getInt("Index");
                 String email = rs.getString("Email_address");
-                String password = rs.getString("password");
-                String phone = rs.getString("Phone_number");
+                Integer bonuses = rs.getInt("Bonus_number");
 
-                worker = new Worker(
-                        tabNum, surname, firstName, middleName,
-                        occupation, salary, startDate, birthDate, age,
-                        city, street, building,
-                        flat, index, email, password, phone);
+                clientCard = new ClientCard(
+                        idNum, surname, firstName, middleName,
+                        phone, registrationDate, birthDate, age,
+                        email, bonuses);
             }
 
         } catch (SQLException e) {
-            throw new RuntimeException("Cannot find worker", e);
+            throw new RuntimeException("Cannot find client card", e);
         }
 
-        return worker;
-    }*/
+        return clientCard;
+    }
+
+    public ClientCard findBySurname(String surnameGiven) {
+        String query = "SELECT ID_number, Surname, First_name, Middle_name, Phone_number, Registration_date, Date_of_birth, Age, Email_address, Bonus_number FROM client_card WHERE Surname = ?";
+        ClientCard clientCard = null;
+
+        try (Connection conn = daoConnection.getConnection();
+             PreparedStatement ps = conn.prepareStatement(query)) {
+
+            ps.setString(1, surnameGiven);
+            ResultSet rs = ps.executeQuery();
+
+            if (rs.next()) {
+                String idNum = rs.getString("ID_number");
+                String surname = rs.getString("Surname");
+                String firstName = rs.getString("First_name");
+                String middleName = rs.getString("Middle_name");
+                String phone = rs.getString("Phone_number");
+                LocalDate registrationDate = rs.getDate("Registration_date").toLocalDate();
+                LocalDate birthDate = rs.getDate("Date_of_birth").toLocalDate();
+                Integer age = rs.getInt("Age");
+                String email = rs.getString("Email_address");
+                Integer bonuses = rs.getInt("Bonus_number");
+
+                clientCard = new ClientCard(
+                        idNum, surname, firstName, middleName,
+                        phone, registrationDate, birthDate, age,
+                        email, bonuses);
+            }
+
+        } catch (SQLException e) {
+            throw new RuntimeException("Cannot find client card", e);
+        }
+
+        return clientCard;
+    }
+
 
     public Optional<ClientCard> findByPhoneNumber(String phoneNumber) {
         String query = "SELECT ID_number, Surname, First_name, Middle_name, Phone_number, Registration_date, Date_of_birth, Age, Email_address, Bonus_number FROM client_card WHERE Phone_number = ?";
