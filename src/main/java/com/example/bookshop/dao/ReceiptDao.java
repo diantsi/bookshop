@@ -32,7 +32,8 @@ public class ReceiptDao {
                 "CONCAT(w.Surname, ' ', w.First_name) AS Worker_full_name " +
                 "FROM receipt r " +
                 "INNER JOIN worker w ON r.Tab_number_worker = w.Tab_number " +
-                "INNER JOIN client_card c ON r.ID_number_client = c.ID_number";
+                "INNER JOIN client_card c ON r.ID_number_client = c.ID_number " +
+                "ORDER BY r.Date_buy desc ";
 
         try (Connection conn = daoConnection.getConnection();
              PreparedStatement ps = conn.prepareStatement(query);

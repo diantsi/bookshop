@@ -18,7 +18,7 @@ public class AuthorDao {
 
     public List<Author> findAll() {
         List<Author> authors = new ArrayList<>();
-        String query = "SELECT * FROM author";
+        String query = "SELECT * FROM author ORDER BY Full_name";
         try (Connection connection = daoConnection.getConnection();
              Statement statement = connection.createStatement();
              ResultSet rs = statement.executeQuery(query)) {

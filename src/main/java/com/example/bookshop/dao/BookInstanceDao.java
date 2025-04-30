@@ -18,7 +18,7 @@ public class BookInstanceDao {
 
     public List<BookInstance> findAll() {
         List<BookInstance> bookInstances = new ArrayList<>();
-        String query = "SELECT instance_code, ID_number_of_check, I.ISBN_BOOK, B.Book_name AS Book_name FROM instance I LEFT JOIN book B ON I.ISBN_book = B.ISBN";
+        String query = "SELECT instance_code, ID_number_of_check, I.ISBN_BOOK, B.Book_name AS Book_name FROM instance I LEFT JOIN book B ON I.ISBN_book = B.ISBN ORDER BY Book_name";
         try (Connection connection = daoConnection.getConnection();
              Statement statement = connection.createStatement();
              ResultSet rs = statement.executeQuery(query)) {

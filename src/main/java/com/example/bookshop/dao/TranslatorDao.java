@@ -18,7 +18,7 @@ public class TranslatorDao {
 
     public List<Translator> findAll() {
         List<Translator> translators = new ArrayList<>();
-        String query = "SELECT * FROM translator";
+        String query = "SELECT * FROM translator ORDER BY Full_name";
         try (Connection connection = daoConnection.getConnection();
              Statement statement = connection.createStatement();
              ResultSet rs = statement.executeQuery(query)) {

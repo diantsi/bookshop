@@ -19,7 +19,7 @@ public class GenreDao {
 
     public List<Genre> findAll() {
         List<Genre> genres = new ArrayList<>();
-        String query = "SELECT Id_genre, Genre_name, Genre_description, Number_of_books FROM genre";
+        String query = "SELECT Id_genre, Genre_name, Genre_description, Number_of_books FROM genre ORDER BY Genre_name";
 
         try (Connection conn = daoConnection.getConnection();
              PreparedStatement ps = conn.prepareStatement(query);

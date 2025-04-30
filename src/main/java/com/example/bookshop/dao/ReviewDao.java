@@ -23,7 +23,7 @@ public class ReviewDao {
 
     public List<Review> findAll() {
         List<Review> reviews = new ArrayList<>();
-        String query = "SELECT ordered_number, user_name, user_email, number_of_chars, text, grade, review_date, review_status, ISBN_book, answered_number, tab_number_of_worker FROM review";
+        String query = "SELECT ordered_number, user_name, user_email, number_of_chars, text, grade, review_date, review_status, ISBN_book, answered_number, tab_number_of_worker FROM review ORDER BY review_date";
 
         try (Connection conn = daoConnection.getConnection();
              PreparedStatement ps = conn.prepareStatement(query);

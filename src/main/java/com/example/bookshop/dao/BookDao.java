@@ -24,7 +24,7 @@ public class BookDao {
 
     public List<Book> findAll() {
         List<Book> books = new ArrayList<>();
-        String query = "SELECT * FROM book";
+        String query = "SELECT * FROM book ORDER BY Book_name";
         try (Connection connection = daoConnection.getConnection();
              Statement statement = connection.createStatement();
              ResultSet rs = statement.executeQuery(query)) {
