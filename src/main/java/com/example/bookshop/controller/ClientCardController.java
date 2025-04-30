@@ -104,35 +104,10 @@ public class ClientCardController {
     }
 
 
-    /*@RequestMapping(value = "/worker/delete/{tabNumber}", method = {RequestMethod.GET, RequestMethod.DELETE})
-    public String deleteWorker(@PathVariable String tabNumber) {
-        workerService.delete(tabNumber);
-        return "redirect:/worker";
+    @RequestMapping(value = "/clientcard/delete/{idNumber}", method = {RequestMethod.GET, RequestMethod.DELETE})
+    public String deleteClientCard(@PathVariable String idNumber) {
+        clientCardService.delete(idNumber);
+        return "redirect:/clientcard";
     }
-
-    @RequestMapping(value="/worker/edit/{tabNumber}", method = {RequestMethod.GET, RequestMethod.POST})
-    public String editWorker(@ModelAttribute("worker") Worker worker, BindingResult result, @RequestParam("oldTabNumber") String oldTabNumber,  @RequestParam("newPassword") String newPassword, Model model) {
-        // Тут виконується валідація
-        if (!worker.getTabNumber().equals(oldTabNumber)) {
-            if(workerService.existsByTabNumber(worker.getTabNumber())){
-                result.rejectValue("tabNumber", "error.tabNumber", "Інший працівник з таким табельним номером вже існує!");
-            }
-        }
-        if (worker.getSalary().compareTo(BigDecimal.ZERO)<0) {
-            result.rejectValue("salary", "error.salary", "Зарплата не може бути від’ємною.");
-        }
-        if (worker.calculateAge() < 18) {
-            result.rejectValue("dateOfBirthString", "error.dateOfBirthString", "Працівнику має бути не менше 18 років.");
-        }
-
-        if (result.hasErrors()) {
-            model.addAttribute("oldTabNumber", oldTabNumber); // Додати знову в модель
-            return "worker/edit_worker"; // Просто повертаємо назву шаблону, не редірект!
-        }
-
-        workerService.editWorker(worker, oldTabNumber, newPassword);
-        return "redirect:/worker";
-
-    }*/
 
 }

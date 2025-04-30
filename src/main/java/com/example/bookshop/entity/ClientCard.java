@@ -13,6 +13,7 @@ package com.example.bookshop.entity;
 //        PRIMARY KEY (`ID_number`),
 //        UNIQUE KEY (`Phone_number`)
 
+import com.example.bookshop.controller.ReceiptController;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import java.math.BigDecimal;
@@ -32,6 +33,8 @@ public class ClientCard {
     private Integer age;
     private String email;
     private Integer numberOfBonuses;  //display
+    private Integer numberOfReceipts;  //display
+
 
     public ClientCard() {}
     public ClientCard(String idNumber, String surname, String firstName, String middleName, String phoneNumber, LocalDate registrationDate, LocalDate dateOfBirth, Integer age, String email, Integer numberOfBonuses) {
@@ -148,4 +151,13 @@ public class ClientCard {
     public void setNumberOfBonuses(Integer numberOfBonuses) {
         this.numberOfBonuses = numberOfBonuses;
     }
+
+    public Integer getNumberOfReceipts() {
+        return numberOfReceipts;
+    }
+
+    public void setNumberOfReceipts(Integer number) {
+        this.numberOfReceipts = number;
+    }
+
 }

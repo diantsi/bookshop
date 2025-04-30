@@ -20,7 +20,7 @@ public class ClientCardService {
     }
 
     public List<ClientCard> getAllClientCards() {
-        return clientCardDao.findAll();
+        return clientCardDao.findAllWithReceiptCount();
     }
 
     public void saveClientCard(ClientCard clientCard) {
@@ -40,9 +40,13 @@ public class ClientCardService {
         return clientCardDao.findByPhoneNumber(phoneNumber);
     }
 
-    /*public void delete(String tabNumber) {
-        clientCardDao.deleteByTabNo(tabNumber);
+    /*public void countReceiptsByClientId(String idNumber) {
+        clientCardDao.countReceiptsByClientId(idNumber);
     }*/
+
+    public void delete(String idNumber) {
+        clientCardDao.deleteById(idNumber);
+    }
 
     public ClientCard getById(String id) {
         return clientCardDao.findById(id).orElse(null);

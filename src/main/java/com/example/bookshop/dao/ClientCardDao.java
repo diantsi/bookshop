@@ -18,6 +18,7 @@ public class ClientCardDao {
     public ClientCardDao(ConnectionDao daoConnection) {
         this.daoConnection = daoConnection;
     }
+
     //    `ID_number` varchar(32) NOT NULL,
 //        `Surname` varchar(30) NOT NULL,
 //        `First_name` varchar(30) NOT NULL,
@@ -144,21 +145,21 @@ public class ClientCardDao {
 
     }
 
-/*
-    public void deleteByTabNo(String tabNumber) {
-        String query = "DELETE FROM worker WHERE Tab_number = ?";
+
+    public void deleteById(String idNumber) {
+        String query = "DELETE FROM client_card WHERE ID_number = ?";
 
         try (Connection conn = daoConnection.getConnection();
              PreparedStatement ps = conn.prepareStatement(query)) {
 
-            ps.setString(1, tabNumber);
+            ps.setString(1, idNumber);
             ps.executeUpdate();
 
         } catch (SQLException e) {
-            throw new RuntimeException("Cannot delete a worker", e);
+            throw new RuntimeException("Cannot delete a clientcard", e);
         }
     }
-*/
+
     public ClientCard findById(String idNumber) {
         String query = "SELECT ID_number, Surname, First_name, Middle_name, Phone_number, Registration_date, Date_of_birth, Age, Email_address, Bonus_number FROM client_card WHERE ID_number = ?";
         ClientCard clientCard = null;
@@ -263,6 +264,41 @@ public class ClientCardDao {
         }
 
         return Optional.ofNullable(clientCard);
+    }
+
+
+    public List<ClientCard> findAllWithReceiptCount() {
+        String query = """
+                    SELECT c.ID_number, c.Surname, c.First_name, c.Phone_number, c.Bonus_number,
+                           COUNT(r.Id_number_of_check) AS Receipt_count
+                    FROM client_card c
+                    LEFT JOIN receipt r ON c.ID_number = r.ID_number_client
+                    GROUP BY c.ID_number, c.Surname, c.First_name, c.Phone_number
+                    ORDER BY c.ID_number
+                """;
+        List<ClientCard> clientCards = new ArrayList<>();
+
+        try (Connection conn = daoConnection.getConnection();
+             PreparedStatement ps = conn.prepareStatement(query);
+             ResultSet rs = ps.executeQuery()) {
+
+            while (rs.next()) {
+                ClientCard clientCard = new ClientCard(
+                        rs.getString("ID_number"),
+                        rs.getString("Surname"),
+                        rs.getString("First_name"),
+                        rs.getString("Phone_number"),
+                        rs.getInt("Bonus_number")
+                );
+                clientCard.setNumberOfReceipts(rs.getInt("Receipt_count"));
+                clientCards.add(clientCard);
+            }
+
+        } catch (SQLException e) {
+            throw new RuntimeException("Cannot fetch client cards with receipt count", e);
+        }
+
+        return clientCards;
     }
 
 }

@@ -43,6 +43,7 @@
                                 <a class="btn btn-primary" th:href="@{'/clientcard_info/'+${clientcard.idNumber}}"><i class="icon_info"></i></a>
                                 <a class="btn btn-success" th:href="@{'/edit_clientcard/'+${clientcard.idNumber}}"><i class="icon_pencil-edit"></i></a>
                                 <a class="btn btn-danger"
+                                   th:disabled="${clientcard.numberOfReceipts > 0}"
                                    th:data-tab-number="${clientcard.idNumber}" onclick="return confirmDelete(this)"
                                    th:href="@{'/clientcard/delete/'+${clientcard.idNumber}}"><i class="icon_trash"></i></a>
                                 <script>
