@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="_layout">
+<head>
+    <meta charset="UTF-8">
+    <title>Worker info</title>
+    <style>
+        .info-label {
+            font-weight: bold;
+            color: #555;
+        }
+
+        .info-value {
+            padding: 5px 0;
+        }
+    </style>
+</head>
+<body>
+<div layout:fragment="content">
+    <h1>Worker info</h1>
+    <a href="/worker" data-toggle="modal" class="btn btn-warning">
+        ← Back
+    </a>
+
+
+    <div class="container"
+         style="width: 90%; background-color: #FFFFFF; padding: 20px; border-radius: 8px; margin-top: 20px;">
+
+        <h2 th:text="${worker.surname}+' '+${worker.firstName}+' '+${worker.middleName}" style="margin-top: 0;"></h2>
+
+        <div class="info" style="display: grid; grid-template-columns: 150px 1fr; gap: 15px; align-items: baseline;">
+
+            <div class="info-label">Табельний номер</div>
+            <div class="info-value" th:text="${worker.tabNumber}"></div>
+
+            <div class="info-label">Прізвище</div>
+            <div class="info-value" th:text="${worker.surname}"></div>
+
+            <div class="info-label">Ім'я</div>
+            <div class="info-value" th:text="${worker.firstName}"></div>
+
+            <div class="info-label">По батькові</div>
+            <div class="info-value" th:text="${worker.middleName}"></div>
+
+            <div class="info-label">Посада</div>
+            <div class="info-value" th:text="${worker.occupation}"></div>
+
+            <div class="info-label">Заробітня плата</div>
+            <div class="info-value" th:text="${worker.salary}"></div>
+
+            <div class="info-label">Дата початку роботи</div>
+            <div class="info-value" th:text="${worker.startWorkingDate}"></div>
+
+            <div class="info-label">Дата народження</div>
+            <div class="info-value" th:text="${worker.dateOfBirth}"></div>
+
+            <div class="info-label">Вік</div>
+            <div class="info-value" th:text="${worker.age}"></div>
+
+            <div class="info-label">Адреса</div>
+            <div class="info-value"
+                 th:text="'м. '+${worker.city}+', '+${worker.street}+' '+${worker.building}+', кв. '+${worker.flat}+', індекс: '+${worker.index}"></div>
+
+            <div class="info-label">Електронна адреса</div>
+            <div class="info-value" th:text="${worker.email}"></div>
+
+            <div class="info-label">Номер телефону</div>
+            <div class="info-value" th:text="${worker.phoneNumber}"></div>
+
+
+        </div>
+    </div>
+</div>
+
+</body>
+</html>

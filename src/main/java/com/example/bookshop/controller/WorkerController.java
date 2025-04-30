@@ -43,6 +43,13 @@ public class WorkerController {
         return "worker/edit_worker";
     }
 
+    @GetMapping("/worker_info/{tabNumber}")
+    public String infoWorker(@PathVariable String tabNumber, Model model) {
+        Worker worker = workerService.getByTabNumber(tabNumber);
+        model.addAttribute("worker", worker);
+        return "worker/worker_info";
+    }
+
 
     @PostMapping("/workers")
     public String saveWorker(@ModelAttribute("worker") Worker worker, BindingResult result) {
