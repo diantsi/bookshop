@@ -56,6 +56,15 @@ public class ReviewController {
         return "review/add_review";
     }
 
+    @GetMapping("/review_info/{id}")
+    public String infoReview(@PathVariable Integer id, Model model) {
+        Review review = reviewService.getById(id);
+        model.addAttribute("review", review);
+        List<Review> reviews = reviewService.getAllReviewsAnswering(id);
+        model.addAttribute("answers", reviews);
+        return "review/review_info";
+    }
+
     @RequestMapping(value = "/review/delete/{id}", method = {RequestMethod.GET, RequestMethod.DELETE})
     public String deleteReview(@PathVariable Integer id) {
         reviewService.delete(id);

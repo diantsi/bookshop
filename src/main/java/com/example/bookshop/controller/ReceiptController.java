@@ -3,6 +3,8 @@ package com.example.bookshop.controller;
 import com.example.bookshop.entity.BookInstance;
 import com.example.bookshop.entity.Genre;
 import com.example.bookshop.entity.Receipt;
+import com.example.bookshop.entity.Worker;
+import com.example.bookshop.security.LoginController;
 import com.example.bookshop.service.ClientCardService;
 import com.example.bookshop.service.ReceiptService;
 import com.example.bookshop.service.WorkerService;
@@ -11,6 +13,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 @Controller
 public class ReceiptController {
@@ -35,6 +38,8 @@ public class ReceiptController {
     public String showCategoriesPage(Model model) {
         List<Receipt> receipts = receiptService.getAllReceipts();
         model.addAttribute("receipts", receipts);
+        Optional<Worker> user = workerService.findByTabEmail(LoginController.USER);
+        model.addAttribute("tab", user.get().getTabNumber());
         return "receipt/index";
     }
 
@@ -49,6 +54,19 @@ public class ReceiptController {
         model.addAttribute("receipt", new Receipt());
         model.addAttribute("clientCards", clientCardService.getAllClientCards());
         model.addAttribute("workers", workerService.getAllWorkers());
+        return "receipt/add_receipt";
+    }
+
+    @GetMapping("/add_my_receipt")
+    public String addCashierReceipt(Model model) {
+        Receipt receipt = new Receipt();
+        Optional<Worker> worker = workerService.findByTabEmail(LoginController.USER);
+        receipt.setWorker_id(worker.get().getTabNumber());
+        model.addAttribute("receipt", receipt);
+        model.addAttribute("clientCards", clientCardService.getAllClientCards());
+        model.addAttribute("workers", workerService.getAllWorkers());
+        //System.out.println(worker.get().getTabNumber());
+        //model.addAttribute("tabNumber", worker.get().getTabNumber());
         return "receipt/add_receipt";
     }
 

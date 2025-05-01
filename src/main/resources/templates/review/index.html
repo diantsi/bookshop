@@ -43,7 +43,7 @@
 
                         <td>
                             <div class="btn-group">
-                                <a class="btn btn-primary" href="#"><i class="icon_info"></i></a>
+                                <a class="btn btn-primary" th:href="@{'/review_info/' + ${review.id}}"><i class="icon_info"></i></a>
                                 <a class="btn btn-success"
                                    th:href="@{'/edit_review/' + ${review.id}}"><i class="icon_pencil-edit"></i></a>
                                 <a class="btn btn-danger"

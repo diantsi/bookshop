@@ -38,4 +38,8 @@ public class ReviewService {
     public void editReview(Review newReview) {
         reviewDao.editReview(newReview);
     }
+
+    public List<Review> getAllReviewsAnswering(Integer id) {
+        return reviewDao.findAllAnswers(id);
+    }
 }

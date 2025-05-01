@@ -12,7 +12,10 @@
     <div class="row">
 
         <div class="panel-body">
-            <a href="/add_receipt" data-toggle="modal" class="btn btn-primary">
+            <a href="/add_receipt" data-toggle="modal" class="btn btn-primary" th:if="${#authorization.expression('hasAuthority(''Менеджер'')')}">
+                New Receipt
+            </a>
+            <a href="/add_my_receipt" data-toggle="modal" class="btn btn-primary" th:if="${#authorization.expression('hasAuthority(''Касир'')')}">
                 New Receipt
             </a>
 
@@ -32,7 +35,7 @@
                         <th><i class="icon_profile"></i> worker full name </th>
                         <th><i class="icon_cogs"></i> actions </th>
                     </tr>
-                    <tr th:each="receipt : ${receipts}">
+                    <tr th:each="receipt : ${receipts}" th:if="${#authorization.expression('hasAuthority(''Менеджер'')') or receipt.worker_id == tab}">
                         <td th:text="${receipt.id}"></td>
                         <td th:text="${#temporals.format(receipt.time, 'yyyy-MM-dd HH:mm')}"></td>
                         <td th:text="${receipt.totalPrice}"></td>
@@ -44,9 +47,9 @@
                         <td>
                             <div class="btn-group">
                                 <a class="btn btn-primary" href="#"><i class="icon_info"></i></a>
-                                <a class="btn btn-success"
+                                <a class="btn btn-success" th:if="${#authorization.expression('hasAuthority(''Менеджер'')')}"
                                    th:href="@{'/edit_receipt/' + ${receipt.id}}"><i class="icon_pencil-edit"></i></a>
-                                <a class="btn btn-danger"
+                                <a class="btn btn-danger" th:if="${#authorization.expression('hasAuthority(''Менеджер'')')}"
                                    onclick="return confirm('sure?')"
                                    th:href="@{'/receipt/delete/' + ${receipt.id}}"><i class="icon_trash"></i></a>
                             </div>

@@ -12,7 +12,7 @@
     <div class="row">
 
         <div class="panel-body">
-            <a href="/add_book" data-toggle="modal" class="btn btn-primary">
+            <a href="/add_book" data-toggle="modal" class="btn btn-primary" th:if="${#authorization.expression('hasAuthority(''Менеджер'')')}">
                 New Book
             </a>
 
@@ -40,9 +40,9 @@
                             <div class="btn-group">
                                 <a class="btn btn-primary"
                                    th:href="@{'/book_info/' + ${book.ISBN}}"><i class="icon_info"></i></a>
-                                <a class="btn btn-success"
+                                <a class="btn btn-success" th:if="${#authorization.expression('hasAuthority(''Менеджер'')')}"
                                    th:href="@{'/edit_book/' + ${book.ISBN}}"><i class="icon_pencil-edit"></i></a>
-                                <a class="btn btn-danger"
+                                <a class="btn btn-danger" th:if="${#authorization.expression('hasAuthority(''Менеджер'')')}"
                                    th:disabled="${book.quantity > 0}"
                                    onclick="return confirm('sure?')"
                                    th:href="@{'/book/delete/' + ${book.ISBN}}"><i class="icon_trash"></i></a>

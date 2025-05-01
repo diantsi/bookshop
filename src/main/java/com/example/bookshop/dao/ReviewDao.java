@@ -163,7 +163,8 @@ public class ReviewDao {
             throw new RuntimeException("Cannot delete a review", e);
         }
     }
-//`ordered_number` int(11) NOT NULL AUTO_INCREMENT,
+
+    //`ordered_number` int(11) NOT NULL AUTO_INCREMENT,
 //                                        `user_name` varchar(30) NOT NULL,
 //                                        `user_email` varchar(30) NOT NULL,
 //                                        `number_of_chars` int(11) NOT NULL,
@@ -210,48 +211,41 @@ public class ReviewDao {
         return review;
     }
 
-    /*public Optional<Worker> findByEmail(String emailToFind) {
-        String query = "SELECT Tab_number, Surname, First_name, Middle_name, Occupation, Salary, Start_working_date, Date_of_birth, Age, City, Street, Building, Flat, `Index`, Email_address, password, Phone_number FROM worker WHERE Email_address = ?";
-        Worker worker = null;
+    public List<Review> findAllAnswers(Integer id) {
+        List<Review> reviews = new ArrayList<>();
+        String query = "SELECT ordered_number, user_name, user_email, number_of_chars, text, grade, review_date, review_status, ISBN_book, answered_number, tab_number_of_worker FROM review WHERE answered_number =? ORDER BY review_date";
 
         try (Connection conn = daoConnection.getConnection();
              PreparedStatement ps = conn.prepareStatement(query)) {
+            ps.setInt(1, id);
 
-            ps.setString(1, emailToFind);
             ResultSet rs = ps.executeQuery();
 
-            if (rs.next()) {
-                String tabNum = rs.getString("Tab_number");
-                String surname = rs.getString("Surname");
-                String firstName = rs.getString("First_name");
-                String middleName = rs.getString("Middle_name");
-                String occupation = rs.getString("Occupation");
-                BigDecimal salary = rs.getBigDecimal("Salary");
-                LocalDate startDate = rs.getDate("Start_working_date").toLocalDate();
-                LocalDate birthDate = rs.getDate("Date_of_birth").toLocalDate();
-                Integer age = rs.getInt("Age");
-                String city = rs.getString("City");
-                String street = rs.getString("Street");
-                String building = rs.getString("Building");
-                Integer flat = rs.getInt("Flat");
-                Integer index = rs.getInt("Index");
-                String email = rs.getString("Email_address");
-                String password = rs.getString("password");
-                String phone = rs.getString("Phone_number");
+            while (rs.next()) {
+                Integer orderedNumber = rs.getInt("ordered_number");
+                String userName = rs.getString("user_name");
+                String userEmail = rs.getString("user_email");
+                Integer numberOfChars = rs.getInt("number_of_chars");
+                String text = rs.getString("text");
+                Integer grade = rs.getInt("grade");
+                LocalDate date = rs.getDate("review_date").toLocalDate();
+                String reviewStatus = rs.getString("review_status");
+                String bookISBN = rs.getString("ISBN_book");
+                Integer answeredNumber = rs.getInt("answered_number");
+                String tabNumberOfWorker = rs.getString("tab_number_of_worker");
 
-                worker = new Worker(
-                        tabNum, surname, firstName, middleName,
-                        occupation, salary, startDate, birthDate, age,
-                        city, street, building,
-                        flat, index, email, password, phone);
+                Review review = new Review(
+                        orderedNumber, userName, userEmail, numberOfChars, text,
+                        grade, date, reviewStatus, bookISBN, answeredNumber, tabNumberOfWorker);
+
+                reviews.add(review);
             }
 
         } catch (SQLException e) {
-            throw new RuntimeException("Cannot find worker", e);
+            throw new RuntimeException("Cannot get reviews", e);
         }
 
-        return Optional.ofNullable(worker);
-    }*/
-
+        return reviews;
+    }
 
 }

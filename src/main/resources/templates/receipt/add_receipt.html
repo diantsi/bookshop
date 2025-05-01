@@ -55,13 +55,15 @@
                             <div class="form-group">
                                 <label class="control-label col-sm-4">Worker </label>
                                 <div class="col-sm-6">
-                                    <select th:field="*{worker_id}" class="form-control book-select" required>
+                                    <select th:field="*{worker_id}" class="form-control book-select" required th:if="${#authorization.expression('hasAuthority(''Менеджер'')')}">
                                         <option value="">Choose a worker </option>
                                         <option th:each="worker : ${workers}"
                                                 th:value="${worker.tabNumber}"
                                                 th:text="${worker.tabNumber +  ' (' + worker.surname + ' ' + worker.firstName + ')'}">
                                         </option>
                                     </select>
+
+                                    <input type="text" th:field="*{worker_id}" class="form-control" readonly th:if="${#authorization.expression('hasAuthority(''Касир'')')}">
                                 </div>
                             </div>
                         </div>
@@ -97,3 +99,4 @@
 
 
 
+</script>

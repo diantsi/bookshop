@@ -109,8 +109,8 @@
                 <li><a class="" th:href="@{/receipt}"><i class="icon_document_alt"></i>Чеки</a></li>
                 <li><a class="" th:href="@{/bookcopy}"><i class="icon_document_alt"></i>Примірники</a></li>
                 <li><a class="" th:href="@{/clientcard}"><i class="icon_document_alt"></i>Карти клієнтів</a></li>
-                <li><a class="" th:href="@{/worker}"><i class="icon_document_alt"></i>Працівники</a></li>
-                <li><a class="" th:href="@{/review}"><i class="icon_document_alt"></i>Відгуки</a></li>
+                <li><a class="" th:href="@{/worker}" th:if="${#authorization.expression('hasAuthority(''Менеджер'')')}"><i class="icon_document_alt"></i>Працівники</a></li>
+                <li><a class="" th:href="@{/review}" th:if="${#authorization.expression('hasAuthority(''Менеджер'')')}"><i class="icon_document_alt"></i>Відгуки</a></li>
             </ul>
         </div>
     </aside>

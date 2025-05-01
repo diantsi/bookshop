@@ -39,7 +39,7 @@ public class LoginController {
             if ("Менеджер".equals(role)) {
                 return "redirect:/manager/home";
             } else if ("Касир".equals(role)) {
-                return "redirect:/cashier/home";
+                return "redirect:/manager/home";
             }
         }
 
