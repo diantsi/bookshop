@@ -1,5 +1,85 @@
-<form th:action="@{/login}" method="post">
-    <input type="email" name="email" placeholder="Email" required />
-    <input type="password" name="password" placeholder="Password" required />
-    <button type="submit">Login</button>
+<!DOCTYPE html>
+<html xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+<head>
+    <meta charset="UTF-8">
+    <link th:href="@{/css/bootstrap.min.css}" rel="stylesheet">
+    <!-- bootstrap theme -->
+    <link th:href="@{/css/bootstrap-theme.css}" rel="stylesheet">
+    <!--external css-->
+    <!-- font icon -->
+    <link th:href="@{/css/elegant-icons-style.css}" rel="stylesheet"/>
+    <link th:href="@{/css/font-awesome.min.css}" rel="stylesheet"/>
+    <!-- full calendar css-->
+    <link th:href="@{/assets/fullcalendar/fullcalendar/bootstrap-fullcalendar.css}" rel="stylesheet"/>
+    <link th:href="@{/assets/fullcalendar/fullcalendar/fullcalendar.css}" rel="stylesheet"/>
+    <!-- easy pie chart-->
+    <link th:href="@{/assets/jquery-easy-pie-chart/jquery.easy-pie-chart.css}" rel="stylesheet" type="text/css"
+          media="screen"/>
+    <!-- owl carousel -->
+    <link th:href="@{/css/owl.carousel.css}" rel="stylesheet" type="text/css">
+    <link th:href="@{/css/jquery-jvectormap-1.2.2.css}" rel="stylesheet">
+    <!-- Custom styles -->
+    <link th:href="@{/css/fullcalendar.css}" rel="stylesheet">
+    <link th:href="@{/css/widgets.css}" rel="stylesheet">
+    <link th:href="@{/css/style.css}" rel="stylesheet">
+    <link th:href="@{/css/style-responsive.css}" rel="stylesheet"/>
+    <link th:href="@{/css/xcharts.min.css}" rel="stylesheet">
+    <link th:href="@{/css/jquery-ui-1.10.4.min.css}" rel="stylesheet">
+
+    <style>
+        body {
+
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .login-panel {
+            background-image: url('/assets/cat.jpg');
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.3);
+            width: 100%;
+            height: 563px;
+            max-width: 400px;
+        }
+
+        .login-panel label, h3 {
+            color: white;
+            font-weight: bold;
+            text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.8);
+        }
+    </style>
+
+</head>
+<body>
+<form th:action="@{/login}" method="post" class="login-panel">
+    <h3 class="text-center">Login</h3>
+
+    <div class="form-group">
+        <label>Email</label>
+        <input type="email" name="email" placeholder="Email" class="form-control" required>
+    </div>
+
+    <div class="form-group">
+        <label>Password</label>
+        <input type="password" name="password" placeholder="Password" class="form-control" required>
+    </div>
+
+    <div class="form-group text-center">
+        <button type="submit" class="btn btn-primary">Login</button>
+    </div>
+
+    <div class="form-group">
+
+    </div>
+
+    <div class="form-group">
+
+    </div>
 </form>
+</body>

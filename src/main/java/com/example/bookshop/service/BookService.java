@@ -23,6 +23,10 @@ public class BookService {
         return bookDao.findAllByIsbnOrName(prompt);
     }
 
+    public List<Book> getAllBooksByGenre(Long idGenre) {
+        return bookDao.findAllByGenre(idGenre);
+    }
+
     public void saveBook(Book book) {
         if (book.getISBN() == null || book.getISBN().isEmpty()) {
             throw new IllegalArgumentException("ISBN is required");

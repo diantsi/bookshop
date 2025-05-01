@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="_layout">
+<head>
+    <meta charset="UTF-8">
+    <title>Books of genre</title>
+    <style>
+        .info-label {
+            font-weight: bold;
+            color: #555;
+        }
+
+        .info-value {
+            padding: 5px 0;
+        }
+    </style>
+</head>
+<body>
+<div layout:fragment="content">
+    <h1>Books of genre</h1>
+    <a href="/genre" data-toggle="modal" class="btn btn-warning">
+        ← Back
+    </a>
+
+
+    <div class="container"
+         style="width: 90%; background-color: #FFFFFF; padding: 20px; border-radius: 8px; margin-top: 20px;">
+
+        <h2 th:text="'Жанр: '+${genre.name}" style="margin-top: 0;"></h2>
+
+        <div class="info" style="display: grid; grid-template-columns: 150px 1fr; gap: 15px; align-items: baseline;">
+
+            <div class="info-label">ID жанру</div>
+            <div class="info-value" th:text="${genre.id}"></div>
+
+            <div class="info-label">Опис</div>
+            <div class="info-value" th:text="${genre.description}"></div>
+
+            <div class="info-label" th:if="${genre.numberOfBooks > 0}">Книги:</div>
+        </div>
+            <table class="table table-striped table-advance table-hover" th:if="${genre.numberOfBooks > 0}">
+                <tbody>
+                <tr>
+                    <th><i class="icon_image"></i> photo</th>
+                    <th><i class="icon_book"></i> name</th>
+                    <th><i class="icon_currency"></i> price</th>
+                    <th><i class="icon_cogs"></i> actions</th>
+
+                </tr>
+                <tr th:each="book : ${books}">
+                    <td>
+                        <img th:if="${book.image != null}"
+                             th:src="@{${book.image}}"
+                             style="width: 50px; height: 50px; object-fit: cover;"/>
+                    </td>
+                    <td th:text="${book.name}"></td>
+                    <!--                        <td th:text="${book.author}"></td>-->
+                    <td th:text="${book.price}"></td>
+                    <td>
+                        <div class="btn-group">
+                            <a class="btn btn-primary"
+                               th:href="@{'/book_info/' + ${book.ISBN}}"><i class="icon_info"></i></a>
+                            <a class="btn btn-success"
+                               th:if="${#authorization.expression('hasAuthority(''Менеджер'')')}"
+                               th:href="@{'/edit_book/' + ${book.ISBN}}"><i class="icon_pencil-edit"></i></a>
+                            <a class="btn btn-danger"
+                               th:if="${#authorization.expression('hasAuthority(''Менеджер'')')}"
+                               th:disabled="${book.quantity > 0}"
+                               onclick="return confirm('sure?')"
+                               th:href="@{'/book/delete/' + ${book.ISBN}}"><i class="icon_trash"></i></a>
+                        </div>
+                    </td>
+
+                </tr>
+                </tbody>
+            </table>
+
+
+
+
+    </div>
+</div>
+
+</body>
+</html>

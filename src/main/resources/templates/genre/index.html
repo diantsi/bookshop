@@ -36,7 +36,7 @@
                         <td th:text="${genre.numberOfBooks}"></td>
                         <td>
                             <div class="btn-group">
-                                <a class="btn btn-primary" href="#"><i class="icon_info"></i></a>
+                                <a class="btn btn-primary" th:href="@{'/genre_info/' + ${genre.id}}"><i class="icon_book"></i></a>
                                 <a class="btn btn-success" th:if="${#authorization.expression('hasAuthority(''Менеджер'')')}"
                                    th:href="@{'/edit_genre/' + ${genre.id}}"><i class="icon_pencil-edit"></i></a>
                                 <a class="btn btn-danger" th:if="${#authorization.expression('hasAuthority(''Менеджер'')')}"

@@ -1,6 +1,9 @@
 package com.example.bookshop.controller;
 
+import com.example.bookshop.entity.Book;
 import com.example.bookshop.entity.Genre;
+import com.example.bookshop.entity.Review;
+import com.example.bookshop.service.BookService;
 import com.example.bookshop.service.GenreService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -13,9 +16,11 @@ import java.util.List;
 public class GenreController {
 
     private final GenreService genreService;
+    private final BookService bookService;
 
-    public GenreController(GenreService genreService) {
+    public GenreController(GenreService genreService, BookService bookService) {
         this.genreService = genreService;
+        this.bookService = bookService;
     }
 
     @GetMapping({"/genre", "/genre.html"})
@@ -29,6 +34,15 @@ public class GenreController {
     @GetMapping("/add_genre")
     public String addGenre(Model model) {
         return "genre/add_genre";
+    }
+
+    @GetMapping("/genre_info/{id}")
+    public String infoGenre(@PathVariable Long id, Model model) {
+        Genre genre = genreService.getById(id);
+        model.addAttribute("genre", genre);
+        List<Book> books = bookService.getAllBooksByGenre(id);
+        model.addAttribute("books", books);
+        return "genre/genre_info";
     }
 
     @GetMapping("/edit_genre/{id}")
