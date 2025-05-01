@@ -57,5 +57,8 @@ public class BookInstanceService {
         bookInstanceDao.saveAll(instances);
     }
 
+    public List<BookInstance> getAvailableBookInstances() {
+        return bookInstanceDao.findByReceiptIsNull();
+    }
 
 }

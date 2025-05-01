@@ -38,7 +38,7 @@ public class ReceiptController {
     }
 
     @GetMapping({"/receipt", "/receipt.html"})
-    public String showCategoriesPage(Model model) {
+    public String showReceiptPage(Model model) {
         List<Receipt> receipts = receiptService.getAllReceipts();
         model.addAttribute("receipts", receipts);
         Optional<Worker> user = workerService.findByTabEmail(LoginController.USER);
@@ -57,6 +57,7 @@ public class ReceiptController {
         return "receipt/card";
     }
 
+
     @PostMapping("/receipts")
     public String saveReceipt(@ModelAttribute Receipt receipt,
                               @RequestParam("instanceIds") List<Long> instanceIds) {
@@ -71,6 +72,9 @@ public class ReceiptController {
                 instance.setReceipt_id(receipt.getId());
             }
             bookInstanceService.updateAll(instances);
+            if (receipt.getClient_id() != null) {
+                clientCardService.updateBonuses(receipt);
+            }
         }
         return "redirect:/receipt";
     }

@@ -11,7 +11,7 @@
 
     <div class="container" style="width: 70%">
         <div class="row">
-            <form class="form-horizontal " th:action="@{/receipts}" th:object="${receipt}" method="post">
+            <form class="form-horizontal" th:action="@{/receipts}" th:object="${receipt}" method="post" onsubmit="return validateForm()">
                 <div class="col-lg-8">
                     <section class="panel">
                         <header class="panel-heading">
@@ -25,20 +25,25 @@
                                            id="timeInput"
                                            th:field="*{time}"
                                            class="form-control"
-                                           onchange="formatDateTime()">
+                                           onchange="formatDateTime()"
+                                           max="">
                                 </div>
                             </div>
                             <div class="form-group">
                                 <label class="control-label col-sm-4"> Number of bonuses </label>
                                 <div class="col-sm-6">
-                                    <input type="text" th:field="*{bonuses}" size="16" class="form-control">
+                                    <input type="number"
+                                           th:field="*{bonuses}"
+                                           class="form-control"
+                                           min="0"
+                                           oninput="this.value = Math.abs(this.value)">
                                 </div>
                             </div>
                             <div class="form-group">
                                 <label class="control-label col-sm-4">Client</label>
                                 <div class="col-sm-6">
-                                    <select th:field="*{client_id}" class="form-control book-select">
-                                        <option value="">Choose a client  </option>
+                                    <select th:field="*{client_id}" class="form-control book-select" required>
+                                        <option value="">Choose a client</option>
                                         <option th:each="client : ${clientCards}"
                                                 th:value="${client.idNumber}"
                                                 th:text="${client.idNumber + ' (' + client.surname + ' ' + client.firstName + ')'}">
@@ -64,45 +69,65 @@
                         <div class="form-group">
                             <label class="control-label col-sm-4">Available Book Instances</label>
                             <div class="col-sm-6">
-                                <select name="instanceIds" multiple class="form-control">
+                                <select name="instanceIds" multiple class="form-control" required>
                                     <option th:each="instance : ${availableInstances}"
                                             th:value="${instance.id}"
-                                            th:text="'Instance #' + ${instance.id} + ' - ' + ${instance.book_name} + ' (' + ${instance.ISBN} + ')'">
+                                            th:text=" ${instance.book_name} + ' (' + ${instance.ISBN} + ')'">
                                     </option>
                                 </select>
                             </div>
                         </div>
                     </section>
 
-
                     <section class="panel">
                         <div class="panel-body">
-                            <button type="submit" href="/add_receipt" data-toggle="modal" class="btn btn-success">
-                                Confirm
-                            </button>
-                            <a href="/receipt" data-toggle="modal" class="btn btn-warning">
-                                Cancel
-                            </a>
+                            <button type="submit" class="btn btn-success">Confirm</button>
+                            <a href="/receipt" class="btn btn-warning">Cancel</a>
                         </div>
                     </section>
                 </div>
             </form>
-
         </div>
     </div>
-
+</div>
+</body>
+</html>
 
 </div>
 </body>
 </html>
 <script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const now = new Date();
+        const timeInput = document.getElementById('timeInput');
+        const formattedDate = now.toISOString().slice(0, 16);
+        timeInput.max = formattedDate;
+    });
+
+    function validateForm() {
+        const timeInput = document.getElementById('timeInput');
+        const bonusesInput = document.querySelector('input[name="bonuses"]');
+
+        const selectedDate = new Date(timeInput.value);
+        const now = new Date();
+
+        if (selectedDate > now) {
+            alert("Дата не може бути в майбутньому!");
+            return false;
+        }
+
+        if (bonusesInput.value < 0) {
+            alert("Кількість бонусів не може бути від'ємною!");
+            return false;
+        }
+
+        return true;
+    }
+
     function formatDateTime() {
         const input = document.getElementById('timeInput');
         const date = new Date(input.value);
         const formattedDate = date.toISOString().slice(0, 19).replace('T', ' ');
         input.value = formattedDate;
     }
-
-
-
 </script>
