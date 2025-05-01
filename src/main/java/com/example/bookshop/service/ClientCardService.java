@@ -3,6 +3,7 @@ package com.example.bookshop.service;
 import com.example.bookshop.dao.ClientCardDao;
 import com.example.bookshop.dao.WorkerDao;
 import com.example.bookshop.entity.ClientCard;
+import com.example.bookshop.entity.Receipt;
 import com.example.bookshop.entity.Worker;
 import com.example.bookshop.security.Sha256PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -59,4 +60,18 @@ public class ClientCardService {
     public ClientCard getBySurname(String surname) {
         return clientCardDao.findBySurname(surname).orElse(null);
     }
+
+    public void updateBonuses(Receipt receipt) {
+        if (receipt.getClient_id() != null) {
+            ClientCard clientCard = clientCardDao.findById(receipt.getClient_id());
+            if (clientCard != null) {
+                double bonusesUsed = (receipt.getBonuses() != null) ? receipt.getBonuses() : 0;
+                double newBonuses = clientCard.getNumberOfBonuses() + (receipt.getTotalPrice() * 0.05) - bonusesUsed;
+                clientCard.setNumberOfBonuses((int) Math.max(0, newBonuses)); // Ensure bonuses don't go negative
+                clientCardDao.editClientCard(clientCard);
+            }
+        }
+    }
+
 }
+

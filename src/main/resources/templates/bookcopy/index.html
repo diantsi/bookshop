@@ -34,8 +34,6 @@
                         <td th:text="${instance.book_name}"></td>
                         <td>
                             <div class="btn-group">
-                                <a class="btn btn-primary"
-                                   th:href="@{'/book_info/' + ${instance.id}}"><i class="icon_info"></i></a>
                                 <a class="btn btn-success" th:if="${#authorization.expression('hasAuthority(''Менеджер'')')}"
                                    th:href="@{'/edit_bookcopy/' + ${instance.id}}"><i class="icon_pencil-edit"></i></a>
                                 <a class="btn btn-danger" th:if="${#authorization.expression('hasAuthority(''Менеджер'')')}"

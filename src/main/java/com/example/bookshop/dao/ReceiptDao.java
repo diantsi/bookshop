@@ -35,7 +35,7 @@ public class ReceiptDao {
                 "CONCAT(w.Surname, ' ', w.First_name) AS Worker_full_name " +
                 "FROM receipt r " +
                 "INNER JOIN worker w ON r.Tab_number_worker = w.Tab_number " +
-                "INNER JOIN client_card c ON r.ID_number_client = c.ID_number " +
+                "LEFT JOIN client_card c ON r.ID_number_client = c.ID_number " +
                 "ORDER BY r.Date_buy desc ";
 
         try (Connection conn = daoConnection.getConnection();
@@ -71,8 +71,16 @@ public class ReceiptDao {
 
                 ps.setObject(1, receipt.getTime());
                 ps.setDouble(2, receipt.getTotalPrice());
-                ps.setInt(3, receipt.getBonuses());
-                ps.setString(4, receipt.getClient_id());
+                if (receipt.getBonuses() == null) {
+                    ps.setNull(3, Types.INTEGER);
+                } else {
+                    ps.setInt(3, receipt.getBonuses());
+                }
+                if (receipt.getClient_id() == null || receipt.getClient_id().isEmpty()) {
+                    ps.setNull(4, Types.VARCHAR);
+                } else {
+                    ps.setString(4, receipt.getClient_id());
+                }
                 ps.setString(5, receipt.getWorker_id());
                 ps.executeUpdate();
 
@@ -86,7 +94,6 @@ public class ReceiptDao {
             }
         }
     }
-
 
     public Receipt findById(Long id) {
         String query = "SELECT " +

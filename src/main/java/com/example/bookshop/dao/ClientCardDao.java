@@ -19,18 +19,7 @@ public class ClientCardDao {
         this.daoConnection = daoConnection;
     }
 
-    //    `ID_number` varchar(32) NOT NULL,
-//        `Surname` varchar(30) NOT NULL,
-//        `First_name` varchar(30) NOT NULL,
-//        `Middle_name` varchar(30) NULL,
-//        `Phone_number` varchar(13) NOT NULL,
-//        `Registration_date` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-//        `Date_of_birth` date NOT NULL,
-//        `Age` int NOT NULL,
-//        `Email_address` varchar(30) NOT NULL,
-//        `Bonus_number` int NOT NULL,
-//        PRIMARY KEY (`ID_number`),
-//        UNIQUE KEY (`Phone_number`)
+
     public List<ClientCard> findAll() {
         List<ClientCard> clientCards = new ArrayList<>();
         String query = "SELECT ID_number, Surname, First_name, Phone_number, Bonus_number FROM client_card ORDER BY ID_number";
@@ -119,7 +108,6 @@ public class ClientCardDao {
         String query = "UPDATE client_card SET ID_number =?, Surname =?, First_name =?, Middle_name =?, Phone_number =?, Date_of_birth =?, Age =?, Email_address =?, Bonus_number =? WHERE ID_number = ?";
         try (Connection conn = daoConnection.getConnection();
              PreparedStatement ps = conn.prepareStatement(query)) {
-
             ps.setString(1, clientCard.getIdNumber());
             ps.setString(2, clientCard.getSurname());
             ps.setString(3, clientCard.getFirstName());
@@ -129,20 +117,15 @@ public class ClientCardDao {
                 ps.setObject(4, null, Types.VARCHAR);
             }
             ps.setString(5, clientCard.getPhoneNumber());
-            //ps.setObject(7, clientCard.getRegistrationDate(), Types.DATE);
             ps.setObject(6, clientCard.getDateOfBirth(), Types.DATE);
             ps.setInt(7, clientCard.calculateAge());
             ps.setString(8, clientCard.getEmail());
-            ps.setInt(9, 0);
+            ps.setInt(9, clientCard.getNumberOfBonuses());
             ps.setString(10, clientCard.getIdNumber());
-
-
             ps.executeUpdate();
-
         } catch (SQLException e) {
-            throw new RuntimeException("Cannot edit worker", e);
+            throw new RuntimeException("Cannot edit client card", e);
         }
-
     }
 
 
