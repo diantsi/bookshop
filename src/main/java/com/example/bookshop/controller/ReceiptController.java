@@ -60,13 +60,18 @@ public class ReceiptController {
     @PostMapping("/receipts")
     public String saveReceipt(@ModelAttribute Receipt receipt,
                               @RequestParam("instanceIds") List<Long> instanceIds) {
-        receiptService.saveReceipt(receipt);
         List<BookInstance> instances = bookInstanceService.getInstancesByIds(instanceIds);
-        for (BookInstance instance : instances) {
-            instance.setReceipt_id(receipt.getId());
-        }
-        bookInstanceService.updateAll(instances);
 
+        double totalPrice = receiptService.calculateTotalPrice(instances);
+        totalPrice -= (receipt.getBonuses() != null) ? receipt.getBonuses() : 0;
+        receipt.setTotalPrice(totalPrice);
+        if (totalPrice > 0) {
+            receiptService.saveReceipt(receipt);
+            for (BookInstance instance : instances) {
+                instance.setReceipt_id(receipt.getId());
+            }
+            bookInstanceService.updateAll(instances);
+        }
         return "redirect:/receipt";
     }
 

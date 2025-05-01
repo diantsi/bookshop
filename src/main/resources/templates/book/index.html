@@ -34,19 +34,30 @@
                 <table class="table table-striped table-advance table-hover">
                     <tbody>
                     <tr>
+                        <th><i class="glyphicon-bookmark"></i>isbn</th>
                         <th><i class="icon_image"></i> photo</th>
                         <th><i class="icon_book"></i> name</th>
+                        <th><i class="icon_user"></i> author</th>
+                        <th><i class="icon_genius"></i> genre</th>
                         <th><i class="icon_currency"></i> price</th>
                         <th><i class="icon_cogs"></i> actions</th>
                     </tr>
                     <tr th:each="book : ${books}">
+                        <td th:text="${book.ISBN}"></td>
                         <td>
                             <img th:if="${book.image != null}"
                                  th:src="@{${book.image}}"
                                  style="width: 50px; height: 50px; object-fit: cover;"/>
                         </td>
                         <td th:text="${book.name}"></td>
-                        <!--                        <td th:text="${book.author}"></td>-->
+                        <td>
+                              <span  th:each="author, iterStat : ${book.authors}"
+                                     th:text="${author.full_name} + (${iterStat.last} ? '' : ', ')"></span>
+                        </td>
+                        <td>
+                            <span th:each="genre, iterStat : ${book.genres}"
+                                  th:text="${genre.name} + (${iterStat.last} ? '' : ', ')"></span>
+                        </td>
                         <td th:text="${book.price}"></td>
                         <td>
                             <div class="btn-group">
