@@ -31,4 +31,6 @@ public class ReceiptService {
     public void delete(Long id) {
         receiptDao.deleteReceipt(id);
     }
+
+
 }

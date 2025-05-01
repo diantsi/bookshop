@@ -46,7 +46,9 @@
                         <td th:text="${receipt.worker_full_name}"></td>
                         <td>
                             <div class="btn-group">
-                                <a class="btn btn-primary" href="#"><i class="icon_info"></i></a>
+                                <a class="btn btn-primary"
+                                   th:href="@{'/receipt/' + ${receipt.id}}">
+                                    <i class="icon_info"></i></a>
                                 <a class="btn btn-success" th:if="${#authorization.expression('hasAuthority(''Менеджер'')')}"
                                    th:href="@{'/edit_receipt/' + ${receipt.id}}"><i class="icon_pencil-edit"></i></a>
                                 <a class="btn btn-danger" th:if="${#authorization.expression('hasAuthority(''Менеджер'')')}"

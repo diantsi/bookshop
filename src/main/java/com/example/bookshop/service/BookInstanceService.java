@@ -36,5 +36,9 @@ public class BookInstanceService {
         bookInstanceDao.updateBookInstance(bookInstance);
     }
 
+    public List<BookInstance> getBookInstancesByReceiptId(Long receiptId) {
+        return bookInstanceDao.findBookInstancesByReceiptId(receiptId);
+    }
+
 
 }

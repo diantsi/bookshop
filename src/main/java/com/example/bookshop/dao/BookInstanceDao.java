@@ -96,6 +96,34 @@ public class BookInstanceDao {
     }
 
 
+    public List<BookInstance> findBookInstancesByReceiptId(Long receiptId) {
+        List<BookInstance> instances = new ArrayList<>();
+        String query = "SELECT i.instance_code as id, i.ID_number_of_check as receipt_id, " +
+                "b.ISBN, b.Book_name, i.ISBN_book " +
+                "FROM instance i " +
+                "INNER JOIN book b ON i.ISBN_book = b.ISBN " +
+                "WHERE i.ID_number_of_check = ?";
+
+        try (Connection conn = daoConnection.getConnection();
+             PreparedStatement ps = conn.prepareStatement(query)) {
+
+            ps.setLong(1, receiptId);
+            ResultSet rs = ps.executeQuery();
+
+            while (rs.next()) {
+                BookInstance instance = new BookInstance();
+                instance.setId(rs.getLong("id"));
+                instance.setReceipt_id(rs.getLong("receipt_id"));
+                instance.setISBN(rs.getString("ISBN"));
+                instance.setBook_name(rs.getString("Book_name"));
+                instances.add(instance);
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException("Cannot get book instances for receipt", e);
+        }
+        return instances;
+    }
+
     public void updateBookInstance(BookInstance bookInstance) {
         String query = "UPDATE instance SET ID_number_of_check = ?, ISBN_book = ? WHERE instance_code = ?";
         try (Connection connection = daoConnection.getConnection();

@@ -5,6 +5,7 @@ import com.example.bookshop.entity.Genre;
 import com.example.bookshop.entity.Receipt;
 import com.example.bookshop.entity.Worker;
 import com.example.bookshop.security.LoginController;
+import com.example.bookshop.service.BookInstanceService;
 import com.example.bookshop.service.ClientCardService;
 import com.example.bookshop.service.ReceiptService;
 import com.example.bookshop.service.WorkerService;
@@ -22,11 +23,13 @@ public class ReceiptController {
     private final ClientCardService clientCardService;
 
     private final WorkerService workerService;
+    private final BookInstanceService bookInstanceService;
 
-    public ReceiptController(ReceiptService receiptService, ClientCardService clientCardService, WorkerService workerService) {
+    public ReceiptController(ReceiptService receiptService, ClientCardService clientCardService, WorkerService workerService, BookInstanceService bookInstanceService) {
         this.receiptService = receiptService;
         this.clientCardService = clientCardService;
         this.workerService = workerService;
+        this.bookInstanceService = bookInstanceService;
     }
 
     @ModelAttribute("receipt")
@@ -41,6 +44,17 @@ public class ReceiptController {
         Optional<Worker> user = workerService.findByTabEmail(LoginController.USER);
         model.addAttribute("tab", user.get().getTabNumber());
         return "receipt/index";
+    }
+
+    @GetMapping("/receipt/{id}")
+    public String viewReceiptCard(@PathVariable Long id, Model model) {
+        Receipt receipt = receiptService.getById(id);
+        List<BookInstance> instances = bookInstanceService.getBookInstancesByReceiptId(id);
+
+        model.addAttribute("receipt", receipt);
+        model.addAttribute("instances", instances);
+
+        return "receipt/card";
     }
 
     @PostMapping("/receipts")

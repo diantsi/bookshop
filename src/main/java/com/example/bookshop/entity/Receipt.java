@@ -3,6 +3,8 @@ package com.example.bookshop.entity;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
+import java.util.List;
 
 public class Receipt {
 
@@ -16,6 +18,8 @@ public class Receipt {
     private String worker_id;
     private String client_full_name;
 
+    private List<BookInstance> bookInstances = new ArrayList<>();
+
 
     public Receipt() {
     }
@@ -26,6 +30,14 @@ public class Receipt {
         this.bonuses = bonuses;
         this.client_id = client_id;
         this.worker_id = work_id;
+    }
+
+    public List<BookInstance> getBookInstances() {
+        return bookInstances;
+    }
+
+    public void setBookInstances(List<BookInstance> bookInstances) {
+        this.bookInstances = bookInstances;
     }
 
     public Long getId() {
