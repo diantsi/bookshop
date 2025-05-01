@@ -58,8 +58,15 @@ public class ReceiptController {
     }
 
     @PostMapping("/receipts")
-    public String saveGenre(Receipt receipt) {
+    public String saveReceipt(@ModelAttribute Receipt receipt,
+                              @RequestParam("instanceIds") List<Long> instanceIds) {
         receiptService.saveReceipt(receipt);
+        List<BookInstance> instances = bookInstanceService.getInstancesByIds(instanceIds);
+        for (BookInstance instance : instances) {
+            instance.setReceipt_id(receipt.getId());
+        }
+        bookInstanceService.updateAll(instances);
+
         return "redirect:/receipt";
     }
 
@@ -68,6 +75,7 @@ public class ReceiptController {
         model.addAttribute("receipt", new Receipt());
         model.addAttribute("clientCards", clientCardService.getAllClientCards());
         model.addAttribute("workers", workerService.getAllWorkers());
+        model.addAttribute("availableInstances", bookInstanceService.getAvailableInstances());
         return "receipt/add_receipt";
     }
 

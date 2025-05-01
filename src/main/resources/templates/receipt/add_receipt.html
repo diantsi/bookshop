@@ -67,7 +67,19 @@
                                 </div>
                             </div>
                         </div>
+                        <div class="form-group">
+                            <label class="control-label col-sm-4">Available Book Instances</label>
+                            <div class="col-sm-6">
+                                <select name="instanceIds" multiple class="form-control">
+                                    <option th:each="instance : ${availableInstances}"
+                                            th:value="${instance.id}"
+                                            th:text="'Instance #' + ${instance.id} + ' - ' + ${instance.book_name} + ' (' + ${instance.ISBN} + ')'">
+                                    </option>
+                                </select>
+                            </div>
+                        </div>
                     </section>
+
 
                     <section class="panel">
                         <div class="panel-body">

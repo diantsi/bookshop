@@ -40,5 +40,20 @@ public class BookInstanceService {
         return bookInstanceDao.findBookInstancesByReceiptId(receiptId);
     }
 
+    public List<BookInstance> getInstancesByIds(List<Long> ids) {
+        return bookInstanceDao.findByIds(ids);
+    }
+
+    public void updateAll(List<BookInstance> instances) {
+        bookInstanceDao.updateAll(instances);
+    }
+
+    public List<BookInstance> getAvailableInstances() {
+        return bookInstanceDao.findAvailableInstances();
+    }
+    public void saveAll(List<BookInstance> instances) {
+        bookInstanceDao.saveAll(instances);
+    }
+
 
 }
