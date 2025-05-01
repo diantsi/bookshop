@@ -95,6 +95,45 @@ public class BookDao {
 
     }
 
+    public List<Book> findAllByIsbnOrName(String prompt) {
+        List<Book> books = new ArrayList<>();
+        String query = "SELECT * FROM book WHERE ISBN LIKE ? OR Book_name LIKE ?";
+
+        try (Connection connection = daoConnection.getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+            preparedStatement.setString(1, "%"+prompt+"%");
+            preparedStatement.setString(2, "%"+prompt+"%");
+            ResultSet rs = preparedStatement.executeQuery();
+
+            while (rs.next()) {
+                Book book = new Book(
+                        rs.getString("ISBN"),
+                        rs.getString("Image"),
+                        rs.getString("Book_name"),
+                        rs.getInt("Number_of_pages"),
+                        rs.getString("Type_of_cover"),
+                        rs.getString("Book_language"),
+                        rs.getInt("Year_of_publication"),
+                        rs.getFloat("Weight"),
+                        rs.getFloat("Height"),
+                        rs.getFloat("Width"),
+                        rs.getFloat("Thickness"),
+                        rs.getDouble("Book_price"),
+                        rs.getInt("Number_of_instances"),
+                        rs.getBoolean("Adults_only_status")
+                );
+                book.setGenres(findGenresByIsbn(book.getISBN(), connection));
+                book.setAuthors(findAuthorsByIsbn(book.getISBN(), connection));
+                book.setTranslators(findTranslatorsByIsbn(book.getISBN(), connection));
+                books.add(book);
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException("Cannot find books", e);
+        }
+        return books;
+
+    }
+
     private List<Author> findAuthorsByIsbn(String isbn, Connection connection) throws SQLException {
         List<Author> authors = new ArrayList<>();
         String authorQuery = "SELECT a.Id_author, a.Full_name " +

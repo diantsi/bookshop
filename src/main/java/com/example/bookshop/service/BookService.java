@@ -19,6 +19,10 @@ public class BookService {
         return bookDao.findAll();
     }
 
+    public List<Book> getAllBooksByPrompt(String prompt) {
+        return bookDao.findAllByIsbnOrName(prompt);
+    }
+
     public void saveBook(Book book) {
         if (book.getISBN() == null || book.getISBN().isEmpty()) {
             throw new IllegalArgumentException("ISBN is required");

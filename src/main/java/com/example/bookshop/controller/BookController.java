@@ -45,8 +45,17 @@ public class BookController {
     }
 
     @GetMapping({"/book", "/book.html"})
-    public String showBooksPage(Model model) {
-        List<Book> books = bookService.getAllBooks();
+    public String showBooksPage(Model model, String keyword) {
+        List<Book> books;
+        if (keyword == null || keyword.isEmpty()) {
+            System.out.println("keyword is null"+keyword+"]");
+            books = bookService.getAllBooks();
+        } else {
+            System.out.println("keyword"+keyword+"]");
+            books = bookService.getAllBooksByPrompt(keyword);
+            System.out.println("books"+books);
+        }
+        model.addAttribute("keyword", keyword);
         model.addAttribute("books", books);
         return "book/index";
     }

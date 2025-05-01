@@ -1567,6 +1567,11 @@ input[type="number"]::-webkit-inner-spin-button {
   -webkit-transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;
   transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;
 }
+.form-control.search-bar{
+  margin-left: 70px;
+  display: inline;
+  width: 60%;
+}
 .form-control:focus {
   border-color: #007AFF;
   outline: 0;  
