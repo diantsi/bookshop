@@ -23,8 +23,14 @@ public class ClientCardController {
     }
 
     @GetMapping({"/clientcard", "/clientcard.html"})
-    public String showClientCardsPage(Model model) {
-        List<ClientCard> clientcards = clientCardService.getAllClientCards();
+    public String showClientCardsPage(Model model, String keyword) {
+        List<ClientCard> clientcards;
+        if (keyword == null || keyword.isEmpty()) {
+            clientcards = clientCardService.getAllClientCards();
+        } else {
+            clientcards = clientCardService.getAllClientCardsByPrompt(keyword);
+        }
+        model.addAttribute("keyword", keyword);
         model.addAttribute("clientcards", clientcards);
         return "clientcard/index";
     }

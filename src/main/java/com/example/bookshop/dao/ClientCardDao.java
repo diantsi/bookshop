@@ -301,4 +301,45 @@ public class ClientCardDao {
         return clientCards;
     }
 
+
+    public List<ClientCard> findAllWithReceiptCountByPrompt(String prompt) {
+        String query = """
+                    SELECT c.ID_number, c.Surname, c.First_name, c.Phone_number, c.Bonus_number,
+                           COUNT(r.Id_number_of_check) AS Receipt_count
+                    FROM client_card c
+                    LEFT JOIN receipt r ON c.ID_number = r.ID_number_client
+                    WHERE ID_number LIKE ? OR Surname LIKE ? OR Phone_number LIKE ?
+                    GROUP BY c.ID_number, c.Surname, c.First_name, c.Phone_number
+                    ORDER BY c.ID_number
+                """;
+        List<ClientCard> clientCards = new ArrayList<>();
+
+        try (Connection conn = daoConnection.getConnection();
+             PreparedStatement ps = conn.prepareStatement(query)) {
+
+            ps.setString(1, "%" + prompt + "%");
+            ps.setString(2, "%" + prompt + "%");
+            ps.setString(3, "%" + prompt + "%");
+
+            ResultSet rs = ps.executeQuery();
+
+            while (rs.next()) {
+                ClientCard clientCard = new ClientCard(
+                        rs.getString("ID_number"),
+                        rs.getString("Surname"),
+                        rs.getString("First_name"),
+                        rs.getString("Phone_number"),
+                        rs.getInt("Bonus_number")
+                );
+                clientCard.setNumberOfReceipts(rs.getInt("Receipt_count"));
+                clientCards.add(clientCard);
+            }
+
+        } catch (SQLException e) {
+            throw new RuntimeException("Cannot find client cards with receipt count", e);
+        }
+
+        return clientCards;
+    }
+
 }
