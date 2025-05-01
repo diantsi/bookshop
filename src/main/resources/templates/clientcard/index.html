@@ -11,11 +11,20 @@
 
     <div class="row">
 
-
         <div class="panel-body">
-            <a href="/add_clientcard" class="btn btn-primary">
-                Register new client
-            </a>
+            <div class="row">
+                <div class="col-lg-1">
+                    <a href="/add_clientcard" class="btn btn-primary">
+                        Register new client
+                    </a>
+                </div>
+                <form th:action="@{/clientcard}">
+                    <div class="col-lg-4">
+                        <input type="text" name="keyword" class="form-control search-bar" th:value="${keyword}">
+                        <button type="submit" class="btn btn-success">Search</button>
+                    </div>
+                </form>
+            </div>
         </div>
 
 

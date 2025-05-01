@@ -23,6 +23,10 @@ public class ClientCardService {
         return clientCardDao.findAllWithReceiptCount();
     }
 
+    public List<ClientCard> getAllClientCardsByPrompt(String prompt) {
+        return clientCardDao.findAllWithReceiptCountByPrompt(prompt);
+    }
+
     public void saveClientCard(ClientCard clientCard) {
         clientCardDao.saveClientCard(clientCard);
     }
