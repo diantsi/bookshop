@@ -41,6 +41,7 @@
 <!--                                   th:href="@{'/edit_bookcopy/' + ${instance.id}}"><i class="icon_pencil-edit"></i></a>-->
                                 <a class="btn btn-danger" th:if="${#authorization.expression('hasAuthority(''Менеджер'')')}"
                                    onclick="return confirm('sure?')"
+                                   th:disabled="${instance.receipt_id != 0}"
                                    th:href="@{'/bookcopy/delete/' + ${instance.id}}"><i class="icon_trash"></i></a>
                             </div>
                         </td>
