@@ -120,7 +120,11 @@ public class ClientCardDao {
             ps.setObject(6, clientCard.getDateOfBirth(), Types.DATE);
             ps.setInt(7, clientCard.calculateAge());
             ps.setString(8, clientCard.getEmail());
-            ps.setInt(9, clientCard.getNumberOfBonuses());
+            if (clientCard.getNumberOfBonuses() != null) {
+                ps.setInt(9, clientCard.getNumberOfBonuses());
+            } else {
+                ps.setObject(9, 0, Types.INTEGER);
+            }
             ps.setString(10, clientCard.getIdNumber());
             ps.executeUpdate();
         } catch (SQLException e) {

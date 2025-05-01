@@ -11,7 +11,8 @@
 
     <div class="container" style="width: 70%">
         <div class="row">
-            <form class="form-horizontal" th:action="@{/receipts}" th:object="${receipt}" method="post" onsubmit="return validateForm()">
+            <form class="form-horizontal" th:action="@{/receipts}" th:object="${receipt}" method="post"
+                  onsubmit="return validateForm()">
                 <div class="col-lg-8">
                     <section class="panel">
                         <header class="panel-heading">
@@ -42,27 +43,33 @@
                             <div class="form-group">
                                 <label class="control-label col-sm-4">Client</label>
                                 <div class="col-sm-6">
-                                    <select th:field="*{client_id}" class="form-control book-select">
+                                    <select th:field="*{client_id}" class="form-control book-select"
+                                            th:classappend="${#fields.hasErrors('client_id')} ? 'is-invalid'">
+
                                         <option value="">Choose a client</option>
                                         <option th:each="client : ${clientCards}"
                                                 th:value="${client.idNumber}"
                                                 th:text="${client.idNumber + ' (' + client.surname + ' ' + client.firstName + ')'}">
                                         </option>
                                     </select>
+                                    <div th:if="${#fields.hasErrors('client_id')}" th:errors="*{client_id}"
+                                         class="text-danger"></div>
                                 </div>
                             </div>
                             <div class="form-group">
                                 <label class="control-label col-sm-4">Worker </label>
                                 <div class="col-sm-6">
-                                    <select th:field="*{worker_id}" class="form-control book-select" required th:if="${#authorization.expression('hasAuthority(''Менеджер'')')}">
-                                        <option value="">Choose a worker </option>
+                                    <select th:field="*{worker_id}" class="form-control book-select" required
+                                            th:if="${#authorization.expression('hasAuthority(''Менеджер'')')}">
+                                        <option value="">Choose a worker</option>
                                         <option th:each="worker : ${workers}"
                                                 th:value="${worker.tabNumber}"
                                                 th:text="${worker.tabNumber +  ' (' + worker.surname + ' ' + worker.firstName + ')'}">
                                         </option>
                                     </select>
 
-                                    <input type="text" th:field="*{worker_id}" class="form-control" readonly th:if="${#authorization.expression('hasAuthority(''Касир'')')}">
+                                    <input type="text" th:field="*{worker_id}" class="form-control" readonly
+                                           th:if="${#authorization.expression('hasAuthority(''Касир'')')}">
                                 </div>
                             </div>
                         </div>
@@ -72,7 +79,8 @@
                                 <select name="instanceIds" multiple class="form-control" required>
                                     <option th:each="instance : ${availableInstances}"
                                             th:value="${instance.id}"
-                                            th:text=" ${instance.book_name} + ' (' + ${instance.ISBN} + ')'">
+                                            th:selected="${selectedInstanceIds != null and selectedInstanceIds.contains(instance.id)}"
+                                            th:text="${instance.book_name + ' (' + instance.ISBN + ')'}">
                                     </option>
                                 </select>
                             </div>
@@ -97,7 +105,7 @@
 </body>
 </html>
 <script>
-    document.addEventListener('DOMContentLoaded', function() {
+    document.addEventListener('DOMContentLoaded', function () {
         const now = new Date();
         const timeInput = document.getElementById('timeInput');
         const formattedDate = now.toISOString().slice(0, 16);

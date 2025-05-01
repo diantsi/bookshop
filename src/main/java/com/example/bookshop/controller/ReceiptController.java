@@ -1,18 +1,14 @@
 package com.example.bookshop.controller;
 
-import com.example.bookshop.entity.BookInstance;
-import com.example.bookshop.entity.Genre;
-import com.example.bookshop.entity.Receipt;
-import com.example.bookshop.entity.Worker;
+import com.example.bookshop.entity.*;
 import com.example.bookshop.security.LoginController;
-import com.example.bookshop.service.BookInstanceService;
-import com.example.bookshop.service.ClientCardService;
-import com.example.bookshop.service.ReceiptService;
-import com.example.bookshop.service.WorkerService;
+import com.example.bookshop.service.*;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.Optional;
 
@@ -24,12 +20,14 @@ public class ReceiptController {
 
     private final WorkerService workerService;
     private final BookInstanceService bookInstanceService;
+    private final BookService bookService;
 
-    public ReceiptController(ReceiptService receiptService, ClientCardService clientCardService, WorkerService workerService, BookInstanceService bookInstanceService) {
+    public ReceiptController(ReceiptService receiptService, ClientCardService clientCardService, WorkerService workerService, BookInstanceService bookInstanceService, BookService bookService) {
         this.receiptService = receiptService;
         this.clientCardService = clientCardService;
         this.workerService = workerService;
         this.bookInstanceService = bookInstanceService;
+        this.bookService = bookService;
     }
 
     @ModelAttribute("receipt")
@@ -59,8 +57,33 @@ public class ReceiptController {
 
 
     @PostMapping("/receipts")
-    public String saveReceipt(@ModelAttribute Receipt receipt,
-                              @RequestParam("instanceIds") List<Long> instanceIds) {
+    public String saveReceipt(@ModelAttribute("receipt") Receipt receipt,
+                              @RequestParam("instanceIds") List<Long> instanceIds, BindingResult result, Model model) {
+
+        // Тут виконується валідація
+        ClientCard clientCard;
+        Book book;
+        if(receipt.getClient_id() != null && !receipt.getClient_id().isEmpty()) {
+            System.out.println(receipt.getClient_id());
+            clientCard = clientCardService.getById(receipt.getClient_id());
+            if(clientCard.getAge()<18){
+                for (Long instanceId : instanceIds) {
+                    book = bookService.getByIsbn(bookInstanceService.getById(instanceId).getISBN());
+                    if(book.getAdultsOnly()){
+                        result.rejectValue("client_id", "error.client_id", "В списку є книга 18+, Ви не можете продати її неповнолітньому клієнту!");
+                    }
+                }
+            }
+        }
+        if (result.hasErrors()) {
+            model.addAttribute("clientCards", clientCardService.getAllClientCards());
+            model.addAttribute("workers", workerService.getAllWorkers());
+            model.addAttribute("availableInstances", bookInstanceService.getAvailableInstances());
+            model.addAttribute("selectedInstanceIds", instanceIds);
+            return "receipt/add_receipt";
+        }
+
+
         List<BookInstance> instances = bookInstanceService.getInstancesByIds(instanceIds);
 
         double totalPrice = receiptService.calculateTotalPrice(instances);

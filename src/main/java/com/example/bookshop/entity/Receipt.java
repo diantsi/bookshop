@@ -1,5 +1,7 @@
 package com.example.bookshop.entity;
 
+import org.springframework.format.annotation.DateTimeFormat;
+
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -9,6 +11,7 @@ import java.util.List;
 public class Receipt {
 
     private Long id;
+    @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm")
     private LocalDateTime time;
 
     private Double totalPrice;
