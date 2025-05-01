@@ -45,7 +45,8 @@
                     <div class="info-value" th:text="${#temporals.format(receipt.time, 'yyyy-MM-dd HH:mm')}"></div>
 
                     <div class="info-label">Client:</div>
-                    <div class="info-value" th:text="${receipt.client_full_name} + ' (' + ${receipt.client_id} + ')'"></div>
+                    <div class="info-value" th:if="${receipt.client_id != null}" th:text="${receipt.client_full_name} + ' (' + ${receipt.client_id} + ')'"></div>
+                    <div class="info-value" th:if="${receipt.client_id == null}" th:text="'-'"></div>
 
                     <div class="info-label">Worker:</div>
                     <div class="info-value" th:text="${receipt.worker_full_name} + ' (' + ${receipt.worker_id} + ')'"></div>

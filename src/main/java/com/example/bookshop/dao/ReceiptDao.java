@@ -123,7 +123,7 @@ public class ReceiptDao {
                 "CONCAT(w.Surname, ' ', w.First_name) AS Worker_full_name " +
                 "FROM receipt r " +
                 "INNER JOIN worker w ON r.Tab_number_worker = w.Tab_number " +
-                "INNER JOIN client_card c ON r.ID_number_client = c.ID_number " +
+                "LEFT JOIN client_card c ON r.ID_number_client = c.ID_number " +
                 "WHERE r.Id_number_of_check = ? ";
         Receipt receipt = null;
         try (Connection conn = daoConnection.getConnection();
@@ -139,9 +139,9 @@ public class ReceiptDao {
                         rs.getString("ID_number_client"),
                         rs.getString("Tab_number_worker")
                 );
+                receipt.setClient_full_name(rs.getString("Client_full_name"));
+                receipt.setWorker_full_name(rs.getString("Worker_full_name"));
             }
-            receipt.setClient_full_name(rs.getString("Client_full_name"));
-            receipt.setWorker_full_name(rs.getString("Worker_full_name"));
         } catch (SQLException e) {
             throw new RuntimeException("Cannot find receipt", e);
         }

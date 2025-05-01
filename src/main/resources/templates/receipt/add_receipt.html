@@ -42,7 +42,7 @@
                             <div class="form-group">
                                 <label class="control-label col-sm-4">Client</label>
                                 <div class="col-sm-6">
-                                    <select th:field="*{client_id}" class="form-control book-select" required>
+                                    <select th:field="*{client_id}" class="form-control book-select">
                                         <option value="">Choose a client</option>
                                         <option th:each="client : ${clientCards}"
                                                 th:value="${client.idNumber}"
