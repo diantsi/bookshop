@@ -1,7 +1,9 @@
 package com.example.bookshop.service;
 
 
+import com.example.bookshop.dao.BookDao;
 import com.example.bookshop.dao.BookInstanceDao;
+import com.example.bookshop.entity.Book;
 import com.example.bookshop.entity.BookInstance;
 import org.springframework.stereotype.Service;
 
