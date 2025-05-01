@@ -36,6 +36,29 @@
     <link th:href="@{/css/style-responsive.css}" rel="stylesheet"/>
     <link th:href="@{/css/xcharts.min.css}" rel="stylesheet">
     <link th:href="@{/css/jquery-ui-1.10.4.min.css}" rel="stylesheet">
+
+    <style>
+        .btn-print{
+            display: inline;
+            margin-left: auto;
+            margin-right: 15px;
+            align-items: center;
+            height: 40px;
+            background: none;
+            border: none;
+            color: #007AFF;
+        }
+        .btn-print:hover{
+            border: solid #007AFF;
+            color: #007AFF;
+        }
+        .btn-print:focus{
+            border: solid #007AFF;
+            background: grey;
+            color: #007AFF;
+        }
+    </style>
+
     <!-- =======================================================
       Theme Name: NiceAdmin
       Theme URL: https://bootstrapmade.com/nice-admin-bootstrap-admin-html-template/
@@ -69,16 +92,19 @@
             </ul>
             <!--  search form end -->
         </div>
-        <div class="top-nav notification-row"> <!-- notificatoin dropdown start-->
+
+        <div class="top-nav notification-row">
+            <button class="btn btn-print" onclick="printTable()"><i class="icon_printer"></i></button>
+            <!-- notificatoin dropdown start-->
             <!-- alert notification end-->
             <!-- user login dropdown start-->
-            <li class="dropdown" style="display: flex; align-items: center; height: 40px;">
+
+            <li class="dropdown" style="display: inline; align-items: center; height: 40px;">
                 <a data-toggle="dropdown" class="dropdown-toggle" href="#">
                             <span class="profile-ava">
                                   <i class="icon_profile"></i>
                             </span>
                     <span class="username" th:text="${#authentication.name}"></span>
-                    <b class="caret"></b>
                 </a>
                 <ul class="dropdown-menu extended logout">
                     <div class="log-arrow-up"></div>
@@ -86,7 +112,7 @@
                         <form th:action="@{/logout}" method="post" style="text-align: center;">
                             <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
                             <span style="padding: 0; margin: 0">
-                    <button type="submit" class="logout-button" >Log Out</button>
+                    <button type="submit" class="logout-button">Log Out</button>
                   </span>
                         </form>
                     </li>
@@ -109,8 +135,10 @@
                 <li><a class="" th:href="@{/receipt}"><i class="icon_document_alt"></i>Чеки</a></li>
                 <li><a class="" th:href="@{/bookcopy}"><i class="icon_document_alt"></i>Примірники</a></li>
                 <li><a class="" th:href="@{/clientcard}"><i class="icon_document_alt"></i>Карти клієнтів</a></li>
-                <li><a class="" th:href="@{/worker}" th:if="${#authorization.expression('hasAuthority(''Менеджер'')')}"><i class="icon_document_alt"></i>Працівники</a></li>
-                <li><a class="" th:href="@{/review}" th:if="${#authorization.expression('hasAuthority(''Менеджер'')')}"><i class="icon_document_alt"></i>Відгуки</a></li>
+                <li><a class="" th:href="@{/worker}" th:if="${#authorization.expression('hasAuthority(''Менеджер'')')}"><i
+                        class="icon_document_alt"></i>Працівники</a></li>
+                <li><a class="" th:href="@{/review}" th:if="${#authorization.expression('hasAuthority(''Менеджер'')')}"><i
+                        class="icon_document_alt"></i>Відгуки</a></li>
             </ul>
         </div>
     </aside>
@@ -228,6 +256,19 @@
             }
         });
     });
+
+
+    function printTable() {
+        const printContents = document.getElementById('printArea').innerHTML;
+
+        const originalContents = document.body.innerHTML;
+
+        document.body.innerHTML = printContents;
+        window.print();
+        document.body.innerHTML = originalContents;
+        location.reload();
+    }
+
 </script>
 
 </body>
