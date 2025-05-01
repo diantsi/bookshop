@@ -33,11 +33,17 @@ public class BookInstanceController {
     }
 
     @GetMapping({"/bookcopy", "/bookcopy.html"})
-    public String showInstancesPage(Model model) {
-        List<BookInstance>instance = bookInstanceService.getAllBookInstances();
-        model.addAttribute("instances", instance);
+    public String showInstancesPage(@RequestParam(value = "available", required = false, defaultValue = "false") boolean available, Model model) {
+        List<BookInstance> instances;
+        if (available) {
+            instances = bookInstanceService.getAvailableBookInstances();
+        } else {
+            instances = bookInstanceService.getAllBookInstances();
+        }
+        model.addAttribute("instances", instances);
         return "bookcopy/index";
     }
+
 
     @PostMapping("/bookcopies")
     public String saveBookInstance(BookInstance bookInstance) {
