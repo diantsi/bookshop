@@ -78,26 +78,7 @@ public class ReceiptDao {
                  PreparedStatement ps = conn.prepareStatement(query, Statement.RETURN_GENERATED_KEYS)) {
 
                 ps.setDouble(1, receipt.getTotalPrice());
-                Integer adjustedBonuses = null;
-                if (receipt.getClient_id() != null && !receipt.getClient_id().isEmpty() && receipt.getBonuses() != null) {
-                    String clientQuery = "SELECT Bonus_number FROM client_card WHERE ID_number = ?";
-                    try (PreparedStatement clientPs = conn.prepareStatement(clientQuery)) {
-                        clientPs.setString(1, receipt.getClient_id());
-                        ResultSet rs = clientPs.executeQuery();
-                        if (rs.next()) {
-                            int clientBonuses = rs.getInt("Bonus_number");
-                            adjustedBonuses = (receipt.getBonuses() > clientBonuses) ? clientBonuses : receipt.getBonuses();
-                        } else {
-                            throw new SQLException("Client with ID " + receipt.getClient_id() + " not found");
-                        }
-                    }
-                }
-
-                if (adjustedBonuses == null) {
-                    ps.setNull(2, Types.INTEGER);
-                } else {
-                    ps.setInt(2, adjustedBonuses);
-                }
+                ps.setInt(2, receipt.getBonuses());
 
                 if (receipt.getClient_id() == null || receipt.getClient_id().isEmpty()) {
                     ps.setNull(3, Types.VARCHAR);

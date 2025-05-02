@@ -59,12 +59,9 @@ public class ReceiptController {
     @PostMapping("/receipts")
     public String saveReceipt(@ModelAttribute("receipt") Receipt receipt,
                               @RequestParam("instanceIds") List<Long> instanceIds, BindingResult result, Model model) {
-
-        // Тут виконується валідація
         ClientCard clientCard;
         Book book;
         if(receipt.getClient_id() != null && !receipt.getClient_id().isEmpty()) {
-            System.out.println(receipt.getClient_id());
             clientCard = clientCardService.getById(receipt.getClient_id());
             if(clientCard.getAge()<18){
                 for (Long instanceId : instanceIds) {
@@ -73,6 +70,9 @@ public class ReceiptController {
                         result.rejectValue("client_id", "error.client_id", "В списку є книга 18+, Ви не можете продати її неповнолітньому клієнту!");
                     }
                 }
+            }
+            if(receipt.getBonuses() != null && clientCard.getNumberOfBonuses() < receipt.getBonuses()) {
+                result.rejectValue("bonuses", "error.bonuses", "Недостатньо бонусів на картці клієнта!");
             }
         }
         if (result.hasErrors()) {
