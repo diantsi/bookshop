@@ -4,6 +4,25 @@
 <head>
     <meta charset="UTF-8">
     <title>Add Book</title>
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+    <style>
+        .select2-container--default .select2-selection--multiple {
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            min-height: 38px;
+            padding: 5px;
+        }
+        .select2-container--default .select2-selection--multiple .select2-selection__choice {
+            background-color: #e4e4e4;
+            border: 1px solid #aaa;
+            border-radius: 4px;
+            padding: 0 5px;
+        }
+        .select2-container--default .select2-selection--multiple .select2-selection__choice__remove {
+            margin-right: 5px;
+            color: #999;
+        }
+    </style>
 </head>
 <body>
 <div layout:fragment="content">
@@ -114,10 +133,11 @@
                                 <input type="number" step="0.10" th:field="*{price}"  min ="1"  class="form-control" required/>
                             </div>
                         </div>
+
                         <div class="form-group">
                             <label class="control-label col-sm-4">Genres</label>
                             <div class="col-sm-6">
-                                <select name="genreIds" class="form-control" multiple="multiple" required>
+                                <select name="genreIds" class="form-control genre-select" multiple="multiple" required>
                                     <option th:each="genre : ${genres}"
                                             th:value="${genre.id}"
                                             th:text="${genre.name}"></option>
@@ -127,9 +147,9 @@
                                style="margin-top: 10px;">Manage genres</a>
                         </div>
                         <div class="form-group">
-                            <label class="control-label col-sm-4"> Authors </label>
+                            <label class="control-label col-sm-4">Authors</label>
                             <div class="col-sm-6">
-                                <select name="authorIds" class="form-control" multiple="multiple" required>
+                                <select name="authorIds" class="form-control author-select" multiple="multiple" required>
                                     <option th:each="author : ${authors}"
                                             th:value="${author.id}"
                                             th:text="${author.full_name}"></option>
@@ -141,14 +161,14 @@
                         <div class="form-group">
                             <label class="control-label col-sm-4">Translators</label>
                             <div class="col-sm-6">
-                                <select name="translatorIds" class="form-control" multiple="multiple">
+                                <select name="translatorIds" class="form-control translator-select" multiple="multiple">
                                     <option th:each="translator : ${translators}"
                                             th:value="${translator.id}"
                                             th:text="${translator.full_name}"></option>
                                 </select>
                             </div>
                             <a href="/translators" class="btn btn-primary btn-sm"
-                                     style="margin-top: 10px;">Manage Translators</a>
+                               style="margin-top: 10px;">Manage Translators</a>
                         </div>
                     </div>
                 </section>
@@ -164,3 +184,27 @@
 </div>
 </body>
 </html>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script>
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        // Initialize all select2 elements
+        initSelect2('.author-select', "Search authors...", "No authors found");
+        initSelect2('.translator-select', "Search translators...", "No translators found");
+        initSelect2('.genre-select', "Search genres...", "No genres found");
+
+        // Function to initialize select2 with custom options
+        function initSelect2(selector, placeholder, noResultsText) {
+            $(selector).select2({
+                placeholder: placeholder,
+                allowClear: true,
+                width: '100%',
+                closeOnSelect: false,
+                language: {
+                    noResults: function() {
+                        return noResultsText;
+                    }
+                }
+            });
+        }
+    });
+</script>
