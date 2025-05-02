@@ -104,7 +104,8 @@ public class ReceiptController {
 
     @GetMapping("/add_receipt")
     public String addReceipt(Model model) {
-        model.addAttribute("receipt", new Receipt());
+        Receipt receipt = new Receipt();
+        model.addAttribute("receipt", receipt);
         model.addAttribute("clientCards", clientCardService.getAllClientCards());
         model.addAttribute("workers", workerService.getAllWorkers());
         model.addAttribute("availableInstances", bookInstanceService.getAvailableInstances());
@@ -119,6 +120,7 @@ public class ReceiptController {
         model.addAttribute("receipt", receipt);
         model.addAttribute("clientCards", clientCardService.getAllClientCards());
         model.addAttribute("workers", workerService.getAllWorkers());
+        model.addAttribute("availableInstances", bookInstanceService.getAvailableInstances());
         //System.out.println(worker.get().getTabNumber());
         //model.addAttribute("tabNumber", worker.get().getTabNumber());
         return "receipt/add_receipt";

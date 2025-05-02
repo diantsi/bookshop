@@ -19,9 +19,9 @@
                             Define new receipt
                         </header>
                         <div class="panel-body">
-                            <div class="form-group">
+                            <div class="form-group" th:if="${#authorization.expression('hasAuthority(''Менеджер'')')}">
                                 <label class="control-label col-sm-4"> Purchase date </label>
-                                <div class="col-sm-6">
+                                <div class="col-sm-6" >
                                     <input type="datetime-local"
                                            id="timeInput"
                                            th:field="*{time}"

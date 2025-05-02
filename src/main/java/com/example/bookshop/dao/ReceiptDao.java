@@ -65,12 +65,19 @@ public class ReceiptDao {
 
     public void saveReceipt(Receipt receipt) {
         if (receipt.getId() == null) {
-            String query = "INSERT INTO receipt (Date_buy, Sum_of_check, User_bonus_number, ID_number_client, Tab_number_worker) VALUES (?, ?, ?, ?, ?)";
+
+            String query;
+            if(receipt.getTime()==null) {
+                query = "INSERT INTO receipt (Sum_of_check, User_bonus_number, ID_number_client, Tab_number_worker) VALUES (?, ?, ?, ?)";
+
+            } else{
+                query = "INSERT INTO receipt (Sum_of_check, User_bonus_number, ID_number_client, Tab_number_worker, Date_buy) VALUES (?, ?, ?, ?, ?)";
+            }
+
             try (Connection conn = daoConnection.getConnection();
                  PreparedStatement ps = conn.prepareStatement(query, Statement.RETURN_GENERATED_KEYS)) {
 
-                ps.setObject(1, receipt.getTime());
-                ps.setDouble(2, receipt.getTotalPrice());
+                ps.setDouble(1, receipt.getTotalPrice());
                 Integer adjustedBonuses = null;
                 if (receipt.getClient_id() != null && !receipt.getClient_id().isEmpty() && receipt.getBonuses() != null) {
                     String clientQuery = "SELECT Bonus_number FROM client_card WHERE ID_number = ?";
@@ -87,17 +94,21 @@ public class ReceiptDao {
                 }
 
                 if (adjustedBonuses == null) {
-                    ps.setNull(3, Types.INTEGER);
+                    ps.setNull(2, Types.INTEGER);
                 } else {
-                    ps.setInt(3, adjustedBonuses);
+                    ps.setInt(2, adjustedBonuses);
                 }
 
                 if (receipt.getClient_id() == null || receipt.getClient_id().isEmpty()) {
-                    ps.setNull(4, Types.VARCHAR);
+                    ps.setNull(3, Types.VARCHAR);
                 } else {
-                    ps.setString(4, receipt.getClient_id());
+                    ps.setString(3, receipt.getClient_id());
                 }
-                ps.setString(5, receipt.getWorker_id());
+                ps.setString(4, receipt.getWorker_id());
+
+                if(receipt.getTime()!=null) {
+                    ps.setObject(5, receipt.getTime());
+                }
                 ps.executeUpdate();
 
                 try (ResultSet generatedKeys = ps.getGeneratedKeys()) {
