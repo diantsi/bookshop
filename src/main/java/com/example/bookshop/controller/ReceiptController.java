@@ -179,11 +179,8 @@ public class ReceiptController {
         model.addAttribute("clientCards", clientCardService.getAllClientCards());
         model.addAttribute("workers", workerService.getAllWorkers());
         model.addAttribute("availableInstances", bookInstanceService.getAvailableInstances());
-        //System.out.println(worker.get().getTabNumber());
-        //model.addAttribute("tabNumber", worker.get().getTabNumber());
         return "receipt/add_receipt";
     }
-
     @GetMapping("/edit_receipt/{id}")
     public String editReceipt(@PathVariable Long id, Model model) {
         Receipt receipt = receiptService.getById(id);
