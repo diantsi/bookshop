@@ -3,6 +3,7 @@ package com.example.bookshop.controller;
 import com.example.bookshop.entity.*;
 import com.example.bookshop.security.LoginController;
 import com.example.bookshop.service.*;
+import jakarta.servlet.http.HttpSession;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -39,21 +40,35 @@ public class ReceiptController {
     @GetMapping({"/receipt", "/receipt.html"})
     public String showReceiptPage(@RequestParam(value = "starttime", required = false) LocalDateTime starttime,
                                   @RequestParam(value = "endtime", required = false) LocalDateTime endtime,
-                                  Model model) {
+                                  HttpSession session, Model model) {
         List<Receipt> receipts;
-        System.out.println("Start time: " + starttime);
-        System.out.println("End time: " + endtime);
         if (starttime != null && endtime != null) {
+            session.setAttribute("starttime", starttime);
+            session.setAttribute("endtime", endtime);
             receipts = receiptService.getReceiptsByDateRange(starttime, endtime);
         } else {
-            receipts = receiptService.getAllReceipts();
+            starttime = (LocalDateTime) session.getAttribute("starttime");
+            endtime = (LocalDateTime) session.getAttribute("endtime");
+            if (starttime != null && endtime != null) {
+                receipts = receiptService.getReceiptsByDateRange(starttime, endtime);
+            } else {
+                receipts = receiptService.getAllReceipts();
+            }
         }
         model.addAttribute("receipts", receipts);
+        model.addAttribute("starttime", starttime);
+        model.addAttribute("endtime", endtime);
         Optional<Worker> user = workerService.findByTabEmail(LoginController.USER);
         model.addAttribute("tab", user.get().getTabNumber());
         return "receipt/index";
     }
 
+    @GetMapping("/receipt/clear")
+    public String clearFilters(HttpSession session) {
+        session.removeAttribute("starttime");
+        session.removeAttribute("endtime");
+        return "redirect:/receipt";
+    }
     @GetMapping("/receipt/{id}")
     public String viewReceiptCard(@PathVariable Long id, Model model) {
         Receipt receipt = receiptService.getById(id);
