@@ -12,24 +12,24 @@
 
         }
 
-        td{
+        td {
             padding: 0;
             margin: 0;
         }
 
-        tr{
+        tr {
             padding: 0;
             margin: 0;
         }
 
-        table{
+        table {
             padding: 0;
             margin: 0;
         }
 
         @media print {
 
-            @page{
+            @page {
                 padding: 3px;
             }
 
@@ -94,13 +94,16 @@
                     </a>
                 </div>
                 <div class="col-lg-10">
-                    <form th:action="@{/receipt(keyTab=${keyTab})}" th:object="${receipt}" method="get" class="form-inline d-flex gap-2" id="searchForm">
-                        <input type="datetime-local" name="starttime" id="starttime" class="form-control form-control-sm"
-                               style="width: 180px;" th:value="${starttime}" />
+                    <form th:action="@{/receipt(keyTab=${keyTab})}" th:object="${receipt}" method="get"
+                          class="form-inline d-flex gap-2" id="searchForm">
+                        <input type="datetime-local" name="starttime" id="starttime"
+                               class="form-control form-control-sm"
+                               style="width: 180px;" th:value="${starttime}"/>
                         <input type="datetime-local" name="endtime" id="endtime" class="form-control form-control-sm"
-                               style="width: 180px;" th:value="${endtime}" />
+                               style="width: 180px;" th:value="${endtime}"/>
 
-                        <select id="keyTab" th:value="${keyTab}" class="form-control book-select" name="keyTab" style="display: inline; width: 30%">
+                        <select id="keyTab" th:value="${keyTab}" class="form-control book-select" name="keyTab"
+                                style="display: inline; width: 30%">
                             <option value="">All workers</option>
                             <option th:each="worker : ${workers}"
                                     th:value="${worker.getTabNumber()}"
@@ -110,13 +113,13 @@
                         </select>
 
                         <button type="submit" class="btn btn-success btn-sm" style="font-size: 14px;">Search</button>
-                        <button type="button" class="btn btn-danger btn-sm" title="Clear" style="font-size: 14px;" onclick="clearFilters()">
+                        <button type="button" class="btn btn-danger btn-sm" title="Clear" style="font-size: 14px;"
+                                onclick="clearFilters()">
                             <i class="icon_trash"></i>
                         </button>
 
                     </form>
                 </div>
-
 
 
             </div>
@@ -138,7 +141,7 @@
                     <table style="width: 100%;">
                         <thead>
                         <tr>
-                            <td >
+                            <td>
                                 <!--place holder for the fixed-position header-->
                                 <div class="page-header-space print-only"></div>
                             </td>
@@ -150,9 +153,22 @@
                             <td style="width: 100%">
 
                                 <div class="print-body">
-                                    <h2 id="printTitle" class="print-only" style="text-align: center">Звіт: чеки</h2>
+                                    <h2 id="printTitle" class="print-only" style="text-align: center">Звіт по усіх
+                                        чеках</h2>
 
-                                    <table class="table table-striped table-advance table-hover" style="width: 100%; margin-bottom:0">
+
+                                    <div class="print-only" style="text-align: left; margin-bottom: 10px;">
+                                        <span th:if="${starttime != null && starttime != ''}" id="formattedStartTime"
+                                              th:text="${starttime}"></span><br/>
+                                        <span th:if="${endtime != null && endtime != ''}" id="formattedEndTime"
+                                              th:text="${endtime}"></span><br/>
+                                        <span th:if="${keyTab != null && keyTab != ''}"
+                                              th:text="'Працівник: '+${keyTab}"></span>
+                                    </div>
+
+
+                                    <table class="table table-striped table-advance table-hover"
+                                           style="width: 100%; margin-bottom:0">
                                         <tbody>
                                         <tr>
                                             <th><i class="icon_id_alt"></i> id</th>
@@ -237,5 +253,46 @@
                 console.error('Error:', error);
                 alert('Помилка при очищенні фільтрів');
             });
+
+
     }
+
+
+    document.addEventListener("DOMContentLoaded", function () {
+        // Отримуємо значення starttime з елемента
+        var starttime = document.getElementById("formattedStartTime").textContent.trim();
+        var endtime = document.getElementById("formattedEndTime").textContent.trim();
+
+        // Перевіряємо, чи є значення
+        if (starttime) {
+            // Якщо формат дати такий, як 'yyyy-MM-ddTHH:mm' (наприклад: '2025-05-03T12:45')
+            var date = new Date(starttime);
+            var dateEnd = new Date(endtime);
+
+
+            // Перевірка, чи дата коректно розпарсилась
+            if (isNaN(date)) {
+                console.error("Невірний формат дати");
+                return;
+            }
+
+            // Форматуємо дату
+            var formattedDate = date.getFullYear() + '-' +
+                ('0' + (date.getMonth() + 1)).slice(-2) + '-' +
+                ('0' + date.getDate()).slice(-2) + ' ' +
+                ('0' + date.getHours()).slice(-2) + ':' +
+                ('0' + date.getMinutes()).slice(-2);
+
+            var formattedDateEnd = dateEnd.getFullYear() + '-' +
+                ('0' + (dateEnd.getMonth() + 1)).slice(-2) + '-' +
+                ('0' + dateEnd.getDate()).slice(-2) + ' ' +
+                ('0' + dateEnd.getHours()).slice(-2) + ':' +
+                ('0' + dateEnd.getMinutes()).slice(-2);
+
+            // Виводимо відформатовану дату
+            document.getElementById("formattedStartTime").textContent = 'З: ' + formattedDate;
+            document.getElementById("formattedEndTime").textContent = 'По: ' + formattedDateEnd;
+
+        }
+    });
 </script>
