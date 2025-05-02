@@ -5,6 +5,38 @@
 <head>
     <meta charset="UTF-8">
     <title>Add receipt</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
+    <style>
+        .selected-books-container {
+            border: 1px solid #ddd;
+            padding: 10px;
+            margin-bottom: 15px;
+            border-radius: 5px;
+        }
+        .selected-book-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 5px;
+            border-bottom: 1px solid #eee;
+        }
+        .selected-book-item:last-child {
+            border-bottom: none;
+        }
+        .remove-book-btn {
+            color: #dc3545;
+            cursor: pointer;
+            background: none;
+            border: none;
+        }
+        .search-box {
+            margin-bottom: 10px;
+        }
+        #bookInstancesDropdown {
+            max-height: 200px;
+            overflow-y: auto;
+        }
+    </style>
 </head>
 <body>
 <div layout:fragment="content">
@@ -21,7 +53,7 @@
                         <div class="panel-body">
                             <div class="form-group" th:if="${#authorization.expression('hasAuthority(''Менеджер'')')}">
                                 <label class="control-label col-sm-4"> Purchase date </label>
-                                <div class="col-sm-6" >
+                                <div class="col-sm-6">
                                     <input type="datetime-local"
                                            id="timeInput"
                                            th:field="*{time}"
@@ -76,15 +108,28 @@
                             </div>
                         </div>
                         <div class="form-group">
-                            <label class="control-label col-sm-4">Available Book Instances</label>
+                            <label class="control-label col-sm-4">Select Books</label>
                             <div class="col-sm-6">
-                                <select name="instanceIds" multiple class="form-control" required>
+                                <div class="search-box">
+                                    <input type="text" id="bookSearch" class="form-control" placeholder="Search by ISBN or name...">
+                                </div>
+                                <select id="bookInstancesDropdown" multiple class="form-control" size="5">
                                     <option th:each="instance : ${availableInstances}"
                                             th:value="${instance.id}"
-                                            th:selected="${selectedInstanceIds != null and selectedInstanceIds.contains(instance.id)}"
+                                            th:data-isbn="${instance.ISBN}"
+                                            th:data-name="${instance.book_name}"
                                             th:text="${instance.book_name + ' (' + instance.ISBN + ')'}">
                                     </option>
                                 </select>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label col-sm-4">Selected Books</label>
+                            <div class="col-sm-6">
+                                <div class="selected-books-container" id="selectedBooksContainer">
+                                    <!-- Selected books will appear here -->
+                                </div>
+                                <input type="hidden" id="selectedInstanceIds" name="instanceIds" value="">
                             </div>
                         </div>
                     </section>
@@ -103,20 +148,132 @@
 </body>
 </html>
 
-</div>
-</body>
-</html>
 <script>
     document.addEventListener('DOMContentLoaded', function () {
         const now = new Date();
         const timeInput = document.getElementById('timeInput');
         const formattedDate = now.toISOString().slice(0, 16);
         timeInput.max = formattedDate;
+
+        // Initialize book selection functionality
+        initBookSelection();
     });
+
+    function initBookSelection() {
+        const bookSearch = document.getElementById('bookSearch');
+        const bookInstancesDropdown = document.getElementById('bookInstancesDropdown');
+        const selectedBooksContainer = document.getElementById('selectedBooksContainer');
+        const selectedInstanceIdsInput = document.getElementById('selectedInstanceIds');
+
+        // Array to store selected book instances
+        let selectedBooks = [];
+
+        // Load previously selected books if any
+        const initialSelectedIds = selectedInstanceIdsInput.value ? selectedInstanceIdsInput.value.split(',') : [];
+        if (initialSelectedIds.length > 0) {
+            initialSelectedIds.forEach(id => {
+                const option = bookInstancesDropdown.querySelector(`option[value="${id}"]`);
+                if (option) {
+                    addBookToSelection(option);
+                }
+            });
+        }
+
+        // Search functionality
+        bookSearch.addEventListener('input', function() {
+            const searchTerm = this.value.toLowerCase();
+            Array.from(bookInstancesDropdown.options).forEach(option => {
+                const text = option.text.toLowerCase();
+                const isbn = option.getAttribute('data-isbn').toLowerCase();
+                const name = option.getAttribute('data-name').toLowerCase();
+
+                if (text.includes(searchTerm) || isbn.includes(searchTerm) || name.includes(searchTerm)) {
+                    option.style.display = 'block';
+                } else {
+                    option.style.display = 'none';
+                }
+            });
+        });
+
+        // Add book to selection when clicked
+        bookInstancesDropdown.addEventListener('click', function(e) {
+            if (e.target.tagName === 'OPTION') {
+                addBookToSelection(e.target);
+            }
+        });
+
+        function addBookToSelection(option) {
+            const instanceId = option.value;
+
+            // Check if already selected
+            if (selectedBooks.includes(instanceId)) {
+                return;
+            }
+
+            selectedBooks.push(instanceId);
+            updateSelectedBooksDisplay();
+
+            // Highlight selected option
+            option.style.backgroundColor = '#f8f9fa';
+        }
+
+        function removeBookFromSelection(instanceId) {
+            selectedBooks = selectedBooks.filter(id => id !== instanceId);
+            updateSelectedBooksDisplay();
+
+            // Remove highlight from option
+            const option = bookInstancesDropdown.querySelector(`option[value="${instanceId}"]`);
+            if (option) {
+                option.style.backgroundColor = '';
+            }
+        }
+
+        function updateSelectedBooksDisplay() {
+            selectedBooksContainer.innerHTML = '';
+
+            if (selectedBooks.length === 0) {
+                selectedBooksContainer.innerHTML = '<p>No books selected</p>';
+                selectedInstanceIdsInput.value = '';
+                return;
+            }
+
+            selectedBooks.forEach(instanceId => {
+                const option = bookInstancesDropdown.querySelector(`option[value="${instanceId}"]`);
+                if (option) {
+                    const bookItem = document.createElement('div');
+                    bookItem.className = 'selected-book-item';
+                    bookItem.innerHTML = `
+                        <span>${option.text}</span>
+                        <button class="remove-book-btn" data-id="${instanceId}">
+                            <i class="bi bi-x-circle"></i>
+                        </button>
+                    `;
+                    selectedBooksContainer.appendChild(bookItem);
+                }
+            });
+
+            // Update hidden input with selected IDs
+            selectedInstanceIdsInput.value = selectedBooks.join(',');
+
+            // Add event listeners to remove buttons
+            document.querySelectorAll('.remove-book-btn').forEach(btn => {
+                btn.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    removeBookFromSelection(this.getAttribute('data-id'));
+                });
+            });
+        }
+    }
 
     function validateForm() {
         const timeInput = document.getElementById('timeInput');
         const bonusesInput = document.querySelector('input[name="bonuses"]');
+        const selectedBooks = document.getElementById('selectedInstanceIds').value;
+
+        if (!selectedBooks) {
+            alert("Please select at least one book!");
+            return false;
+        }
 
         const selectedDate = new Date(timeInput.value);
         const now = new Date();
