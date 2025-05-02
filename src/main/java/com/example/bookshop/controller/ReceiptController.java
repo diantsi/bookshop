@@ -3,12 +3,14 @@ package com.example.bookshop.controller;
 import com.example.bookshop.entity.*;
 import com.example.bookshop.security.LoginController;
 import com.example.bookshop.service.*;
+import jakarta.servlet.http.HttpSession;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -36,14 +38,37 @@ public class ReceiptController {
     }
 
     @GetMapping({"/receipt", "/receipt.html"})
-    public String showReceiptPage(Model model) {
-        List<Receipt> receipts = receiptService.getAllReceipts();
+    public String showReceiptPage(@RequestParam(value = "starttime", required = false) LocalDateTime starttime,
+                                  @RequestParam(value = "endtime", required = false) LocalDateTime endtime,
+                                  HttpSession session, Model model) {
+        List<Receipt> receipts;
+        if (starttime != null && endtime != null) {
+            session.setAttribute("starttime", starttime);
+            session.setAttribute("endtime", endtime);
+            receipts = receiptService.getReceiptsByDateRange(starttime, endtime);
+        } else {
+            starttime = (LocalDateTime) session.getAttribute("starttime");
+            endtime = (LocalDateTime) session.getAttribute("endtime");
+            if (starttime != null && endtime != null) {
+                receipts = receiptService.getReceiptsByDateRange(starttime, endtime);
+            } else {
+                receipts = receiptService.getAllReceipts();
+            }
+        }
         model.addAttribute("receipts", receipts);
+        model.addAttribute("starttime", starttime);
+        model.addAttribute("endtime", endtime);
         Optional<Worker> user = workerService.findByTabEmail(LoginController.USER);
         model.addAttribute("tab", user.get().getTabNumber());
         return "receipt/index";
     }
 
+    @GetMapping("/receipt/clear")
+    public String clearFilters(HttpSession session) {
+        session.removeAttribute("starttime");
+        session.removeAttribute("endtime");
+        return "redirect:/receipt";
+    }
     @GetMapping("/receipt/{id}")
     public String viewReceiptCard(@PathVariable Long id, Model model) {
         Receipt receipt = receiptService.getById(id);
@@ -59,12 +84,9 @@ public class ReceiptController {
     @PostMapping("/receipts")
     public String saveReceipt(@ModelAttribute("receipt") Receipt receipt,
                               @RequestParam("instanceIds") List<Long> instanceIds, BindingResult result, Model model) {
-
-        // Тут виконується валідація
         ClientCard clientCard;
         Book book;
         if(receipt.getClient_id() != null && !receipt.getClient_id().isEmpty()) {
-            System.out.println(receipt.getClient_id());
             clientCard = clientCardService.getById(receipt.getClient_id());
             if(clientCard.getAge()<18){
                 for (Long instanceId : instanceIds) {
@@ -73,6 +95,9 @@ public class ReceiptController {
                         result.rejectValue("client_id", "error.client_id", "В списку є книга 18+, Ви не можете продати її неповнолітньому клієнту!");
                     }
                 }
+            }
+            if(receipt.getBonuses() != null && clientCard.getNumberOfBonuses() < receipt.getBonuses()) {
+                result.rejectValue("bonuses", "error.bonuses", "Недостатньо бонусів на картці клієнта!");
             }
         }
         if (result.hasErrors()) {
