@@ -116,7 +116,8 @@ public class ReceiptController {
 
     @PostMapping("/receipts")
     public String saveReceipt(@ModelAttribute("receipt") Receipt receipt,
-                              @RequestParam("instanceIds") List<Long> instanceIds, BindingResult result, Model model) {
+                              @RequestParam("instanceIds") List<Long> instanceIds,
+                              BindingResult result, Model model) {
         ClientCard clientCard;
         Book book;
         if(receipt.getClient_id() != null && !receipt.getClient_id().isEmpty()) {
@@ -141,13 +142,10 @@ public class ReceiptController {
             return "receipt/add_receipt";
         }
 
-
         List<BookInstance> instances = bookInstanceService.getInstancesByIds(instanceIds);
 
-        double totalPrice = receiptService.calculateTotalPrice(instances);
-        totalPrice -= (receipt.getBonuses() != null) ? receipt.getBonuses() : 0;
-        receipt.setTotalPrice(totalPrice);
-        if (totalPrice > 0) {
+        // Use the total price that was calculated on the client side
+        if (receipt.getTotalPrice() > 0) {
             receiptService.saveReceipt(receipt);
             for (BookInstance instance : instances) {
                 instance.setReceipt_id(receipt.getId());

@@ -61,6 +61,12 @@
         .select2-selection__arrow {
             height: 36px !important;
         }
+
+        .total-price {
+            font-weight: bold;
+            font-size: 1.2em;
+            margin-left: 10px;
+        }
     </style>
 </head>
 <body>
@@ -91,10 +97,11 @@
                                 <label class="control-label col-sm-4"> Number of bonuses </label>
                                 <div class="col-sm-6">
                                     <input type="number"
+                                           id="bonusesInput"
                                            th:field="*{bonuses}"
                                            class="form-control"
                                            min="0"
-                                           oninput="this.value = Math.abs(this.value)">
+                                           oninput="calculateTotalPrice()">
                                     <div th:if="${#fields.hasErrors('bonuses')}" th:errors="*{bonuses}"
                                          class="text-danger"></div>
                                 </div>
@@ -102,12 +109,13 @@
                             <div class="form-group">
                                 <label class="control-label col-sm-4">Client</label>
                                 <div class="col-sm-6">
-                                    <select th:field="*{client_id}" class="form-control client-select"
+                                    <select th:field="*{client_id}" class="form-control client-select" id="clientSelect"
                                             th:classappend="${#fields.hasErrors('client_id')} ? 'is-invalid'">
                                         <option value=""></option>
                                         <option th:each="client : ${clientCards}"
                                                 th:value="${client.idNumber}"
-                                                th:text="${client.idNumber + ' (' + client.surname + ' ' + client.firstName + ')'}">
+                                                th:text="${client.idNumber + ' (' + client.surname + ' ' + client.firstName + ')'}"
+                                                th:data-bonuses="${client.numberOfBonuses}">
                                         </option>
                                     </select>
                                     <div th:if="${#fields.hasErrors('client_id')}" th:errors="*{client_id}"
@@ -141,10 +149,12 @@
                                     </div>
                                     <select id="bookInstancesDropdown" multiple class="form-control" size="5">
                                         <option th:each="instance : ${availableInstances}"
+                                                th:with="book=${@bookService.getByIsbn(instance.ISBN)}"
                                                 th:value="${instance.id}"
                                                 th:data-isbn="${instance.ISBN}"
                                                 th:data-name="${instance.book_name}"
-                                                th:text="${instance.book_name + ' (' + instance.ISBN + ')'}">
+                                                th:data-price="${book.price}"
+                                                th:text="${instance.book_name + ' (' + instance.ISBN + ') - ' + book.price + '₴'}">
                                         </option>
                                     </select>
                                 </div>
@@ -159,7 +169,8 @@
                             </div>
                             <div class="form-group">
                                 <label class="control-label col-sm-4">Total Price</label>
-                                <span th:text="${receipt.totalPrice}"></span>
+                                <span id="totalPriceDisplay" class="total-price">0.00₴</span>
+                                <input type="hidden" id="totalPriceInput" th:field="*{totalPrice}">
                             </div>
                         </div>
                     </section>
@@ -193,6 +204,14 @@
         initClientSelect();
 
         initWorkerSelect();
+
+        // Initialize client select change event
+        document.getElementById('clientSelect').addEventListener('change', function() {
+            const selectedOption = this.options[this.selectedIndex];
+            const bonusesAvailable = selectedOption ? parseInt(selectedOption.getAttribute('data-bonuses')) || 0 : 0;
+            document.getElementById('bonusesInput').max = bonusesAvailable;
+            calculateTotalPrice();
+        });
     });
 
     function initWorkerSelect() {
@@ -261,6 +280,7 @@
         bookInstancesDropdown.addEventListener('click', function (e) {
             if (e.target.tagName === 'OPTION') {
                 addBookToSelection(e.target);
+                calculateTotalPrice();
             }
         });
 
@@ -288,6 +308,8 @@
             if (option) {
                 option.style.backgroundColor = '';
             }
+
+            calculateTotalPrice();
         }
 
         function updateSelectedBooksDisplay() {
@@ -327,10 +349,35 @@
         }
     }
 
+    function calculateTotalPrice() {
+        const bookInstancesDropdown = document.getElementById('bookInstancesDropdown');
+        const selectedBooks = document.getElementById('selectedInstanceIds').value.split(',').filter(id => id !== '');
+        const bonuses = parseInt(document.getElementById('bonusesInput').value) || 0;
+
+        let totalPrice = 0;
+
+        selectedBooks.forEach(instanceId => {
+            const option = bookInstancesDropdown.querySelector(`option[value="${instanceId}"]`);
+            if (option) {
+                const price = parseFloat(option.getAttribute('data-price')) || 0;
+                totalPrice += price;
+            }
+        });
+
+        // Apply bonuses
+        totalPrice = Math.max(0, totalPrice - bonuses);
+
+        // Update display
+        document.getElementById('totalPriceDisplay').textContent = totalPrice.toFixed(2) + '₴';
+        document.getElementById('totalPriceInput').value = totalPrice;
+    }
+
     function validateForm() {
         const timeInput = document.getElementById('timeInput');
-        const bonusesInput = document.querySelector('input[name="bonuses"]');
+        const bonusesInput = document.getElementById('bonusesInput');
         const selectedBooks = document.getElementById('selectedInstanceIds').value;
+        const clientSelect = document.getElementById('clientSelect');
+        const selectedClient = clientSelect.options[clientSelect.selectedIndex];
 
         if (!selectedBooks) {
             alert("Please select at least one book!");
@@ -348,6 +395,15 @@
         if (bonusesInput.value < 0) {
             alert("Кількість бонусів не може бути від'ємною!");
             return false;
+        }
+
+        // Check if bonuses exceed available for client
+        if (selectedClient && selectedClient.value) {
+            const maxBonuses = parseInt(selectedClient.getAttribute('data-bonuses')) || 0;
+            if (parseInt(bonusesInput.value) > maxBonuses) {
+                alert("Недостатньо бонусів на картці клієнта!");
+                return false;
+            }
         }
 
         return true;
