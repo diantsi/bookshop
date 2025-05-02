@@ -55,4 +55,12 @@ public class ReceiptService {
         return receiptDao.findByDateRange(starttime, endtime);
     }
 
+    public List<Receipt> getReceiptsByDateRangeWithWorker(LocalDateTime starttime, LocalDateTime endtime, String tabNum) {
+        return receiptDao.findByDateRangeWithWorker(starttime, endtime, tabNum);
+    }
+
+    public List<Receipt> getReceiptsWithWorker(String tabNum) {
+        return receiptDao.findByWorker(tabNum);
+    }
+
 }

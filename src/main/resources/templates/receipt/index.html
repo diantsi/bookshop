@@ -83,26 +83,41 @@
             <div class="row align-items-center">
                 <div class="col-lg-2">
                     <a href="/add_receipt" data-toggle="modal" class="btn btn-primary btn-sm mb-1"
-                       th:if="${#authorization.expression('hasAuthority(''Менеджер'')')}">
+                       th:if="${#authorization.expression('hasAuthority(''Менеджер'')')}"
+                       style="font-size: 14px;">
                         New Receipt
                     </a>
                     <a href="/add_my_receipt" data-toggle="modal" class="btn btn-primary btn-sm mb-1"
-                       th:if="${#authorization.expression('hasAuthority(''Касир'')')}">
+                       th:if="${#authorization.expression('hasAuthority(''Касир'')')}"
+                       style="font-size: 14px;">
                         New Receipt
                     </a>
                 </div>
-                <div class="col-lg-8">
-                    <form th:action="@{/receipt}" th:object="${receipt}" method="get" class="form-inline d-flex gap-2" id="searchForm">
+                <div class="col-lg-10">
+                    <form th:action="@{/receipt(keyTab=${keyTab})}" th:object="${receipt}" method="get" class="form-inline d-flex gap-2" id="searchForm">
                         <input type="datetime-local" name="starttime" id="starttime" class="form-control form-control-sm"
                                style="width: 180px;" th:value="${starttime}" />
                         <input type="datetime-local" name="endtime" id="endtime" class="form-control form-control-sm"
                                style="width: 180px;" th:value="${endtime}" />
-                        <button type="submit" class="btn btn-success btn-sm">Search</button>
-                        <button type="button" class="btn btn-danger btn-sm" title="Clear" onclick="clearFilters()">
+
+                        <select id="keyTab" th:value="${keyTab}" class="form-control book-select" name="keyTab" style="display: inline; width: 30%">
+                            <option value="">All workers</option>
+                            <option th:each="worker : ${workers}"
+                                    th:value="${worker.getTabNumber()}"
+                                    th:text="${worker.getTabNumber() + ' (' + worker.getSurname() + ' ' + worker.getFirstName() + ')'}"
+                                    th:selected="${worker.getTabNumber() == keyTab}">
+                            </option>
+                        </select>
+
+                        <button type="submit" class="btn btn-success btn-sm" style="font-size: 14px;">Search</button>
+                        <button type="button" class="btn btn-danger btn-sm" title="Clear" style="font-size: 14px;" onclick="clearFilters()">
                             <i class="icon_trash"></i>
                         </button>
+
                     </form>
                 </div>
+
+
 
             </div>
         </div>
@@ -199,6 +214,8 @@
         // Очищення полів форми
         document.getElementById('starttime').value = '';
         document.getElementById('endtime').value = '';
+        document.getElementById('keyTab').value = '';
+
 
         // Виклик AJAX для очищення сесії
         fetch('/receipt/clear', {

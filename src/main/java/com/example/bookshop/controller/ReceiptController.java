@@ -44,32 +44,53 @@ public class ReceiptController {
     @GetMapping({"/receipt", "/receipt.html"})
     public String showReceiptPage(@RequestParam(value = "starttime", required = false) LocalDateTime starttime,
                                   @RequestParam(value = "endtime", required = false) LocalDateTime endtime,
-                                  HttpSession session, Model model) {
+                                  HttpSession session, Model model, String keyTab) {
         List<Receipt> receipts = new ArrayList<>();
+
         try {
             if (starttime != null && endtime != null) {
                 session.setAttribute("starttime", starttime);
                 session.setAttribute("endtime", endtime);
-                receipts = receiptService.getReceiptsByDateRange(starttime, endtime);
+                if(keyTab != null && !keyTab.isEmpty()) {
+                    receipts = receiptService.getReceiptsByDateRangeWithWorker(starttime, endtime, keyTab);
+                } else {
+                    receipts = receiptService.getReceiptsByDateRange(starttime, endtime);
+                }
             } else {
                 starttime = (LocalDateTime) session.getAttribute("starttime");
                 endtime = (LocalDateTime) session.getAttribute("endtime");
-                receipts = (starttime != null && endtime != null)
-                        ? receiptService.getReceiptsByDateRange(starttime, endtime)
-                        : receiptService.getAllReceipts();
+                if(keyTab != null && !keyTab.isEmpty()) {
+                    receipts = (starttime != null && endtime != null)
+                            ? receiptService.getReceiptsByDateRangeWithWorker(starttime, endtime, keyTab)
+                            : receiptService.getReceiptsWithWorker(keyTab);
+                } else {
+                    receipts = (starttime != null && endtime != null)
+                            ? receiptService.getReceiptsByDateRange(starttime, endtime)
+                            : receiptService.getAllReceipts();
+                }
+
             }
+
+
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm");
             model.addAttribute("starttime", starttime != null ? starttime.format(formatter) : "");
             model.addAttribute("endtime", endtime != null ? endtime.format(formatter) : "");
             model.addAttribute("receipts", receipts);
             Optional<Worker> user = workerService.findByTabEmail(LoginController.USER);
             model.addAttribute("tab", user.isPresent() ? user.get().getTabNumber() : "");
+            List<Worker> workers = workerService.getAllWorkers();
+            model.addAttribute("workers", workers);
+            model.addAttribute("keyTab", keyTab);
+
+
         } catch (Exception e) {
             model.addAttribute("error", "Не вдалося завантажити чеки");
             model.addAttribute("receipts", new ArrayList<>());
             model.addAttribute("starttime", "");
             model.addAttribute("endtime", "");
             model.addAttribute("tab", "");
+            model.addAttribute("keyTab", "");
+
         }
         return "receipt/index";
     }
