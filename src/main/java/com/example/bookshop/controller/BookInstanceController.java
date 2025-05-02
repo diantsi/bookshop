@@ -54,7 +54,6 @@ public class BookInstanceController {
 
         List<Book> books = bookService.getAllBooks();
 
-
         model.addAttribute("keyISBN", keyISBN);
         model.addAttribute("instances", instances);
         model.addAttribute("books", books);
