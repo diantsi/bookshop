@@ -4,6 +4,7 @@ import com.example.bookshop.entity.*;
 import com.example.bookshop.security.LoginController;
 import com.example.bookshop.service.*;
 import jakarta.servlet.http.HttpSession;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -11,7 +12,10 @@ import org.springframework.web.bind.annotation.*;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 @Controller
@@ -41,33 +45,41 @@ public class ReceiptController {
     public String showReceiptPage(@RequestParam(value = "starttime", required = false) LocalDateTime starttime,
                                   @RequestParam(value = "endtime", required = false) LocalDateTime endtime,
                                   HttpSession session, Model model) {
-        List<Receipt> receipts;
-        if (starttime != null && endtime != null) {
-            session.setAttribute("starttime", starttime);
-            session.setAttribute("endtime", endtime);
-            receipts = receiptService.getReceiptsByDateRange(starttime, endtime);
-        } else {
-            starttime = (LocalDateTime) session.getAttribute("starttime");
-            endtime = (LocalDateTime) session.getAttribute("endtime");
+        List<Receipt> receipts = new ArrayList<>();
+        try {
             if (starttime != null && endtime != null) {
+                session.setAttribute("starttime", starttime);
+                session.setAttribute("endtime", endtime);
                 receipts = receiptService.getReceiptsByDateRange(starttime, endtime);
             } else {
-                receipts = receiptService.getAllReceipts();
+                starttime = (LocalDateTime) session.getAttribute("starttime");
+                endtime = (LocalDateTime) session.getAttribute("endtime");
+                receipts = (starttime != null && endtime != null)
+                        ? receiptService.getReceiptsByDateRange(starttime, endtime)
+                        : receiptService.getAllReceipts();
             }
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm");
+            model.addAttribute("starttime", starttime != null ? starttime.format(formatter) : "");
+            model.addAttribute("endtime", endtime != null ? endtime.format(formatter) : "");
+            model.addAttribute("receipts", receipts);
+            Optional<Worker> user = workerService.findByTabEmail(LoginController.USER);
+            model.addAttribute("tab", user.isPresent() ? user.get().getTabNumber() : "");
+        } catch (Exception e) {
+            model.addAttribute("error", "Не вдалося завантажити чеки");
+            model.addAttribute("receipts", new ArrayList<>());
+            model.addAttribute("starttime", "");
+            model.addAttribute("endtime", "");
+            model.addAttribute("tab", "");
         }
-        model.addAttribute("receipts", receipts);
-        model.addAttribute("starttime", starttime);
-        model.addAttribute("endtime", endtime);
-        Optional<Worker> user = workerService.findByTabEmail(LoginController.USER);
-        model.addAttribute("tab", user.get().getTabNumber());
         return "receipt/index";
     }
 
     @GetMapping("/receipt/clear")
-    public String clearFilters(HttpSession session) {
+    @ResponseBody
+    public ResponseEntity<Map<String, Boolean>> clearFilters(HttpSession session) {
         session.removeAttribute("starttime");
         session.removeAttribute("endtime");
-        return "redirect:/receipt";
+        return ResponseEntity.ok(Map.of("success", true));
     }
     @GetMapping("/receipt/{id}")
     public String viewReceiptCard(@PathVariable Long id, Model model) {
