@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import com.example.bookshop.dao.ReceiptDao;
 import com.example.bookshop.entity.BookInstance;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
@@ -48,6 +49,10 @@ public class ReceiptService {
             }
         }
         return total;
+    }
+
+    public List<Receipt> getReceiptsByDateRange(LocalDateTime starttime, LocalDateTime endtime) {
+        return receiptDao.findByDateRange(starttime, endtime);
     }
 
 }

@@ -63,6 +63,50 @@ public class ReceiptDao {
         return receipts;
     }
 
+    public List<Receipt> findByDateRange(LocalDateTime starttime, LocalDateTime endtime) {
+        List<Receipt> receipts = new ArrayList<>();
+        String query = "SELECT " +
+                "r.Id_number_of_check, " +
+                "r.Date_buy, " +
+                "r.Sum_of_check, " +
+                "r.User_bonus_number, " +
+                "r.ID_number_client, " +
+                "CONCAT(c.Surname, ' ', c.First_name) AS Client_full_name," +
+                "r.Tab_number_worker, " +
+                "CONCAT(w.Surname, ' ', w.First_name) AS Worker_full_name " +
+                "FROM receipt r " +
+                "INNER JOIN worker w ON r.Tab_number_worker = w.Tab_number " +
+                "LEFT JOIN client_card c ON r.ID_number_client = c.ID_number " +
+                "WHERE r.Date_buy BETWEEN ? AND ? " +
+                "ORDER BY r.Date_buy desc ";
+
+        try (Connection conn = daoConnection.getConnection();
+             PreparedStatement ps = conn.prepareStatement(query)) {
+            ps.setTimestamp(1, Timestamp.valueOf(starttime));
+            ps.setTimestamp(2, Timestamp.valueOf(endtime));
+            ResultSet rs = ps.executeQuery();
+
+            while (rs.next()) {
+                Receipt receipt = new Receipt(
+                        rs.getLong("Id_number_of_check"),
+                        rs.getTimestamp("Date_buy").toLocalDateTime(),
+                        rs.getDouble("sum_of_check"),
+                        rs.getInt("User_bonus_number"),
+                        rs.getString("ID_number_client"),
+                        rs.getString("Tab_number_worker")
+                );
+                receipt.setClient_full_name(rs.getString("Client_full_name"));
+                receipt.setWorker_full_name(rs.getString("Worker_full_name"));
+                receipts.add(receipt);
+            }
+
+        } catch (SQLException e) {
+            throw new RuntimeException("Cannot get receipts by date range", e);
+        }
+
+        return receipts;
+    }
+
     public void saveReceipt(Receipt receipt) {
         if (receipt.getId() == null) {
 

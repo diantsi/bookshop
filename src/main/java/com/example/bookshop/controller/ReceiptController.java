@@ -9,6 +9,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -36,8 +37,17 @@ public class ReceiptController {
     }
 
     @GetMapping({"/receipt", "/receipt.html"})
-    public String showReceiptPage(Model model) {
-        List<Receipt> receipts = receiptService.getAllReceipts();
+    public String showReceiptPage(@RequestParam(value = "starttime", required = false) LocalDateTime starttime,
+                                  @RequestParam(value = "endtime", required = false) LocalDateTime endtime,
+                                  Model model) {
+        List<Receipt> receipts;
+        System.out.println("Start time: " + starttime);
+        System.out.println("End time: " + endtime);
+        if (starttime != null && endtime != null) {
+            receipts = receiptService.getReceiptsByDateRange(starttime, endtime);
+        } else {
+            receipts = receiptService.getAllReceipts();
+        }
         model.addAttribute("receipts", receipts);
         Optional<Worker> user = workerService.findByTabEmail(LoginController.USER);
         model.addAttribute("tab", user.get().getTabNumber());
