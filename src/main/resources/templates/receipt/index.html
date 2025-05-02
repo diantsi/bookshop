@@ -80,24 +80,31 @@
     <div class="row">
 
         <div class="panel-body">
-            <a href="/add_receipt" data-toggle="modal" class="btn btn-primary"
-               th:if="${#authorization.expression('hasAuthority(''Менеджер'')')}">
-                New Receipt
-            </a>
-            <a href="/add_my_receipt" data-toggle="modal" class="btn btn-primary"
-               th:if="${#authorization.expression('hasAuthority(''Касир'')')}">
-                New Receipt
-            </a>
-            <form th:action="@{/receipt}" th:object="${receipt}" method="get">
-                <div class="col-lg-4">
-                    <input type="datetime-local" name="starttime" class="form-control" max="">
-                    <input type="datetime-local" name="endtime" class="form-control" max="">
+            <div class="row align-items-center">
+                <div class="col-lg-2">
+                    <a href="/add_receipt" data-toggle="modal" class="btn btn-primary btn-sm mb-1"
+                       th:if="${#authorization.expression('hasAuthority(''Менеджер'')')}">
+                        New Receipt
+                    </a>
+                    <a href="/add_my_receipt" data-toggle="modal" class="btn btn-primary btn-sm mb-1"
+                       th:if="${#authorization.expression('hasAuthority(''Касир'')')}">
+                        New Receipt
+                    </a>
                 </div>
-                <button type="submit" class="btn btn-success">Search</button>
-            </form>
-            <form th:action="@{/receipt/clear}" method="get">
-                <button type="submit" class="icon_trash"></button>
-            </form>
+                <div class="col-lg-8">
+                    <form th:action="@{/receipt}" th:object="${receipt}" method="get" class="form-inline d-flex gap-2" id="searchForm">
+                        <input type="datetime-local" name="starttime" id="starttime" class="form-control form-control-sm"
+                               style="width: 180px;" th:value="${starttime}" />
+                        <input type="datetime-local" name="endtime" id="endtime" class="form-control form-control-sm"
+                               style="width: 180px;" th:value="${endtime}" />
+                        <button type="submit" class="btn btn-success btn-sm">Search</button>
+                        <button type="button" class="btn btn-danger btn-sm" title="Clear" onclick="clearFilters()">
+                            <i class="icon_trash"></i>
+                        </button>
+                    </form>
+                </div>
+
+            </div>
         </div>
 
         <div class="col-lg-12">
@@ -187,3 +194,31 @@
 </div>
 </body>
 </html>
+<script>
+    function clearFilters() {
+        // Очищення полів форми
+        document.getElementById('starttime').value = '';
+        document.getElementById('endtime').value = '';
+
+        // Виклик AJAX для очищення сесії
+        fetch('/receipt/clear', {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    // Оновлення таблиці: повторна подача форми без дат
+                    document.getElementById('searchForm').submit();
+                } else {
+                    alert('Помилка при очищенні фільтрів');
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('Помилка при очищенні фільтрів');
+            });
+    }
+</script>
