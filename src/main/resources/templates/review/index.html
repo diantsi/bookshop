@@ -12,9 +12,30 @@
     <div class="row">
 
         <div class="panel-body">
-            <a href="/add_review" data-toggle="modal" class="btn btn-primary">
-                New Review
-            </a>
+            <div class="col-lg-2">
+                <a href="/add_review" data-toggle="modal" class="btn btn-primary">
+                    New Review
+                </a>
+            </div>
+
+            <div class="col-lg-8">
+                <form th:action="@{/review}">
+                    <select th:value="${keyISBN}" class="form-control book-select" name="keyISBN" style="display: inline; width: 50%">
+                        <option value="">All books</option>
+                        <option th:each="book : ${books}"
+                                th:value="${book.getISBN()}"
+                                th:text="${book.getName() + ' (' + book.getISBN() + ')'}"
+                                th:selected="${book.ISBN == keyISBN}">
+                        </option>
+                    </select>
+
+                    <button type="submit" class="btn btn-success">
+                        Show All
+                    </button>
+
+                </form>
+            </div>
+
 
         </div>
         <div class="col-lg-12">
@@ -23,12 +44,12 @@
                     <tbody>
                     <tr>
                         <th><i class="icon_id_alt"></i> ID</th>
-                        <th><i class="icon_profile"></i> Username </th>
+                        <th><i class="icon_profile"></i> Username</th>
                         <th><i class="icon_star"></i> Grade</th>
                         <th><i class="icon_comment"></i> Text</th>
-                        <th><i class="icon_check_alt2"></i> Status </th>
-                        <th><i class="icon_book"></i> Book ISBN </th>
-                        <th><i class="icon_cogs"></i> actions </th>
+                        <th><i class="icon_check_alt2"></i> Status</th>
+                        <th><i class="icon_book"></i> Book ISBN</th>
+                        <th><i class="icon_cogs"></i> actions</th>
 
 
                     </tr>
@@ -36,14 +57,15 @@
                         <td th:text="${review.id}"></td>
                         <td th:text="${review.userName}"></td>
                         <td th:text="${review.grade}"></td>
-                        <td th:text="${review.text}"></td>
+                        <td th:text="${review.text}" style="width: 55%"></td>
                         <td th:text="${review.status}"></td>
                         <td th:text="${review.bookISBN}"></td>
 
 
                         <td>
                             <div class="btn-group">
-                                <a class="btn btn-primary" th:href="@{'/review_info/' + ${review.id}}"><i class="icon_info"></i></a>
+                                <a class="btn btn-primary" th:href="@{'/review_info/' + ${review.id}}"><i
+                                        class="icon_info"></i></a>
                                 <a class="btn btn-success"
                                    th:href="@{'/edit_review/' + ${review.id}}"><i class="icon_pencil-edit"></i></a>
                                 <a class="btn btn-danger"

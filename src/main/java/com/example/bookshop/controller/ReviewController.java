@@ -1,10 +1,7 @@
 package com.example.bookshop.controller;
 
 import com.example.bookshop.dao.WorkerDao;
-import com.example.bookshop.entity.Book;
-import com.example.bookshop.entity.Genre;
-import com.example.bookshop.entity.Review;
-import com.example.bookshop.entity.Worker;
+import com.example.bookshop.entity.*;
 import com.example.bookshop.security.LoginController;
 import com.example.bookshop.service.BookService;
 import com.example.bookshop.service.GenreService;
@@ -40,8 +37,24 @@ public class ReviewController {
     }
 
     @GetMapping({"/review", "/review.html"})
-    public String showReviewsPage(Model model) {
-        List<Review> reviews = reviewService.getAllReviews();
+    public String showReviewsPage(Model model, String keyISBN) {
+        List<Review> reviewsInit = reviewService.getAllReviews();
+        List<Review> reviews = new java.util.ArrayList<>();
+
+        if (keyISBN != null && !keyISBN.isEmpty()) {
+            for (Review review : reviewsInit) {
+                if (review.getBookISBN().equals(keyISBN)) {
+                    reviews.add(review);
+                }
+            }
+        } else{
+            reviews = reviewsInit;
+        }
+
+        List<Book> books = bookService.getAllBooks();
+
+        model.addAttribute("keyISBN", keyISBN);
+        model.addAttribute("books", books);
         model.addAttribute("reviews", reviews);
         return "review/index";
     }
