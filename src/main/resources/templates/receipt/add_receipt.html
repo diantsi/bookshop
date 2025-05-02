@@ -6,13 +6,16 @@
     <meta charset="UTF-8">
     <title>Add receipt</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css">
     <style>
+        /* Стилі для корзини книг */
         .selected-books-container {
             border: 1px solid #ddd;
             padding: 10px;
             margin-bottom: 15px;
             border-radius: 5px;
         }
+
         .selected-book-item {
             display: flex;
             justify-content: space-between;
@@ -20,21 +23,43 @@
             padding: 5px;
             border-bottom: 1px solid #eee;
         }
+
         .selected-book-item:last-child {
             border-bottom: none;
         }
+
         .remove-book-btn {
             color: #dc3545;
             cursor: pointer;
             background: none;
             border: none;
         }
+
         .search-box {
             margin-bottom: 10px;
         }
+
         #bookInstancesDropdown {
             max-height: 200px;
             overflow-y: auto;
+        }
+
+        /* Стилі для Select2 (клієнти) */
+        .select2-container {
+            width: 100% !important;
+        }
+
+        .select2-selection {
+            height: 38px !important;
+            padding: 6px 12px !important;
+            font-size: 14px !important;
+            line-height: 1.42857143 !important;
+            border: 1px solid #ddd !important;
+            border-radius: 4px !important;
+        }
+
+        .select2-selection__arrow {
+            height: 36px !important;
         }
     </style>
 </head>
@@ -77,10 +102,9 @@
                             <div class="form-group">
                                 <label class="control-label col-sm-4">Client</label>
                                 <div class="col-sm-6">
-                                    <select th:field="*{client_id}" class="form-control book-select"
+                                    <select th:field="*{client_id}" class="form-control client-select"
                                             th:classappend="${#fields.hasErrors('client_id')} ? 'is-invalid'">
-
-                                        <option value="">Choose a client</option>
+                                        <option value=""></option>
                                         <option th:each="client : ${clientCards}"
                                                 th:value="${client.idNumber}"
                                                 th:text="${client.idNumber + ' (' + client.surname + ' ' + client.firstName + ')'}">
@@ -93,7 +117,7 @@
                             <div class="form-group">
                                 <label class="control-label col-sm-4">Worker </label>
                                 <div class="col-sm-6">
-                                    <select th:field="*{worker_id}" class="form-control book-select" required
+                                    <select th:field="*{worker_id}" class="form-control worker-select" required
                                             th:if="${#authorization.expression('hasAuthority(''Менеджер'')')}">
                                         <option value="">Choose a worker</option>
                                         <option th:each="worker : ${workers}"
@@ -107,29 +131,35 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="form-group">
-                            <label class="control-label col-sm-4">Select Books</label>
-                            <div class="col-sm-6">
-                                <div class="search-box">
-                                    <input type="text" id="bookSearch" class="form-control" placeholder="Search by ISBN or name...">
+                        <div class="panel-body">
+                            <div class="form-group">
+                                <label class="control-label col-sm-4">Select Books</label>
+                                <div class="col-sm-6">
+                                    <div class="search-box">
+                                        <input type="text" id="bookSearch" class="form-control"
+                                               placeholder="Search by ISBN or name...">
+                                    </div>
+                                    <select id="bookInstancesDropdown" multiple class="form-control" size="5">
+                                        <option th:each="instance : ${availableInstances}"
+                                                th:value="${instance.id}"
+                                                th:data-isbn="${instance.ISBN}"
+                                                th:data-name="${instance.book_name}"
+                                                th:text="${instance.book_name + ' (' + instance.ISBN + ')'}">
+                                        </option>
+                                    </select>
                                 </div>
-                                <select id="bookInstancesDropdown" multiple class="form-control" size="5">
-                                    <option th:each="instance : ${availableInstances}"
-                                            th:value="${instance.id}"
-                                            th:data-isbn="${instance.ISBN}"
-                                            th:data-name="${instance.book_name}"
-                                            th:text="${instance.book_name + ' (' + instance.ISBN + ')'}">
-                                    </option>
-                                </select>
                             </div>
-                        </div>
-                        <div class="form-group">
-                            <label class="control-label col-sm-4">Selected Books</label>
-                            <div class="col-sm-6">
-                                <div class="selected-books-container" id="selectedBooksContainer">
-                                    <!-- Selected books will appear here -->
+                            <div class="form-group">
+                                <label class="control-label col-sm-4">Selected Books</label>
+                                <div class="col-sm-6">
+                                    <div class="selected-books-container" id="selectedBooksContainer">
+                                    </div>
+                                    <input type="hidden" id="selectedInstanceIds" name="instanceIds" value="">
                                 </div>
-                                <input type="hidden" id="selectedInstanceIds" name="instanceIds" value="">
+                            </div>
+                            <div class="form-group">
+                                <label class="control-label col-sm-4">Total Price</label>
+                                <span th:text="${receipt.totalPrice}"></span>
                             </div>
                         </div>
                     </section>
@@ -148,6 +178,7 @@
 </body>
 </html>
 
+<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
 <script>
     document.addEventListener('DOMContentLoaded', function () {
         const now = new Date();
@@ -157,7 +188,38 @@
 
         // Initialize book selection functionality
         initBookSelection();
+
+        // Initialize client select with search
+        initClientSelect();
+
+        initWorkerSelect();
     });
+
+    function initWorkerSelect() {
+        $('.worker-select').select2({
+            placeholder: "Search worker...",
+            allowClear: true,
+            width: 'resolve',
+            language: {
+                noResults: function () {
+                    return "No workers found";
+                }
+            }
+        });
+    }
+
+    function initClientSelect() {
+        $('.client-select').select2({
+            placeholder: "Search client...",
+            allowClear: true,
+            width: 'resolve',
+            language: {
+                noResults: function () {
+                    return "No clients found";
+                }
+            }
+        });
+    }
 
     function initBookSelection() {
         const bookSearch = document.getElementById('bookSearch');
@@ -180,7 +242,7 @@
         }
 
         // Search functionality
-        bookSearch.addEventListener('input', function() {
+        bookSearch.addEventListener('input', function () {
             const searchTerm = this.value.toLowerCase();
             Array.from(bookInstancesDropdown.options).forEach(option => {
                 const text = option.text.toLowerCase();
@@ -196,7 +258,7 @@
         });
 
         // Add book to selection when clicked
-        bookInstancesDropdown.addEventListener('click', function(e) {
+        bookInstancesDropdown.addEventListener('click', function (e) {
             if (e.target.tagName === 'OPTION') {
                 addBookToSelection(e.target);
             }
@@ -257,7 +319,7 @@
 
             // Add event listeners to remove buttons
             document.querySelectorAll('.remove-book-btn').forEach(btn => {
-                btn.addEventListener('click', function(e) {
+                btn.addEventListener('click', function (e) {
                     e.preventDefault();
                     removeBookFromSelection(this.getAttribute('data-id'));
                 });
