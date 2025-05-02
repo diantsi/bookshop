@@ -122,7 +122,11 @@ public class ReceiptDao {
                  PreparedStatement ps = conn.prepareStatement(query, Statement.RETURN_GENERATED_KEYS)) {
 
                 ps.setDouble(1, receipt.getTotalPrice());
-                ps.setInt(2, receipt.getBonuses());
+                if (receipt.getBonuses() == null ) {
+                    ps.setInt(2, 0);
+                } else {
+                    ps.setInt(2, receipt.getBonuses());
+                }
 
                 if (receipt.getClient_id() == null || receipt.getClient_id().isEmpty()) {
                     ps.setNull(3, Types.VARCHAR);
