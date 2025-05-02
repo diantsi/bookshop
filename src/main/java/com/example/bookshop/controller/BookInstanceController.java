@@ -33,14 +33,33 @@ public class BookInstanceController {
     }
 
     @GetMapping({"/bookcopy", "/bookcopy.html"})
-    public String showInstancesPage(@RequestParam(value = "available", required = false, defaultValue = "false") boolean available, Model model) {
-        List<BookInstance> instances;
+    public String showInstancesPage(@RequestParam(value = "available", required = false, defaultValue = "false") boolean available, Model model, String keyISBN) {
+        List<BookInstance> instancesInit;
+        List<BookInstance> instances = new java.util.ArrayList<>();
         if (available) {
-            instances = bookInstanceService.getAvailableBookInstances();
+            instancesInit = bookInstanceService.getAvailableBookInstances();
         } else {
-            instances = bookInstanceService.getAllBookInstances();
+            instancesInit = bookInstanceService.getAllBookInstances();
         }
+
+        if (keyISBN != null && !keyISBN.isEmpty()) {
+            for (BookInstance instance : instancesInit) {
+                if (instance.getISBN().equals(keyISBN)) {
+                    instances.add(instance);
+                }
+            }
+        } else{
+            instances = instancesInit;
+        }
+
+        List<Book> books = bookService.getAllBooks();
+
+
+        model.addAttribute("keyISBN", keyISBN);
         model.addAttribute("instances", instances);
+        model.addAttribute("books", books);
+
+
         return "bookcopy/index";
     }
 

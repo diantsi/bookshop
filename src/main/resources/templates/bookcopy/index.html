@@ -4,6 +4,9 @@
 <head>
     <meta charset="UTF-8">
     <title>Примірники</title>
+
+    <link th:href="@{/css/select2.min.css}" rel="stylesheet"/>
+
 </head>
 <body>
 <div layout:fragment="content">
@@ -11,11 +14,41 @@
 
     <div class="row">
         <div class="panel-body">
-            <a href="/add_bookcopy" data-toggle="modal" class="btn btn-primary" th:if="${#authorization.expression('hasAuthority(''Менеджер'')')}">
+            <div class="col-lg-2">
+            <a href="/add_bookcopy" data-toggle="modal" class="btn btn-primary"
+               th:if="${#authorization.expression('hasAuthority(''Менеджер'')')}">
                 New instance
             </a>
-            <a class="btn btn-success" th:href="@{/bookcopy(available=true)}">Show All Available</a>
-            <a class="btn btn-success" th:href="@{/bookcopy}">Show All</a>
+            </div>
+
+            <div class="col-lg-8">
+            <form th:action="@{/bookcopy}">
+
+
+                <select th:value="${keyISBN}" class="form-control book-select" name="keyISBN" style="display: inline; width: 50%">
+                    <option value="">All books</option>
+                    <option th:each="book : ${books}"
+                            th:value="${book.getISBN()}"
+                            th:text="${book.getISBN() + ' (' + book.getName() + ')'}"
+                            th:selected="${book.ISBN == keyISBN}">
+                    </option>
+                </select>
+                <input type="hidden" name="available" id="availableInput" value="false"/>
+
+                <button type="submit"
+                        class="btn btn-success"
+                        onclick="document.getElementById('availableInput').value='true'">
+                    Show All Available
+                </button>
+
+                <button type="submit"
+                        class="btn btn-success"
+                        onclick="document.getElementById('availableInput').value='false'">
+                    Show All
+                </button>
+
+            </form>
+            </div>
 
 
         </div>
@@ -24,11 +57,11 @@
                 <table class="table table-striped table-advance table-hover">
                     <tbody>
                     <tr>
-                        <th><i class="icon_genius"></i> id </th>
-                        <th><i class="icon_cart"></i> receipt id </th>
-                        <th><i class="glyphicon-bookmark"></i> book isbn </th>
-                        <th><i class="icon_book"></i> book name </th>
-                        <th><i class="icon_cogs"></i> actions </th>
+                        <th><i class="icon_genius"></i> id</th>
+                        <th><i class="icon_cart"></i> receipt id</th>
+                        <th><i class="glyphicon-bookmark"></i> book isbn</th>
+                        <th><i class="icon_book"></i> book name</th>
+                        <th><i class="icon_cogs"></i> actions</th>
                     </tr>
                     <tr th:each="instance : ${instances}">
                         <td th:text="${instance.id}"></td>
@@ -37,9 +70,10 @@
                         <td th:text="${instance.book_name}"></td>
                         <td>
                             <div class="btn-group">
-<!--                                <a class="btn btn-success" th:if="${#authorization.expression('hasAuthority(''Менеджер'')')}"-->
-<!--                                   th:href="@{'/edit_bookcopy/' + ${instance.id}}"><i class="icon_pencil-edit"></i></a>-->
-                                <a class="btn btn-danger" th:if="${#authorization.expression('hasAuthority(''Менеджер'')')}"
+                                <!--                                <a class="btn btn-success" th:if="${#authorization.expression('hasAuthority(''Менеджер'')')}"-->
+                                <!--                                   th:href="@{'/edit_bookcopy/' + ${instance.id}}"><i class="icon_pencil-edit"></i></a>-->
+                                <a class="btn btn-danger"
+                                   th:if="${#authorization.expression('hasAuthority(''Менеджер'')')}"
                                    onclick="return confirm('sure?')"
                                    th:disabled="${instance.receipt_id != 0}"
                                    th:href="@{'/bookcopy/delete/' + ${instance.id}}"><i class="icon_trash"></i></a>
@@ -51,7 +85,44 @@
             </section>
         </div>
     </div>
+
+
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+
+    <!-- jQuery (обов'язково перед Select2!) -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+    <!-- Select2 JS -->
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+
+
+    <script>
+        $(document).ready(function() {
+            $('.book-select').select2({
+                placeholder: "Choose a book",
+                allowClear: true,
+                width: '100%',
+                matcher: function(params, data) {
+                    if ($.trim(params.term) === '') {
+                        return data;
+                    }
+
+                    if (typeof data.text === 'undefined') {
+                        return null;
+                    }
+
+                    // Фільтрація по частковому співпадінню з назвою або ISBN
+                    if (data.text.toLowerCase().includes(params.term.toLowerCase())) {
+                        return data;
+                    }
+
+                    return null;
+                }
+            });
+        });
+    </script>
 </div>
+
 </body>
 
 </html>
