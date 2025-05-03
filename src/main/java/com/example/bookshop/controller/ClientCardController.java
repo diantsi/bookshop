@@ -71,9 +71,14 @@ public class ClientCardController {
             }
         }
 
-        if (clientcard.calculateAgeInDays() < 0) {
+        if (!clientcard.validateAge()) {
             result.rejectValue("dateOfBirth", "error.dateOfBirth", "Клієнт не може бути ненародженим.");
         }
+
+        if (!clientcard.getPhoneNumber().matches("\\d{10}")) {
+            result.rejectValue("phoneNumber", "error.phoneNumber", "Недійсний номер телефону!");
+        }
+
 
         if (result.hasErrors()) {
             return "clientcard/edit_clientcard";
@@ -92,13 +97,18 @@ public class ClientCardController {
             result.rejectValue("idNumber", "error.idNumber", "Карта клієнта з таким ідентифікаційним номером вже існує!");
         }
 
-        if (clientcard.calculateAgeInDays() < 0) {
+        if (!clientcard.validateAge()) {
             result.rejectValue("dateOfBirth", "error.dateOfBirth", "Клієнт не може бути ненародженим.");
         }
 
         if (clientCardService.findByPhoneNumber(clientcard.getPhoneNumber()).isPresent()) {
             result.rejectValue("phoneNumber", "error.phoneNumber", "Карта клієнта з таким номером телефону вже існує!");
         }
+
+        if (!clientcard.getPhoneNumber().matches("\\d{10}")) {
+            result.rejectValue("phoneNumber", "error.phoneNumber", "Недійсний номер телефону!");
+        }
+
 
         if (result.hasErrors()) {
             return "clientcard/add_clientcard";

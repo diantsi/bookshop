@@ -99,8 +99,29 @@
             <!-- alert notification end-->
             <!-- user login dropdown start-->
 
-            <li class="dropdown" style="display: inline; align-items: center; height: 40px;">
+            <li class="dropdown" style="display: inline; align-items: center; height: 40px;" th:if="${#authorization.expression('hasAuthority(''Менеджер'')')}">
                 <a data-toggle="dropdown" class="dropdown-toggle" href="#">
+                            <span class="profile-ava">
+                                  <i class="icon_profile"></i>
+                            </span>
+                    <span class="username" th:text="${#authentication.name}"></span>
+                </a>
+                <ul class="dropdown-menu extended logout">
+                    <div class="log-arrow-up"></div>
+                    <li style="">
+                        <form th:action="@{/logout}" method="post" style="text-align: center;">
+                            <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
+                            <span style="padding: 0; margin: 0">
+                    <button type="submit" class="logout-button">Log Out</button>
+                  </span>
+                        </form>
+                    </li>
+                </ul>
+            </li>
+
+            <li class="dropdown" style="display: flex; align-items: center; height: 40px;" th:if="${#authorization.expression('hasAuthority(''Касир'')')}">
+
+            <a data-toggle="dropdown" class="dropdown-toggle" href="#">
                             <span class="profile-ava">
                                   <i class="icon_profile"></i>
                             </span>

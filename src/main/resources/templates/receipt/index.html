@@ -91,7 +91,7 @@
                         New Receipt
                     </a>
                 </div>
-                <div class="col-lg-10">
+                <div class="col-lg-10" th:if="${#authorization.expression('hasAuthority(''Менеджер'')')}">
                     <form th:action="@{/receipt(keyTab=${keyTab})}" th:object="${receipt}" method="get"
                           class="form-inline d-flex gap-2" id="searchForm">
                         <input type="datetime-local" name="starttime" id="starttime"

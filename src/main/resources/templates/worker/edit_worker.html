@@ -140,7 +140,9 @@
                                 <label class="control-label col-sm-4">Phone number</label>
                                 <div class="col-sm-6">
                                     <input type="text" th:field="*{phoneNumber}" size="16" class="form-control"
-                                           required>
+                                           required th:classappend="${#fields.hasErrors('phoneNumber')} ? 'is-invalid'"/>
+                                    <div th:if="${#fields.hasErrors('phoneNumber')}" th:errors="*{phoneNumber}"
+                                         class="text-danger"></div>
                                 </div>
                             </div>
 

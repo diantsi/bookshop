@@ -61,9 +61,14 @@ public class WorkerController {
         if (worker.getSalary().compareTo(BigDecimal.ZERO)<0) {
             result.rejectValue("salary", "error.salary", "Зарплата не може бути від’ємною.");
         }
-        if (worker.calculateAgeInDays() < 18*365) {
-            result.rejectValue("dateOfBirthString", "error.dateOfBirthString", "Працівнику має бути не менше 18 років.");
+        if (!worker.verifyAge()) {
+            result.rejectValue("dateOfBirth", "error.dateOfBirth", "Працівнику має бути не менше 18 років.");
         }
+
+        if (!worker.getPhoneNumber().matches("\\d{10}")) {
+            result.rejectValue("phoneNumber", "error.phoneNumber", "Недійсний номер телефону!");
+        }
+
 
         if (result.hasErrors()) {
             return "worker/add_worker";
@@ -97,9 +102,14 @@ public class WorkerController {
         if (worker.getSalary().compareTo(BigDecimal.ZERO)<0) {
             result.rejectValue("salary", "error.salary", "Зарплата не може бути від’ємною.");
         }
-        if (worker.calculateAgeInDays() < 18*365) {
-            result.rejectValue("dateOfBirthString", "error.dateOfBirthString", "Працівнику має бути не менше 18 років.");
+        if (!worker.verifyAge()) {
+            result.rejectValue("dateOfBirth", "error.dateOfBirth", "Працівнику має бути не менше 18 років.");
         }
+
+        if (!worker.getPhoneNumber().matches("\\d{10}")) {
+            result.rejectValue("phoneNumber", "error.phoneNumber", "Недійсний номер телефону!");
+        }
+
 
         if (result.hasErrors()) {
             model.addAttribute("oldTabNumber", oldTabNumber); // Додати знову в модель

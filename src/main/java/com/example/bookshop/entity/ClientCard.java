@@ -136,9 +136,9 @@ public class ClientCard {
         return Period.between(dateOfBirth, LocalDate.now()).getYears();
     }
 
-    public Integer calculateAgeInDays() {
-        if (dateOfBirth == null) return 0;
-        return Period.between(dateOfBirth, LocalDate.now()).getDays();
+    public boolean validateAge() {
+        if (dateOfBirth == null) return false;
+        return dateOfBirth.isBefore(LocalDate.now()) || dateOfBirth.isEqual(LocalDate.now());
     }
 
     public String getEmail() {

@@ -151,9 +151,9 @@ public class Worker {
         return Period.between(dateOfBirth, LocalDate.now()).getYears();
     }
 
-    public Integer calculateAgeInDays() {
-        if (dateOfBirth == null) return 0;
-        return Period.between(dateOfBirth, LocalDate.now()).getDays();
+    public boolean verifyAge() {
+        if (dateOfBirth == null) return false;
+        return dateOfBirth.plusYears(18).isBefore(LocalDate.now())|| dateOfBirth.plusYears(18).isEqual(LocalDate.now());
     }
 
 
