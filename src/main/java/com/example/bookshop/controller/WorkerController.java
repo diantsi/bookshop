@@ -61,7 +61,7 @@ public class WorkerController {
         if (worker.getSalary().compareTo(BigDecimal.ZERO)<0) {
             result.rejectValue("salary", "error.salary", "Зарплата не може бути від’ємною.");
         }
-        if (worker.calculateAge() < 18) {
+        if (worker.calculateAgeInDays() < 18*365) {
             result.rejectValue("dateOfBirthString", "error.dateOfBirthString", "Працівнику має бути не менше 18 років.");
         }
 
@@ -97,7 +97,7 @@ public class WorkerController {
         if (worker.getSalary().compareTo(BigDecimal.ZERO)<0) {
             result.rejectValue("salary", "error.salary", "Зарплата не може бути від’ємною.");
         }
-        if (worker.calculateAge() < 18) {
+        if (worker.calculateAgeInDays() < 18*365) {
             result.rejectValue("dateOfBirthString", "error.dateOfBirthString", "Працівнику має бути не менше 18 років.");
         }
 
