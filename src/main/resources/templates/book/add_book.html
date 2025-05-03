@@ -52,8 +52,10 @@
                             <div class="col-sm-6">
                                 <input type="text" th:field="*{ISBN}" class="form-control"
                                        required
-                                       minlength="11"
-                                       maxlength="11"/>
+                                       minlength="17"
+                                       maxlength="17"
+                                       pattern="\d+(-\d+){4}"
+                                       title="ISBN має бути у форматі: X-X-X-X-X (де X - цифри, кількість може варіюватись)"/>
                             </div>
                         </div>
                         <div class="form-group">
@@ -105,7 +107,7 @@
                         <div class="form-group">
                             <label class="control-label col-sm-4">Weight (g)</label>
                             <div class="col-sm-6">
-                                <input type="number" th:field="*{weight}" class="form-control" min ="0" required/>
+                                <input type="number" th:field="*{weight}" step="0.1" class="form-control" min ="0" required/>
                             </div>
                         </div>
                         <div class="form-group">
