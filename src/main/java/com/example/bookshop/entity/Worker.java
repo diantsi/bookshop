@@ -151,6 +151,12 @@ public class Worker {
         return Period.between(dateOfBirth, LocalDate.now()).getYears();
     }
 
+    public Integer calculateAgeInDays() {
+        if (dateOfBirth == null) return 0;
+        return Period.between(dateOfBirth, LocalDate.now()).getDays();
+    }
+
+
     public Integer getAge() {
         return age;
     }

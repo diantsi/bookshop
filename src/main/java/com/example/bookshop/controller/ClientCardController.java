@@ -71,7 +71,7 @@ public class ClientCardController {
             }
         }
 
-        if (clientcard.calculateAge() < 0) {
+        if (clientcard.calculateAgeInDays() < 0) {
             result.rejectValue("dateOfBirth", "error.dateOfBirth", "Клієнт не може бути ненародженим.");
         }
 
@@ -92,7 +92,7 @@ public class ClientCardController {
             result.rejectValue("idNumber", "error.idNumber", "Карта клієнта з таким ідентифікаційним номером вже існує!");
         }
 
-        if (clientcard.calculateAge() < 0) {
+        if (clientcard.calculateAgeInDays() < 0) {
             result.rejectValue("dateOfBirth", "error.dateOfBirth", "Клієнт не може бути ненародженим.");
         }
 

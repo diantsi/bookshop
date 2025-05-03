@@ -94,7 +94,7 @@
         </div>
 
         <div class="top-nav notification-row">
-            <button class="btn btn-print" onclick="printTable()"><i class="icon_printer"></i></button>
+            <button class="btn btn-print" onclick="printTable()" th:if="${#authorization.expression('hasAuthority(''Менеджер'')')}"><i class="icon_printer"></i></button>
             <!-- notificatoin dropdown start-->
             <!-- alert notification end-->
             <!-- user login dropdown start-->

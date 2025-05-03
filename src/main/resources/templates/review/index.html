@@ -4,10 +4,78 @@
 <head>
     <meta charset="UTF-8">
     <title>Відгуки</title>
+
+    <style>
+        .print-only {
+            display: none;
+        }
+
+        td {
+            padding: 0;
+            margin: 0;
+        }
+
+        tr {
+            padding: 0;
+            margin: 0;
+        }
+
+        table {
+            padding: 0;
+            margin: 0;
+        }
+
+        @media print {
+
+            @page {
+                padding: 3px;
+            }
+
+            .no-print {
+                display: none !important;
+            }
+
+            .print-only {
+                display: block;
+
+            }
+
+            .page-header, .page-header-space {
+                height: 50px;
+            }
+
+            .page-footer, .page-footer-space {
+                height: 50px;
+
+            }
+
+            .page-footer {
+                position: fixed;
+                text-align: center;
+                bottom: 0;
+                width: 100%;
+                /*border-top: 1px solid black; /*for demo */
+                /* background: yellow; for demo */
+            }
+
+            .page-header {
+                position: fixed;
+                text-align: right;
+                top: 0;
+                width: 100%;
+                /*border-bottom: 1px solid black; /* for demo */
+                /* background: yellow; for demo */
+            }
+
+        }
+    </style>
+
 </head>
 
 <div layout:fragment="content">
     <h1>Відгуки</h1>
+
+
 
     <div class="row">
 
@@ -20,7 +88,8 @@
 
             <div class="col-lg-8">
                 <form th:action="@{/review}">
-                    <select th:value="${keyISBN}" class="form-control book-select" name="keyISBN" style="display: inline; width: 50%">
+                    <select th:value="${keyISBN}" class="form-control book-select" name="keyISBN"
+                            style="display: inline; width: 50%">
                         <option value="">All books</option>
                         <option th:each="book : ${books}"
                                 th:value="${book.getISBN()}"
@@ -40,48 +109,109 @@
         </div>
         <div class="col-lg-12">
             <section class="panel">
-                <table class="table table-striped table-advance table-hover">
-                    <tbody>
-                    <tr>
-                        <th><i class="icon_id_alt"></i> ID</th>
-                        <th><i class="icon_profile"></i> Username</th>
-                        <th><i class="icon_star"></i> Grade</th>
-                        <th><i class="icon_comment"></i> Text</th>
-                        <th><i class="icon_check_alt2"></i> Status</th>
-                        <th><i class="icon_book"></i> Book ISBN</th>
-                        <th><i class="icon_cogs"></i> actions</th>
+
+                <div id="printArea">
+
+                    <div class="page-header print-only">
+                        Звіт: Відгуки
+                        <br/>
+                    </div>
+
+                    <div class="page-footer print-only">
+                        Літературний сад
+                    </div>
+
+                    <table style="width: 100%;">
+                        <thead>
+                        <tr>
+                            <td>
+                                <!--place holder for the fixed-position header-->
+                                <div class="page-header-space print-only"></div>
+                            </td>
+                        </tr>
+                        </thead>
+
+                        <tbody>
+                        <tr>
+                            <td style="width: 100%">
+
+                                <div class="print-body">
+                                    <h2 id="printTitle" class="print-only" style="text-align: center">Звіт по
+                                        відгуках</h2>
 
 
-                    </tr>
-                    <tr th:each="review : ${reviews}">
-                        <td th:text="${review.id}"></td>
-                        <td th:text="${review.userName}"></td>
-                        <td th:text="${review.grade}"></td>
-                        <td th:text="${review.text}" style="width: 55%"></td>
-                        <td th:text="${review.status}"></td>
-                        <td th:text="${review.bookISBN}"></td>
+                                    <div class="print-only" style="text-align: left; margin-bottom: 10px;">
+                                        <span th:if="${keyISBN != null && keyISBN != ''}"
+                                              th:text="'Відгуки на книгу : '+${keyISBN}"></span>
+                                    </div>
 
 
-                        <td>
-                            <div class="btn-group">
-                                <a class="btn btn-primary" th:href="@{'/review_info/' + ${review.id}}"><i
-                                        class="icon_info"></i></a>
-                                <a class="btn btn-success"
-                                   th:href="@{'/edit_review/' + ${review.id}}"><i class="icon_pencil-edit"></i></a>
-                                <a class="btn btn-danger"
-                                   th:data-id="${review.id}" onclick="return confirmDelete(this)"
-                                   th:href="@{'/review/delete/'+${review.id}}"><i class="icon_trash"></i></a>
-                                <script>
-                                    function confirmDelete(button) {
-                                        const id = button.getAttribute('data-id');
-                                        return confirm('Видалити відгук ' + id + '?');
-                                    }
-                                </script>
-                            </div>
-                        </td>
-                    </tr>
-                    </tbody>
-                </table>
+                                    <table class="table table-striped table-advance table-hover"
+                                           style="width: 100%; margin-bottom:0">
+                                        <tbody>
+                                        <tr>
+                                            <th><i class="icon_id_alt"></i> ID</th>
+                                            <th><i class="icon_profile"></i> Username</th>
+                                            <th><i class="icon_star"></i> Grade</th>
+                                            <th><i class="icon_comment"></i> Text</th>
+                                            <th><i class="icon_check_alt2"></i> Status</th>
+                                            <th><i class="icon_book"></i> Book ISBN</th>
+                                            <th class="no-print"><i class="icon_cogs"></i> actions</th>
+
+
+                                        </tr>
+                                        <tr th:each="review : ${reviews}">
+                                            <td th:text="${review.id}"></td>
+                                            <td th:text="${review.userName}"></td>
+                                            <td th:text="${review.grade}"></td>
+                                            <td th:text="${review.text}" style="width: 55%"></td>
+                                            <td th:text="${review.status}"></td>
+                                            <td th:text="${review.bookISBN}"></td>
+
+
+                                            <td class="no-print">
+                                                <div class="btn-group">
+                                                    <a class="btn btn-primary"
+                                                       th:href="@{'/review_info/' + ${review.id}}"><i
+                                                            class="icon_info"></i></a>
+                                                    <a class="btn btn-success"
+                                                       th:href="@{'/edit_review/' + ${review.id}}"><i
+                                                            class="icon_pencil-edit"></i></a>
+                                                    <a class="btn btn-danger"
+                                                       th:data-id="${review.id}" onclick="return confirmDelete(this)"
+                                                       th:href="@{'/review/delete/'+${review.id}}"><i
+                                                            class="icon_trash"></i></a>
+                                                    <script>
+                                                        function confirmDelete(button) {
+                                                            const id = button.getAttribute('data-id');
+                                                            return confirm('Видалити відгук ' + id + '?');
+                                                        }
+                                                    </script>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                        </tbody>
+                                    </table>
+
+                                </div>
+
+                            </td>
+                        </tr>
+                        </tbody>
+
+                        <tfoot>
+                        <tr>
+                            <td>
+                                <!--place holder for the fixed-position footer-->
+                                <div class="page-footer-space print-only"></div>
+                            </td>
+                        </tr>
+                        </tfoot>
+
+                    </table>
+                </div>
+
+
             </section>
         </div>
     </div>
